@@ -194,7 +194,7 @@
                             // Reset course
                             courseSelect.value = '';
                             
-                            if (programId && departmentId) {
+                            if (programId &amp;&amp; departmentId) {
                                 // Filter courses by both department and program
                                 const courseOptions = courseSelect.querySelectorAll('option');
                                 courseOptions.forEach(option => {
@@ -204,7 +204,7 @@
                                     }
                                     const optDept = option.getAttribute('data-department');
                                     const optProg = option.getAttribute('data-program');
-                                    if (optDept === departmentId && optProg === programId) {
+                                    if (optDept === departmentId &amp;&amp; optProg === programId) {
                                         option.style.display = 'block';
                                     } else {
                                         option.style.display = 'none';
