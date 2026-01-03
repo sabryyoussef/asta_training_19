@@ -28,6 +28,14 @@ class OpDepartment(models.Model):
     name = fields.Char('Name', required=True)
     code = fields.Char('Code', required=True)
     parent_id = fields.Many2one('op.department', 'Parent Department')
+    program_ids = fields.Many2many(
+        'op.program', 
+        'department_program_rel', 
+        'department_id', 
+        'program_id', 
+        string='Programs',
+        help='Programs that belong to this department'
+    )
 
     @api.model_create_multi
     def create(self, vals):

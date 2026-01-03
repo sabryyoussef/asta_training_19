@@ -34,6 +34,18 @@ class OpAdmission(models.Model):
     _inherit = 'op.admission'
     
     # ============================================
+    # DEPARTMENT FIELD
+    # ============================================
+    
+    department_id = fields.Many2one(
+        'op.department',
+        string='Department',
+        required=True,
+        tracking=True,
+        help="Department for this admission - determines available programs and courses"
+    )
+    
+    # ============================================
     # PORTAL ACCESS FIELDS
     # ============================================
     
@@ -114,6 +126,60 @@ class OpAdmission(models.Model):
     # ============================================
     # ONCHANGE METHODS
     # ============================================
+    
+    @api.onchange('department_id')
+    def _onchange_department_id(self):
+        """Filter programs and courses when department changes"""
+        if self.department_id:
+            # Reset program and course when department changes
+            self.program_id = False
+            self.course_id = False
+            
+            # Return domain to filter programs and courses by department
+            return {
+                'domain': {
+                    'program_id': [('id', 'in', self.department_id.program_ids.ids)],
+                    'course_id': [('department_id', '=', self.department_id.id)]
+                }
+            }
+        else:
+            # No department selected - show all
+            return {
+                'domain': {
+                    'program_id': [],
+                    'course_id': []
+                }
+            }
+    
+    @api.onchange('program_id')
+    def _onchange_program_id(self):
+        """Further filter courses when program changes"""
+        if self.program_id and self.department_id:
+            # Reset course when program changes
+            self.course_id = False
+            
+            # Return domain to filter courses by both department and program
+            return {
+                'domain': {
+                    'course_id': [
+                        ('department_id', '=', self.department_id.id),
+                        ('program_id', '=', self.program_id.id)
+                    ]
+                }
+            }
+        elif self.department_id:
+            # Only department selected - filter by department
+            return {
+                'domain': {
+                    'course_id': [('department_id', '=', self.department_id.id)]
+                }
+            }
+        else:
+            return {
+                'domain': {
+                    'course_id': []
+                }
+            }
     
     @api.onchange('course_id', 'register_id')
     def _onchange_application_fee(self):

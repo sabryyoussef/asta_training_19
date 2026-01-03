@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Hide "Don't have an account?" section from login page -->
+    <template id="login_hide_signup" inherit_id="web.login" priority="99">
+        <!-- Hide the signup link/message by setting it to display:none -->
+        <xpath expr="//div[contains(@class, 'alert')]//a[@href='/web/signup']/.." position="attributes">
+            <attribute name="style">display: none;</attribute>
+        </xpath>
+    </template>
+    
+    <!-- Alternative: If the above doesn't work, try hiding by specific text content -->
+    <template id="login_hide_signup_alt" inherit_id="web.login" priority="100" active="False">
+        <!-- This is an alternative approach - replace the entire div containing signup link -->
+        <xpath expr="//div[@class='alert alert-info' and contains(., 'account')]" position="replace"/>
+    </template>
+
+</odoo>

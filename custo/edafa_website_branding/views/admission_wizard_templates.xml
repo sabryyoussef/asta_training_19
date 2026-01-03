@@ -125,6 +125,108 @@
                     
                     // Initialize
                     wizard.showStep(1);
+                    
+                    // Department-based filtering
+                    const departmentSelect = document.getElementById('department_id');
+                    const programSelect = document.getElementById('program_id');
+                    const courseSelect = document.getElementById('course_id');
+                    
+                    if (departmentSelect) {
+                        departmentSelect.addEventListener('change', function() {
+                            const departmentId = this.value;
+                            
+                            // Reset program and course
+                            programSelect.value = '';
+                            courseSelect.value = '';
+                            
+                            if (departmentId) {
+                                // Enable and filter program dropdown
+                                programSelect.disabled = false;
+                                const programOptions = programSelect.querySelectorAll('option');
+                                let hasVisiblePrograms = false;
+                                programOptions.forEach(option => {
+                                    if (option.value === '') {
+                                        option.style.display = 'block';
+                                        option.textContent = 'Select Program...';
+                                        return;
+                                    }
+                                    const deptIds = (option.getAttribute('data-department') || '').split(',');
+                                    if (deptIds.includes(departmentId)) {
+                                        option.style.display = 'block';
+                                        hasVisiblePrograms = true;
+                                    } else {
+                                        option.style.display = 'none';
+                                    }
+                                });
+                                
+                                // Enable and filter course dropdown
+                                courseSelect.disabled = false;
+                                const courseOptions = courseSelect.querySelectorAll('option');
+                                let hasVisibleCourses = false;
+                                courseOptions.forEach(option => {
+                                    if (option.value === '') {
+                                        option.style.display = 'block';
+                                        option.textContent = 'Select Course...';
+                                        return;
+                                    }
+                                    if (option.getAttribute('data-department') === departmentId) {
+                                        option.style.display = 'block';
+                                        hasVisibleCourses = true;
+                                    } else {
+                                        option.style.display = 'none';
+                                    }
+                                });
+                            } else {
+                                // No department selected - disable dropdowns
+                                programSelect.disabled = true;
+                                programSelect.querySelector('option[value=""]').textContent = 'Select Department first...';
+                                courseSelect.disabled = true;
+                                courseSelect.querySelector('option[value=""]').textContent = 'Select Department first...';
+                            }
+                        });
+                    }
+                    
+                    if (programSelect) {
+                        programSelect.addEventListener('change', function() {
+                            const programId = this.value;
+                            const departmentId = departmentSelect.value;
+                            
+                            // Reset course
+                            courseSelect.value = '';
+                            
+                            if (programId && departmentId) {
+                                // Filter courses by both department and program
+                                const courseOptions = courseSelect.querySelectorAll('option');
+                                courseOptions.forEach(option => {
+                                    if (option.value === '') {
+                                        option.style.display = 'block';
+                                        return;
+                                    }
+                                    const optDept = option.getAttribute('data-department');
+                                    const optProg = option.getAttribute('data-program');
+                                    if (optDept === departmentId && optProg === programId) {
+                                        option.style.display = 'block';
+                                    } else {
+                                        option.style.display = 'none';
+                                    }
+                                });
+                            } else if (departmentId) {
+                                // Filter courses by department only
+                                const courseOptions = courseSelect.querySelectorAll('option');
+                                courseOptions.forEach(option => {
+                                    if (option.value === '') {
+                                        option.style.display = 'block';
+                                        return;
+                                    }
+                                    if (option.getAttribute('data-department') === departmentId) {
+                                        option.style.display = 'block';
+                                    } else {
+                                        option.style.display = 'none';
+                                    }
+                                });
+                            }
+                        });
+                    }
                 });
             </script>
             
@@ -333,15 +435,31 @@
                                                 
                                                 <div class="step-header">
                                                     <h3>Academic Information</h3>
-                                                    <p>Choose your program and course</p>
+                                                    <p>Choose your department, program and course</p>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <label for="department_id" class="required">Department</label>
+                                                    <select name="department_id" id="department_id" class="form-control" required="required">
+                                                        <option value="">Select Department...</option>
+                                                        <t t-foreach="departments" t-as="department">
+                                                            <option t-att-value="department.id" t-att-selected="'selected' if default.get('department_id') == str(department.id) else None">
+                                                                <t t-esc="department.name"/>
+                                                            </option>
+                                                        </t>
+                                                    </select>
+                                                    <small class="form-text text-muted">Select your department first - this will filter available programs and courses</small>
                                                 </div>
                                                 
                                                 <div class="mb-3">
                                                     <label for="program_id">Program <span class="optional-indicator">(Optional)</span></label>
-                                                    <select name="program_id" id="program_id" class="form-control">
-                                                        <option value="">Select Program...</option>
+                                                    <select name="program_id" id="program_id" class="form-control" disabled="disabled">
+                                                        <option value="">Select Department first...</option>
                                                         <t t-foreach="programs" t-as="program">
-                                                            <option t-att-value="program.id" t-att-selected="'selected' if default.get('program_id') == str(program.id) else None">
+                                                            <option t-att-value="program.id" 
+                                                                    t-att-data-department="program.id in [d.id for dept in departments for d in dept.program_ids] and ','.join([str(dept.id) for dept in departments if program.id in dept.program_ids.ids]) or ''"
+                                                                    t-att-selected="'selected' if default.get('program_id') == str(program.id) else None"
+                                                                    style="display:none;">
                                                                 <t t-esc="program.name"/>
                                                             </option>
                                                         </t>
@@ -350,11 +468,15 @@
                                                 </div>
                                                 
                                                 <div class="mb-3">
-                                                    <label for="course_id">Course</label>
-                                                    <select name="course_id" id="course_id" class="form-control">
-                                                        <option value="">Select Course...</option>
+                                                    <label for="course_id">Course <span class="optional-indicator">(Optional)</span></label>
+                                                    <select name="course_id" id="course_id" class="form-control" disabled="disabled">
+                                                        <option value="">Select Department first...</option>
                                                         <t t-foreach="courses" t-as="course">
-                                                            <option t-att-value="course.id" t-att-selected="'selected' if default.get('course_id') == str(course.id) else None">
+                                                            <option t-att-value="course.id" 
+                                                                    t-att-data-department="course.department_id.id or ''"
+                                                                    t-att-data-program="course.program_id.id or ''"
+                                                                    t-att-selected="'selected' if default.get('course_id') == str(course.id) else None"
+                                                                    style="display:none;">
                                                                 <t t-esc="course.name"/>
                                                             </option>
                                                         </t>

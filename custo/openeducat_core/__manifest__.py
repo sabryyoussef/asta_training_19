@@ -98,9 +98,11 @@
     'post_init_hook': '_openeducat_post_init',
     'assets': {
         'website.assets_frontend': [
+            '/openeducat_core/static/src/css/english_numerals.css',
             '/openeducat_core/static/src/scss/main.scss',
         ],
         'web.assets_backend': [
+            '/openeducat_core/static/src/css/english_numerals.css',
             '/openeducat_core/static/src/scss/style.scss',
             '/openeducat_core/static/src/js/g2_review.js',
             '/openeducat_core/static/src/js/field_inline_char.js',

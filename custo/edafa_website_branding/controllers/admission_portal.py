@@ -33,11 +33,27 @@ class EdafaAdmissionPortal(http.Controller):
 
     @http.route(['/admission', '/admission/apply'], type='http', auth="public", website=True, sitemap=True)
     def admission_form(self, **kwargs):
-        """Public admission application form - Now uses multi-step wizard (Phase 1)"""
-        # Get available courses, batches, programs (only active courses)
+        """Profile selection page - choose between Student or Trainer"""
+        return request.render('edafa_website_branding.profile_selection', {
+            'page_name': 'profile_selection',
+        })
+
+    @http.route(['/admission/apply/student'], type='http', auth="public", website=True, sitemap=True)
+    def admission_form_student(self, **kwargs):
+        """Student admission application form - Now uses multi-step wizard (Phase 1)"""
+        # Get available departments first (for filtering)
+        departments = request.env['op.department'].sudo().search([])
+        
+        # Get available courses (only active courses)
         courses = request.env['op.course'].sudo().search([('active', '=', True)])
+        
+        # Get programs that have at least one active course
+        active_course_program_ids = courses.mapped('program_id').ids
+        programs = request.env['op.program'].sudo().search([
+            ('id', 'in', active_course_program_ids)
+        ])
+        
         batches = request.env['op.batch'].sudo().search([])
-        programs = request.env['op.program'].sudo().search([])
         countries = request.env['res.country'].sudo().search([])
         # Partner titles model removed in Odoo 19
         try:
@@ -67,6 +83,7 @@ class EdafaAdmissionPortal(http.Controller):
         
         # Use wizard template instead of old form
         return request.render('edafa_website_branding.admission_application_wizard', {
+            'departments': departments,
             'courses': courses,
             'batches': batches,
             'programs': programs,
@@ -76,6 +93,22 @@ class EdafaAdmissionPortal(http.Controller):
             'default': default,
             'page_name': 'admission_wizard',
         })
+
+    @http.route(['/admission/apply/trainer'], type='http', auth="public", website=True, sitemap=True)
+    def admission_form_trainer(self, **kwargs):
+        """Trainer application - redirect directly to HR recruitment or contact us"""
+        # Check if hr_recruitment module is installed
+        recruitment_module = request.env['ir.module.module'].sudo().search([
+            ('name', '=', 'hr_recruitment'),
+            ('state', '=', 'installed')
+        ], limit=1)
+        
+        if recruitment_module:
+            # Redirect directly to jobs page
+            return request.redirect('/jobs')
+        else:
+            # No recruitment module - redirect to contact us
+            return request.redirect('/contactus')
 
     @http.route(['/admission/apply/classic'], type='http', auth="public", website=True)
     def admission_form_classic(self, **kwargs):
@@ -127,6 +160,9 @@ class EdafaAdmissionPortal(http.Controller):
         error = {}
         
         # Validation
+        if not post.get('department_id') or not post.get('department_id').strip():
+            error['department_id'] = 'Department is required.'
+        
         if not post.get('first_name') or not post.get('first_name').strip():
             error['first_name'] = 'First name is required.'
         
@@ -178,15 +214,46 @@ class EdafaAdmissionPortal(http.Controller):
                     register = False
             
             # If no register selected or invalid, find an available one
+            # Try to match by course or program if provided
             if not register:
-                register = AdmissionRegister.search([
+                department_id = post.get('department_id')
+                program_id = post.get('program_id')
+                course_id_for_register = post.get('course_id')
+                
+                # Build domain for matching
+                domain = [
                     ('active', '=', True),
                     ('state', 'in', ['application', 'confirm']),
                     ('start_date', '<=', today),
                     '|',
                     ('end_date', '=', False),
                     ('end_date', '>=', today),
-                ], order='start_date desc', limit=1)
+                ]
+                
+                # Try to match by course first (most specific)
+                if course_id_for_register and str(course_id_for_register).strip():
+                    try:
+                        course_id_int = int(course_id_for_register)
+                        register = AdmissionRegister.search(domain + [
+                            ('course_id', '=', course_id_int)
+                        ], order='start_date desc', limit=1)
+                    except (ValueError, TypeError):
+                        pass
+                
+                # If no match by course, try by program
+                if not register and program_id and str(program_id).strip():
+                    try:
+                        program_id_int = int(program_id)
+                        register = AdmissionRegister.search(domain + [
+                            ('program_id', '=', program_id_int)
+                        ], order='start_date desc', limit=1)
+                    except (ValueError, TypeError):
+                        pass
+                
+                # If still no match, find any available register
+                # (this maintains backward compatibility)
+                if not register:
+                    register = AdmissionRegister.search(domain, order='start_date desc', limit=1)
             
             # If still no register found, create a default one
             if not register:
@@ -256,6 +323,7 @@ class EdafaAdmissionPortal(http.Controller):
             # NOTE: Don't pass False for Many2one fields - just omit them if empty
             admission_vals = {
                 'register_id': register.id,  # Required field
+                'department_id': int(post.get('department_id')),  # Required field
                 'name': f"{post.get('first_name', '').strip()} {post.get('last_name', '').strip()}".strip() or 'Student',
                 'first_name': post.get('first_name', '').strip(),
                 'middle_name': post.get('middle_name', '').strip() if post.get('middle_name') else '',

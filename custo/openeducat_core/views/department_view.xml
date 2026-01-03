@@ -8,7 +8,8 @@
                 <list string="Department">
                     <field name="name"/>
                     <field name="code"/>
-                    <field name="parent_id"/>
+                    <field name="parent_id" string="Main Department"/>
+                    <field name="program_ids" widget="many2many_tags"/>
                 </list>
             </field>
         </record>
@@ -24,12 +25,22 @@
                         <group>
                             <group>
                                 <field name="name"/>
-                                <field name="parent_id"/>
+                                <field name="parent_id" string="Main Department"/>
                             </group>
                             <group>
                                 <field name="code"/>
                             </group>
                         </group>
+                        <notebook>
+                            <page string="Programs" name="programs">
+                                <field name="program_ids" nolabel="1">
+                                    <tree editable="bottom">
+                                        <field name="name"/>
+                                        <field name="code"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>
@@ -43,7 +54,8 @@
                 <search string="Department">
                     <field name="name"/>
                     <field name="code"/>
-                    <field name="parent_id"/>
+                    <field name="parent_id" string="Main Department"/>
+                    <field name="program_ids"/>
                 </search>
             </field>
         </record>

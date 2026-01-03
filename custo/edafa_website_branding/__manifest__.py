@@ -43,17 +43,25 @@
         'data/website_data.xml',
         'data/website_menu.xml',
         'data/payment_data.xml',
+        'views/profile_selection_template.xml',
+        'views/trainer_recruitment_template.xml',
         'views/admission_portal_templates.xml',
         'views/admission_wizard_templates.xml',
         'views/admission_thank_you_template.xml',
         'views/my_applications_template.xml',
+        'views/auth_signup_login.xml',
     ],
     'demo': [
         'data/demo_data.xml',
     ],
     'assets': {
+        # Backend assets (loaded in Odoo backend)
+        'web.assets_backend': [
+            'edafa_website_branding/static/src/css/english_numerals.css',
+        ],
         # Frontend assets (loaded on website/portal pages)
         'web.assets_frontend': [
+            'edafa_website_branding/static/src/css/english_numerals.css',
             'edafa_website_branding/static/src/css/admission_portal.css',
             'edafa_website_branding/static/src/css/wizard.css',
             'edafa_website_branding/static/src/js/admission_form.js',
