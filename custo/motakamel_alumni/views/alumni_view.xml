@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    
+    <!-- Alumni List View -->
+    <record id="view_op_alumni_list" model="ir.ui.view">
+        <field name="name">op.alumni.list</field>
+        <field name="model">op.alumni</field>
+        <field name="arch" type="xml">
+            <list string="Alumni">
+                <field name="alumni_number"/>
+                <field name="name"/>
+                <field name="email"/>
+                <field name="course_id"/>
+                <field name="graduation_date"/>
+                <field name="graduation_year"/>
+                <field name="state" widget="badge" decoration-success="state == 'active'" decoration-muted="state == 'inactive'"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Alumni Form View -->
+    <record id="view_op_alumni_form" model="ir.ui.view">
+        <field name="name">op.alumni.form</field>
+        <field name="model">op.alumni</field>
+        <field name="arch" type="xml">
+            <form string="Alumni">
+                <header>
+                    <button name="action_activate" string="Activate" type="object" 
+                            invisible="state == 'active'" class="oe_highlight"/>
+                    <button name="action_deactivate" string="Deactivate" type="object" 
+                            invisible="state != 'active'"/>
+                    <button name="action_create_portal_user" string="Create Portal User" type="object" 
+                            invisible="user_id" class="oe_highlight"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,active"/>
+                </header>
+                <sheet>
+                    <field name="image" widget="image" class="oe_avatar"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                        <h3>
+                            <field name="alumni_number" readonly="1"/>
+                        </h3>
+                    </div>
+                    <group>
+                        <group string="Personal Information">
+                            <field name="first_name"/>
+                            <field name="middle_name"/>
+                            <field name="last_name"/>
+                            <field name="email"/>
+                            <field name="phone"/>
+                            <field name="mobile"/>
+                            <field name="birth_date"/>
+                            <field name="gender"/>
+                        </group>
+                        <group string="Academic Information">
+                            <field name="course_id"/>
+                            <field name="batch_id"/>
+                            <field name="program_id"/>
+                            <field name="admission_date"/>
+                            <field name="graduation_date"/>
+                            <field name="grade"/>
+                            <field name="cgpa"/>
+                            <field name="percentage"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Professional Information">
+                            <field name="current_company"/>
+                            <field name="current_designation"/>
+                            <field name="industry"/>
+                            <field name="work_experience_years"/>
+                            <field name="linkedin_url" widget="url"/>
+                            <field name="website" widget="url"/>
+                        </group>
+                        <group string="Engagement">
+                            <field name="willing_to_mentor"/>
+                            <field name="willing_to_recruit"/>
+                            <field name="last_contact_date"/>
+                            <field name="user_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Address">
+                            <field name="street"/>
+                            <field name="street2"/>
+                            <field name="city"/>
+                            <field name="state_id"/>
+                            <field name="country_id"/>
+                            <field name="zip"/>
+                        </group>
+                        <group string="Statistics">
+                            <field name="event_count"/>
+                            <field name="job_count"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Groups">
+                            <field name="group_ids">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="group_type"/>
+                                    <field name="member_count"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes">
+                            <group>
+                                <field name="notes" nolabel="1"/>
+                                <field name="achievements" string="Notable Achievements"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Alumni Search View -->
+    <record id="view_op_alumni_search" model="ir.ui.view">
+        <field name="name">op.alumni.search</field>
+        <field name="model">op.alumni</field>
+        <field name="arch" type="xml">
+            <search string="Alumni">
+                <field name="name" string="Name" filter_domain="['|', '|', ('first_name', 'ilike', self), ('last_name', 'ilike', self), ('email', 'ilike', self)]"/>
+                <field name="alumni_number"/>
+                <field name="email"/>
+                <field name="course_id"/>
+                <field name="graduation_year"/>
+                <filter string="Active" name="active" domain="[('state', '=', 'active')]"/>
+                <filter string="Inactive" name="inactive" domain="[('state', '=', 'inactive')]"/>
+                <filter string="Willing to Mentor" name="mentor" domain="[('willing_to_mentor', '=', True)]"/>
+                <filter string="Willing to Recruit" name="recruit" domain="[('willing_to_recruit', '=', True)]"/>
+                <group>
+                    <filter string="Course" name="group_course" domain="[]" context="{'group_by': 'course_id'}"/>
+                    <filter string="Graduation Year" name="group_year" domain="[]" context="{'group_by': 'graduation_year'}"/>
+                    <filter string="State" name="group_state" domain="[]" context="{'group_by': 'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Alumni Action -->
+    <record id="action_op_alumni" model="ir.actions.act_window">
+        <field name="name">Alumni</field>
+        <field name="res_model">op.alumni</field>
+        <field name="view_mode">list,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Alumni record
+            </p>
+            <p>
+                Track and manage your institution's alumni network.
+            </p>
+        </field>
+    </record>
+
+</odoo>
+

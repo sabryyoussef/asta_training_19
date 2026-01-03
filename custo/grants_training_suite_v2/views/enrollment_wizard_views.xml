@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Enrollment Wizard Form View -->
+        <record id="enrollment_wizard_form_view" model="ir.ui.view">
+            <field name="name">gr.enrollment.wizard.form</field>
+            <field name="model">gr.enrollment.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Student Enrollment Wizard">
+                    <header>
+                        <button name="action_preview_enrollment" string="Preview Enrollment" type="object" class="btn-info"/>
+                        <button name="action_proceed_with_enrollment" string="Proceed with Enrollment" type="object" class="btn-primary"/>
+                        <button name="action_reset_wizard" string="Reset" type="object" class="btn-secondary"/>
+                        <field name="enrollment_date" readonly="1" invisible="not enrollment_date"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="training_program_id" placeholder="Select Training Program" 
+                                       invisible="course_integration_id"/>
+                                <field name="course_integration_id" placeholder="Select Course Integration" 
+                                       invisible="training_program_id"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="Enrollment Configuration">
+                                <field name="enrollment_type"/>
+                                <field name="send_notification"/>
+                                <field name="auto_assign_agent"/>
+                            </group>
+                            <group string="Student Selection">
+                                <field name="student_selection_type"/>
+                                <field name="available_students_count" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <!-- Filtering Options -->
+                        <group string="Student Filters" invisible="student_selection_type == 'selected_students'">
+                            <group>
+                                <field name="filter_by_english_level"/>
+                                <field name="filter_by_state"/>
+                            </group>
+                            <group>
+                                <field name="filter_by_course_preference"/>
+                            </group>
+                        </group>
+                        
+                        <!-- Student Selection -->
+                        <group string="Student Selection" invisible="student_selection_type != 'selected_students'">
+                            <field name="selected_student_ids" widget="many2many_tags" 
+                                   options="{'color_field': 'color', 'no_create': True}"/>
+                        </group>
+                        
+                        <!-- Available Students Display -->
+                        <group string="Available Students" invisible="not available_students">
+                            <field name="available_students" widget="many2many_tags" readonly="1"
+                                   options="{'color_field': 'color', 'no_create': True}"/>
+                        </group>
+                        
+                        <!-- Notification Settings -->
+                        <group string="Notification Settings" invisible="not send_notification">
+                            <field name="notification_message" widget="text" 
+                                   placeholder="Enter custom notification message (optional)"/>
+                        </group>
+                        
+                        <!-- Results Summary -->
+                        <group string="Enrollment Results" invisible="not enrollment_summary">
+                            <group>
+                                <field name="enrolled_count" readonly="1"/>
+                                <field name="invited_count" readonly="1"/>
+                                <field name="error_count" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="enrollment_summary" widget="text" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Enrollment Wizard List View -->
+        <record id="enrollment_wizard_list_view" model="ir.ui.view">
+            <field name="name">gr.enrollment.wizard.list</field>
+            <field name="model">gr.enrollment.wizard</field>
+            <field name="arch" type="xml">
+                <list string="Enrollment Wizards">
+                    <field name="training_program_id"/>
+                    <field name="enrollment_type"/>
+                    <field name="student_selection_type"/>
+                    <field name="enrolled_count"/>
+                    <field name="invited_count"/>
+                    <field name="error_count"/>
+                    <field name="enrollment_date"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Enrollment Wizard Search View -->
+        <record id="enrollment_wizard_search_view" model="ir.ui.view">
+            <field name="name">gr.enrollment.wizard.search</field>
+            <field name="model">gr.enrollment.wizard</field>
+            <field name="arch" type="xml">
+                <search string="Enrollment Wizards">
+                    <field name="training_program_id"/>
+                    <field name="enrollment_type"/>
+                    <field name="student_selection_type"/>
+                    <filter string="Direct Enrollment" name="direct_enroll" domain="[('enrollment_type', '=', 'direct_enroll')]"/>
+                    <filter string="Invitation Only" name="invite_only" domain="[('enrollment_type', '=', 'invite_only')]"/>
+                    <filter string="Invite &amp; Enroll" name="invite_and_enroll" domain="[('enrollment_type', '=', 'invite_and_enroll')]"/>
+                    <filter string="All Eligible Students" name="all_eligible" domain="[('student_selection_type', '=', 'all_eligible')]"/>
+                    <filter string="Selected Students" name="selected_students" domain="[('student_selection_type', '=', 'selected_students')]"/>
+                    <filter string="Filtered Students" name="filtered_students" domain="[('student_selection_type', '=', 'filtered_students')]"/>
+                    <filter string="With Errors" name="with_errors" domain="[('error_count', '>', 0)]"/>
+                    <filter string="Successful" name="successful" domain="[('error_count', '=', 0), ('enrolled_count', '>', 0)]"/>
+                    <group>
+                        <filter string="Training Program" name="group_program" domain="[]" context="{'group_by': 'training_program_id'}"/>
+                        <filter string="Enrollment Type" name="group_type" domain="[]" context="{'group_by': 'enrollment_type'}"/>
+                        <filter string="Student Selection" name="group_selection" domain="[]" context="{'group_by': 'student_selection_type'}"/>
+                        <filter string="Enrollment Date" name="group_date" domain="[]" context="{'group_by': 'enrollment_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Enrollment Wizard Kanban View -->
+        <record id="enrollment_wizard_kanban_view" model="ir.ui.view">
+            <field name="name">gr.enrollment.wizard.kanban</field>
+            <field name="model">gr.enrollment.wizard</field>
+            <field name="arch" type="xml">
+                <kanban string="Enrollment Wizards" class="o_kanban_mobile">
+                    <field name="training_program_id"/>
+                    <field name="enrollment_type"/>
+                    <field name="student_selection_type"/>
+                    <field name="enrolled_count"/>
+                    <field name="invited_count"/>
+                    <field name="error_count"/>
+                    <field name="enrollment_date"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="training_program_id"/>
+                                            </strong>
+                                        </div>
+                                        <div class="o_kanban_record_subtitle">
+                                            <field name="enrollment_type"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <span class="text-muted">Selection:</span>
+                                                <field name="student_selection_type"/>
+                                            </div>
+                                            <div class="col-6">
+                                                <span class="text-muted">Date:</span>
+                                                <field name="enrollment_date"/>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-2">
+                                            <div class="col-4">
+                                                <span class="text-muted">Enrolled:</span>
+                                                <field name="enrolled_count"/>
+                                            </div>
+                                            <div class="col-4">
+                                                <span class="text-muted">Invited:</span>
+                                                <field name="invited_count"/>
+                                            </div>
+                                            <div class="col-4">
+                                                <span class="text-muted">Errors:</span>
+                                                <field name="error_count"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_left">
+                                            <span t-if="record.error_count.raw_value > 0" class="badge badge-danger">
+                                                <i class="fa fa-exclamation-triangle"/> Errors
+                                            </span>
+                                            <span t-elif="record.enrolled_count.raw_value > 0" class="badge badge-success">
+                                                <i class="fa fa-check"/> Success
+                                            </span>
+                                            <span t-else="" class="badge badge-info">
+                                                <i class="fa fa-info"/> Pending
+                                            </span>
+                                        </div>
+                                        <div class="oe_kanban_bottom_right">
+                                            <button name="action_preview_enrollment" type="object" class="btn btn-sm btn-info">
+                                                <i class="fa fa-eye"/> Preview
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Enrollment Wizard Actions -->
+        <record id="action_enrollment_wizard" model="ir.actions.act_window">
+            <field name="name">Student Enrollment Wizards</field>
+            <field name="res_model">gr.enrollment.wizard</field>
+            <field name="view_mode">list,form,kanban</field>
+            <field name="context">{'search_default_successful': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first enrollment wizard!
+                </p>
+                <p>
+                    Use the enrollment wizard to efficiently enroll students in training programs.
+                    You can choose between direct enrollment, invitation only, or both.
+                    Select students using various filtering options or manual selection.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

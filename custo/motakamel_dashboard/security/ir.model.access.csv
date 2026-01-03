@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_motakamel_workflow_dashboard_user,motakamel.workflow.dashboard user,motakamel_dashboard.model_motakamel_workflow_dashboard,base.group_user,1,0,0,0
+access_motakamel_workflow_dashboard_manager,motakamel.workflow.dashboard manager,motakamel_dashboard.model_motakamel_workflow_dashboard,base.group_system,1,1,1,1
+access_motakamel_workflow_stage_user,motakamel.workflow.stage user,motakamel_dashboard.model_motakamel_workflow_stage,base.group_user,1,0,0,0
+access_motakamel_workflow_stage_manager,motakamel.workflow.stage manager,motakamel_dashboard.model_motakamel_workflow_stage,base.group_system,1,1,1,1

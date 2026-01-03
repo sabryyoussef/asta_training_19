@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Training Dashboard Form View -->
+        <record id="view_training_dashboard_form" model="ir.ui.view">
+            <field name="name">gr.training.dashboard.form</field>
+            <field name="model">gr.training.dashboard</field>
+            <field name="arch" type="xml">
+                <form string="Training Dashboard">
+                    <header>
+                        <button name="action_refresh_dashboard" string="Refresh Dashboard" type="object" class="btn-primary"/>
+                        <button name="action_export_analytics" string="Export Analytics" type="object" class="btn-secondary"/>
+                        <field name="auto_refresh" widget="boolean_toggle"/>
+                    </header>
+                    
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_schedule_report" type="object" class="oe_stat_button" icon="fa-calendar">
+                                <field name="refresh_interval" widget="statinfo" string="Refresh Interval"/>
+                            </button>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Dashboard Name"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group>
+                                <field name="date_from"/>
+                                <field name="date_to"/>
+                            </group>
+                            <group>
+                                <field name="last_update" readonly="1"/>
+                                <field name="refresh_interval" invisible="not auto_refresh"/>
+                            </group>
+                        </group>
+                        
+                        <!-- KPI Metrics Section -->
+                        <div class="oe_clear"/>
+                        <notebook>
+                            <page string="KPI Metrics" name="kpi_metrics">
+                                <group>
+                                    <group>
+                                        <field name="total_students" widget="statinfo" string="Total Students"/>
+                                        <field name="enrolled_students" widget="statinfo" string="Enrolled Students"/>
+                                        <field name="completed_students" widget="statinfo" string="Completed Students"/>
+                                    </group>
+                                    <group>
+                                        <field name="completion_rate" widget="statinfo" string="Completion Rate %"/>
+                                        <field name="avg_completion_time" widget="statinfo" string="Avg Completion Time (Days)"/>
+                                        <field name="elearning_adoption_rate" widget="statinfo" string="eLearning Adoption %"/>
+                                    </group>
+                                </group>
+                                
+                                <group>
+                                    <group>
+                                        <field name="active_courses" widget="statinfo" string="Active Courses"/>
+                                        <field name="total_enrollments" widget="statinfo" string="Total Enrollments"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="Progress Analytics" name="progress_analytics">
+                                <group>
+                                    <group>
+                                        <field name="progress_distribution" widget="text" nolabel="1" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="monthly_enrollments" widget="text" nolabel="1" readonly="1"/>
+                                    </group>
+                                </group>
+                                
+                                <group>
+                                    <field name="completion_trends" widget="text" nolabel="1" readonly="1"/>
+                                </group>
+                            </page>
+                            
+                            <page string="Student Analytics" name="student_analytics">
+                                <group>
+                                    <group>
+                                        <field name="top_performers" widget="text" nolabel="1" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="struggling_students" widget="text" nolabel="1" readonly="1"/>
+                                    </group>
+                                </group>
+                                
+                                <group>
+                                    <field name="engagement_metrics" widget="text" nolabel="1" readonly="1"/>
+                                </group>
+                            </page>
+                            
+                            <page string="Course Analytics" name="course_analytics">
+                                <group>
+                                    <group>
+                                        <field name="course_performance" widget="text" nolabel="1" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="popular_courses" widget="text" nolabel="1" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="Integration Analytics" name="integration_analytics">
+                                <group>
+                                    <field name="integration_status_summary" widget="text" nolabel="1" readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Training Dashboard Tree View -->
+        <record id="view_training_dashboard_tree" model="ir.ui.view">
+            <field name="name">gr.training.dashboard.tree</field>
+            <field name="model">gr.training.dashboard</field>
+            <field name="arch" type="xml">
+                <list string="Training Dashboards">
+                    <field name="name"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    <field name="total_students"/>
+                    <field name="completion_rate"/>
+                    <field name="elearning_adoption_rate"/>
+                    <field name="last_update"/>
+                    <field name="auto_refresh"/>
+                </list>
+            </field>
+        </record>
+        
+        <!-- Training Dashboard Search View -->
+        <record id="view_training_dashboard_search" model="ir.ui.view">
+            <field name="name">gr.training.dashboard.search</field>
+            <field name="model">gr.training.dashboard</field>
+            <field name="arch" type="xml">
+                <search string="Search Dashboards">
+                    <field name="name"/>
+                    <field name="date_from"/>
+                    <field name="date_to"/>
+                    
+                    <filter string="Active Dashboards" name="active" domain="[('auto_refresh', '=', True)]"/>
+                    <filter string="This Month" name="this_month" domain="[('date_from', '>=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01')), ('date_to', '&lt;=', context_today())]"/>
+                    <filter string="Last 30 Days" name="last_30_days" domain="[('date_from', '>=', (context_today() - relativedelta(days=30)).strftime('%Y-%m-%d'))]"/>
+                    <group>
+                        <filter string="Date Range" name="group_date_range" domain="[]" context="{'group_by': 'date_from'}"/>
+                        <filter string="Auto Refresh" name="group_auto_refresh" domain="[]" context="{'group_by': 'auto_refresh'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- Training Dashboard Action -->
+        <record id="action_training_dashboard" model="ir.actions.act_window">
+            <field name="name">Training Dashboard</field>
+            <field name="res_model">gr.training.dashboard</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Training Dashboard!
+                </p>
+                <p>
+                    The Training Dashboard provides comprehensive analytics and KPIs for your training programs.
+                    Track student progress, course performance, and eLearning integration metrics.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Advanced Dashboard View (Kanban Style) -->
+        <record id="view_training_dashboard_kanban" model="ir.ui.view">
+            <field name="name">gr.training.dashboard.kanban</field>
+            <field name="model">gr.training.dashboard</field>
+            <field name="arch" type="xml">
+                <kanban sample="1" string="Training Dashboards">
+                    <field name="name"/>
+                    <field name="total_students"/>
+                    <field name="completion_rate"/>
+                    <field name="elearning_adoption_rate"/>
+                    <field name="last_update"/>
+                    <field name="auto_refresh"/>
+                    
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="name"/>
+                                            </strong>
+                                        </div>
+                                        <div class="o_kanban_record_body">
+                                            <div class="row">
+                                                <div class="col-4">
+                                                    <div class="o_kanban_record_bottom">
+                                                        <span class="badge badge-primary">
+                                                            <field name="total_students"/> Students
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="o_kanban_record_bottom">
+                                                        <span class="badge badge-success">
+                                                            <field name="completion_rate"/>% Complete
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-4">
+                                                    <div class="o_kanban_record_bottom">
+                                                        <span class="badge badge-info">
+                                                            <field name="elearning_adoption_rate"/>% eLearning
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="o_kanban_record_bottom">
+                                                <small class="text-muted">
+                                                    Last Update: <field name="last_update"/>
+                                                </small>
+                                                <span t-if="record.auto_refresh.raw_value" class="badge badge-warning float-right">
+                                                    Auto Refresh
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        
+        <!-- Advanced Dashboard Action (Kanban) -->
+        <record id="action_training_dashboard_kanban" model="ir.actions.act_window">
+            <field name="name">Advanced Training Dashboard</field>
+            <field name="res_model">gr.training.dashboard</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Advanced Training Analytics Dashboard
+                </p>
+                <p>
+                    Get comprehensive insights into your training programs with real-time analytics,
+                    student performance metrics, and course effectiveness data.
+                </p>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

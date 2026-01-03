@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Simple Demo Training Programs (no external dependencies) -->
+        <record id="demo_training_program_english" model="gr.training.program">
+            <field name="name">English Communication Program</field>
+            <field name="description">Basic English communication skills program</field>
+            <field name="duration_weeks">4</field>
+            <field name="status">active</field>
+            <field name="eligibility_criteria">Basic English knowledge required</field>
+        </record>
+        
+        <record id="demo_training_program_digital" model="gr.training.program">
+            <field name="name">Digital Skills Program</field>
+            <field name="description">Basic digital literacy program</field>
+            <field name="duration_weeks">6</field>
+            <field name="status">active</field>
+            <field name="eligibility_criteria">No prior experience required</field>
+        </record>
+        
+        <!-- Simple Demo Students -->
+        <record id="demo_student_ahmed" model="gr.student">
+            <field name="name">Ahmed Ali Hassan</field>
+            <field name="name_arabic">أحمد علي حسن</field>
+            <field name="name_english">Ahmed Ali Hassan</field>
+            <field name="email">ahmed.ali@example.com</field>
+            <field name="phone">+966501234567</field>
+            <field name="birth_date">1990-01-01</field>
+            <field name="gender">male</field>
+            <field name="nationality">Saudi</field>
+            <field name="native_language">Arabic</field>
+            <field name="english_level">intermediate</field>
+            <field name="has_certificate">True</field>
+            <field name="enrollment_type">auto</field>
+        </record>
+        
+        <record id="demo_student_fatima" model="gr.student">
+            <field name="name">Fatima Mohammed Al-Rashid</field>
+            <field name="name_arabic">فاطمة محمد الراشد</field>
+            <field name="name_english">Fatima Mohammed Al-Rashid</field>
+            <field name="email">fatima.rashid@example.com</field>
+            <field name="phone">+966501234568</field>
+            <field name="birth_date">1988-05-15</field>
+            <field name="gender">female</field>
+            <field name="nationality">Saudi</field>
+            <field name="native_language">Arabic</field>
+            <field name="english_level">upper_intermediate</field>
+            <field name="has_certificate">True</field>
+            <field name="enrollment_type">manual</field>
+        </record>
+        
+    </data>
+</odoo>

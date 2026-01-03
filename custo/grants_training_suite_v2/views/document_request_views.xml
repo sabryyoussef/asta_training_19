@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Document Request Form View -->
+        <record id="view_gr_document_request_form" model="ir.ui.view">
+            <field name="name">gr.document.request.form</field>
+            <field name="model">gr.document.request</field>
+            <field name="arch" type="xml">
+                <form string="Document Request">
+                    <header>
+                        <!-- Primary Action Buttons -->
+                        <button name="action_request" string="Request" type="object" class="btn-primary" 
+                                invisible="state != 'draft'"/>
+                        <button name="action_submit_document" string="Submit Document" type="object" class="btn-primary" 
+                                invisible="state != 'requested'"/>
+                        <button name="action_start_review" string="Start Review" type="object" class="btn-primary" 
+                                invisible="state != 'submitted'"/>
+                        <button name="action_approve" string="Approve" type="object" class="btn-success" 
+                                invisible="state != 'under_review'"/>
+                        <button name="action_reject" string="Reject" type="object" class="btn-danger" 
+                                invisible="state != 'under_review'"/>
+                        <button name="action_expire" string="Expire" type="object" class="btn-warning" 
+                                invisible="state in ['approved', 'rejected', 'expired']"/>
+                        <button name="action_reset" string="Reset" type="object" class="btn-secondary" 
+                                invisible="state in ['draft', 'expired']"/>
+                        
+                        <!-- Quick Transition Buttons -->
+                        <button name="action_transition_to_requested" string="→ Requested" type="object" class="btn-outline-primary" 
+                                invisible="state != 'draft'" title="Quick transition to Requested"/>
+                        <button name="action_transition_to_submitted" string="→ Submitted" type="object" class="btn-outline-primary" 
+                                invisible="state != 'requested'" title="Quick transition to Submitted"/>
+                        <button name="action_transition_to_under_review" string="→ Review" type="object" class="btn-outline-primary" 
+                                invisible="state != 'submitted'" title="Quick transition to Under Review"/>
+                        <button name="action_transition_to_approved" string="→ Approve" type="object" class="btn-outline-success" 
+                                invisible="state != 'under_review'" title="Quick transition to Approved"/>
+                        <button name="action_transition_to_rejected" string="→ Reject" type="object" class="btn-outline-danger" 
+                                invisible="state != 'under_review'" title="Quick transition to Rejected"/>
+                        <button name="action_transition_to_expired" string="→ Expire" type="object" class="btn-outline-warning" 
+                                invisible="state in ['approved', 'rejected', 'expired']" title="Quick transition to Expired"/>
+                        <button name="action_transition_to_draft" string="→ Draft" type="object" class="btn-outline-secondary" 
+                                invisible="state not in ['expired']" title="Quick transition to Draft"/>
+                        
+                        <field name="state" widget="statusbar" statusbar_visible="draft,requested,submitted,under_review,approved"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <div class="oe_stat_button" icon="fa-clock-o">
+                                <field name="days_until_deadline" widget="statinfo" string="Days Left"/>
+                            </div>
+                            <div class="oe_stat_button" icon="fa-exclamation-triangle" 
+                                 invisible="is_overdue == False">
+                                <field name="is_overdue" widget="statinfo" string="Overdue"/>
+                            </div>
+                            <div class="oe_stat_button" icon="fa-file-text-o" 
+                                 invisible="document_file == False">
+                                <field name="document_file" widget="statinfo" string="Document"/>
+                            </div>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="Request Details">
+                                <field name="student_id" required="1"/>
+                                <field name="agent_id" required="1"/>
+                                <field name="document_type" required="1"/>
+                                <field name="document_name"/>
+                                <field name="request_date" readonly="1"/>
+                                <field name="requested_by_id" readonly="1"/>
+                                <field name="state"/>
+                            </group>
+                            <group string="Document Information">
+                                <field name="document_description"/>
+                                <field name="required_format"/>
+                                <field name="is_mandatory"/>
+                                <field name="priority"/>
+                                <field name="deadline_date"/>
+                                <field name="days_until_deadline" readonly="1"/>
+                                <field name="is_overdue" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <group string="Submission Details" invisible="state == 'draft'">
+                                <field name="submission_date" readonly="1"/>
+                                <field name="submitted_by_id" readonly="1"/>
+                                <field name="document_file" filename="document_filename"/>
+                                <field name="document_filename" readonly="1"/>
+                            </group>
+                            <group string="Review Details" invisible="state not in ['under_review', 'approved', 'rejected']">
+                                <field name="review_date" readonly="1"/>
+                                <field name="reviewed_by_id" readonly="1"/>
+                                <field name="review_notes"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Timeline" invisible="state == 'draft'">
+                                <group>
+                                    <group>
+                                        <field name="request_date" readonly="1"/>
+                                        <field name="submission_date" readonly="1"/>
+                                        <field name="review_date" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="requested_by_id" readonly="1"/>
+                                        <field name="submitted_by_id" readonly="1"/>
+                                        <field name="reviewed_by_id" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="Document" invisible="document_file == False">
+                                <group>
+                                    <field name="document_file" widget="binary" filename="document_filename" readonly="1"/>
+                                </group>
+                            </page>
+                            
+                            <page string="Notes">
+                                <group>
+                                    <field name="document_description" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="review_notes" readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Document Request List View -->
+        <record id="view_gr_document_request_list" model="ir.ui.view">
+            <field name="name">gr.document.request.list</field>
+            <field name="model">gr.document.request</field>
+            <field name="arch" type="xml">
+                <list string="Document Requests" default_order="request_date desc">
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="agent_id"/>
+                    <field name="document_type"/>
+                    <field name="document_name"/>
+                    <field name="request_date"/>
+                    <field name="deadline_date"/>
+                    <field name="days_until_deadline"/>
+                    <field name="is_overdue"/>
+                    <field name="priority"/>
+                    <field name="state" widget="badge" decoration-success="state == 'approved'" 
+                           decoration-warning="state == 'under_review'" decoration-info="state == 'submitted'" 
+                           decoration-danger="state == 'rejected'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Document Request Kanban View -->
+        <record id="view_gr_document_request_kanban" model="ir.ui.view">
+            <field name="name">gr.document.request.kanban</field>
+            <field name="model">gr.document.request</field>
+            <field name="arch" type="xml">
+                <kanban sample="1" default_group_by="state" class="o_kanban_small_column">
+                    <field name="name"/>
+                    <field name="state"/>
+                    <field name="student_id"/>
+                    <field name="agent_id"/>
+                    <field name="document_type"/>
+                    <field name="document_name"/>
+                    <field name="request_date"/>
+                    <field name="deadline_date"/>
+                    <field name="days_until_deadline"/>
+                    <field name="is_overdue"/>
+                    <field name="priority"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="name"/>
+                                            </strong>
+                                        </div>
+                                        <div class="o_kanban_record_subtitle">
+                                            <field name="document_type"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <div class="o_kanban_record_details">
+                                            <div class="o_kanban_record_bottom">
+                                                <div class="oe_kanban_bottom_left">
+                                                    <span>Student: <field name="student_id"/></span>
+                                                </div>
+                                                <div class="oe_kanban_bottom_right">
+                                                    <span>Days: <field name="days_until_deadline"/></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Document Request Search View -->
+        <record id="view_gr_document_request_search" model="ir.ui.view">
+            <field name="name">gr.document.request.search</field>
+            <field name="model">gr.document.request</field>
+            <field name="arch" type="xml">
+                <search string="Search Document Requests">
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="agent_id"/>
+                    <field name="document_type"/>
+                    <field name="document_name"/>
+                    <field name="requested_by_id"/>
+                    <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Requested" name="requested" domain="[('state', '=', 'requested')]"/>
+                    <filter string="Submitted" name="submitted" domain="[('state', '=', 'submitted')]"/>
+                    <filter string="Under Review" name="under_review" domain="[('state', '=', 'under_review')]"/>
+                    <filter string="Approved" name="approved" domain="[('state', '=', 'approved')]"/>
+                    <filter string="Rejected" name="rejected" domain="[('state', '=', 'rejected')]"/>
+                    <filter string="Expired" name="expired" domain="[('state', '=', 'expired')]"/>
+                    <filter string="Overdue" name="overdue" domain="[('is_overdue', '=', True)]"/>
+                    <filter string="Mandatory" name="mandatory" domain="[('is_mandatory', '=', True)]"/>
+                    <filter string="High Priority" name="high_priority" domain="[('priority', '=', 'high')]"/>
+                    <filter string="This Week" name="this_week" domain="[('request_date', '>=', (context_today() - relativedelta(weeks=1)).strftime('%Y-%m-%d'))]"/>
+                    <filter string="This Month" name="this_month" domain="[('request_date', '>=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+                    <group>
+                        <filter string="Status" name="group_state" domain="[]" context="{'group_by': 'state'}"/>
+                        <filter string="Agent" name="group_agent" domain="[]" context="{'group_by': 'agent_id'}"/>
+                        <filter string="Document Type" name="group_document_type" domain="[]" context="{'group_by': 'document_type'}"/>
+                        <filter string="Priority" name="group_priority" domain="[]" context="{'group_by': 'priority'}"/>
+                        <filter string="Request Date" name="group_request_date" domain="[]" context="{'group_by': 'request_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Document Request Action -->
+        <record id="action_gr_document_request" model="ir.actions.act_window">
+            <field name="name">Document Requests</field>
+            <field name="res_model">gr.document.request</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_this_week': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first document request!
+                </p>
+                <p>
+                    Document requests manage the collection of required documents from students,
+                    including submission tracking, review process, and approval workflow.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

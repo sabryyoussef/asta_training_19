@@ -1,0 +1,15 @@
+<templates>
+    <t t-name="openeducat_core.g2_review_dialog">
+        <Dialog title="'Welcome'" size="'md'" footer="false" header="true" bodyClass="'p-4'">
+            <div class="welcome_container text-center">
+                <div class="s_popup_close js_close_popup o_we_no_overlay o_not_editable" t-on-click="()=>this.onClose()" aria-label="Close" style="position: absolute; top: 10px; right: 15px; cursor: pointer; font-size: 20px;">&#215;</div>
+                <section class="mt-3">
+                    <h3 class="text-primary mb-3">Welcome to Edafa Edu System</h3>
+                    <p class="lead mb-3">Hello <strong>ASTA Member</strong>!</p>
+                    <p class="text-muted">Welcome to your educational management system.</p>
+                    <button class="btn btn-primary mt-3" t-on-click="()=>this.onClose()">Get Started</button>
+                </section>
+            </div>
+        </Dialog>
+    </t>
+</templates>

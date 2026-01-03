@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Certificate Form View -->
+        <record id="view_gr_certificate_form" model="ir.ui.view">
+            <field name="name">gr.certificate.form</field>
+            <field name="model">gr.certificate</field>
+            <field name="arch" type="xml">
+                <form string="Certificate">
+                    <header>
+                        <!-- ===== Phase 5.1: Template Actions ===== -->
+                        <button name="action_apply_default_template" string="Apply Default Template" type="object" class="btn-outline-primary" 
+                                invisible="template_id"/>
+                        <button name="action_preview_certificate" string="Preview Certificate" type="object" class="btn-outline-info" 
+                                invisible="not template_id"/>
+                        <button name="action_generate_certificate_pdf" string="Generate PDF" type="object" class="btn-outline-success" 
+                                invisible="not template_id"/>
+                        <button name="action_send_certificate_email" string="Send Email" type="object" class="btn-outline-info" 
+                                invisible="not certificate_file"/>
+                        <button name="action_download_certificate" string="Download" type="object" class="btn-outline-primary" 
+                                invisible="not certificate_file"/>
+                        
+                        <!-- Original Actions -->
+                        <button name="action_issue" string="Issue Certificate" type="object" class="btn-primary" 
+                                invisible="state != 'draft'"/>
+                        <button name="action_deliver" string="Deliver" type="object" class="btn-success" 
+                                invisible="state != 'issued'"/>
+                        <button name="action_verify" string="Verify" type="object" class="btn-info" 
+                                invisible="state != 'delivered'"/>
+                        <button name="action_revoke" string="Revoke" type="object" class="btn-danger" 
+                                invisible="state in ['revoked', 'expired']"/>
+                        <button name="action_expire" string="Expire" type="object" class="btn-warning" 
+                                invisible="state in ['revoked', 'expired']"/>
+                        <button name="action_reset" string="Reset" type="object" class="btn-secondary" 
+                                invisible="state in ['draft', 'expired']"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,issued,delivered,verified"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <div class="oe_stat_button" icon="fa-percentage">
+                                <field name="grade_percentage" widget="statinfo" string="Grade %"/>
+                            </div>
+                            <div class="oe_stat_button" icon="fa-calendar" 
+                                 invisible="is_expired == False">
+                                <field name="days_until_expiry" widget="statinfo" string="Days Left"/>
+                            </div>
+                            <div class="oe_stat_button" icon="fa-file-pdf-o" 
+                                 invisible="certificate_file == False">
+                                <field name="certificate_file" widget="statinfo" string="PDF"/>
+                            </div>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="Certificate Details">
+                                <field name="student_id" required="1"/>
+                                <field name="agent_id" required="1"/>
+                                <field name="certificate_type" required="1"/>
+                                <field name="certificate_title" required="1"/>
+                                <field name="course_name"/>
+                                <field name="course_duration"/>
+                                <field name="state"/>
+                            </group>
+                            <group string="Issue Information">
+                                <field name="issue_date" readonly="1"/>
+                                <field name="issued_by_id" readonly="1"/>
+                                <field name="completion_date"/>
+                                <field name="final_grade" invisible="state == 'draft'"/>
+                                <field name="grade_percentage" readonly="1" invisible="state == 'draft'"/>
+                                <field name="attendance_percentage" readonly="1" invisible="state == 'draft'"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <group string="Validity Period">
+                                <field name="valid_from"/>
+                                <field name="valid_until"/>
+                                <field name="is_expired" readonly="1"/>
+                                <field name="days_until_expiry" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <field name="certificate_description" placeholder="Certificate description and details..."/>
+                        </group>
+                        
+                        <!-- ===== Phase 5.1: Template Configuration ===== -->
+                        <group string="Template Configuration">
+                            <group>
+                                <field name="template_id" placeholder="Select a certificate template"/>
+                                <field name="template_type" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <group string="Digital Certificate" invisible="certificate_file == False">
+                                <field name="certificate_file" filename="certificate_filename"/>
+                                <field name="certificate_filename" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Certificate Details" invisible="state == 'draft'">
+                                <group>
+                                    <group>
+                                        <field name="issue_date" readonly="1"/>
+                                        <field name="issued_by_id" readonly="1"/>
+                                        <field name="completion_date" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="final_grade" readonly="1"/>
+                                        <field name="grade_percentage" readonly="1"/>
+                                        <field name="attendance_percentage" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="Validity" invisible="state == 'draft'">
+                                <group>
+                                    <group>
+                                        <field name="valid_from" readonly="1"/>
+                                        <field name="valid_until" readonly="1"/>
+                                        <field name="is_expired" readonly="1"/>
+                                        <field name="days_until_expiry" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <!-- ===== Phase 5.1: Template Content Preview ===== -->
+                            <page string="Template Preview" invisible="not template_id">
+                                <group string="Rendered Certificate Content">
+                                    <field name="rendered_header" widget="html" readonly="1" invisible="not rendered_header"/>
+                                    <field name="rendered_body" widget="html" readonly="1" invisible="not rendered_body"/>
+                                    <field name="rendered_footer" widget="html" readonly="1" invisible="not rendered_footer"/>
+                                </group>
+                            </page>
+                            
+                            <page string="Digital Certificate" invisible="certificate_file == False">
+                                <group>
+                                    <field name="certificate_file" widget="binary" filename="certificate_filename" readonly="1"/>
+                                </group>
+                            </page>
+                            
+                            <page string="Description">
+                                <group>
+                                    <field name="certificate_description" readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Certificate List View -->
+        <record id="view_gr_certificate_list" model="ir.ui.view">
+            <field name="name">gr.certificate.list</field>
+            <field name="model">gr.certificate</field>
+            <field name="arch" type="xml">
+                <list string="Certificates" default_order="issue_date desc">
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="agent_id"/>
+                    <field name="certificate_type"/>
+                    <field name="certificate_title"/>
+                    <field name="template_id" string="Template"/>
+                    <field name="course_name"/>
+                    <field name="issue_date"/>
+                    <field name="valid_until"/>
+                    <field name="grade_percentage"/>
+                    <field name="is_expired"/>
+                    <field name="state" widget="badge" decoration-success="state == 'verified'" 
+                           decoration-warning="state == 'delivered'" decoration-info="state == 'issued'" 
+                           decoration-danger="state == 'revoked'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Certificate Kanban View -->
+        <record id="view_gr_certificate_kanban" model="ir.ui.view">
+            <field name="name">gr.certificate.kanban</field>
+            <field name="model">gr.certificate</field>
+            <field name="arch" type="xml">
+                <kanban sample="1" default_group_by="state" class="o_kanban_small_column">
+                    <field name="name"/>
+                    <field name="state"/>
+                    <field name="student_id"/>
+                    <field name="agent_id"/>
+                    <field name="certificate_type"/>
+                    <field name="certificate_title"/>
+                    <field name="course_name"/>
+                    <field name="issue_date"/>
+                    <field name="valid_until"/>
+                    <field name="grade_percentage"/>
+                    <field name="is_expired"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="name"/>
+                                            </strong>
+                                        </div>
+                                        <div class="o_kanban_record_subtitle">
+                                            <field name="certificate_title"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <div class="o_kanban_record_details">
+                                            <div class="o_kanban_record_bottom">
+                                                <div class="oe_kanban_bottom_left">
+                                                    <span>Student: <field name="student_id"/></span>
+                                                </div>
+                                                <div class="oe_kanban_bottom_right">
+                                                    <span>Grade: <field name="grade_percentage"/>%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Certificate Search View -->
+        <record id="view_gr_certificate_search" model="ir.ui.view">
+            <field name="name">gr.certificate.search</field>
+            <field name="model">gr.certificate</field>
+            <field name="arch" type="xml">
+                <search string="Search Certificates">
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="agent_id"/>
+                    <field name="certificate_type"/>
+                    <field name="certificate_title"/>
+                    <field name="course_name"/>
+                    <field name="issued_by_id"/>
+                    <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Issued" name="issued" domain="[('state', '=', 'issued')]"/>
+                    <filter string="Delivered" name="delivered" domain="[('state', '=', 'delivered')]"/>
+                    <filter string="Verified" name="verified" domain="[('state', '=', 'verified')]"/>
+                    <filter string="Revoked" name="revoked" domain="[('state', '=', 'revoked')]"/>
+                    <filter string="Expired" name="expired" domain="[('state', '=', 'expired')]"/>
+                    <filter string="Expired Certificates" name="expired_certs" domain="[('is_expired', '=', True)]"/>
+                    <filter string="High Grades" name="high_grades" domain="[('grade_percentage', '&gt;=', 90)]"/>
+                    <filter string="With Digital File" name="with_file" domain="[('certificate_file', '!=', False)]"/>
+                    <filter string="This Month" name="this_month" domain="[('issue_date', '>=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+                    <filter string="This Year" name="this_year" domain="[('issue_date', '>=', (context_today() - relativedelta(years=1)).strftime('%Y-01-01'))]"/>
+                    <group>
+                        <filter string="Status" name="group_state" domain="[]" context="{'group_by': 'state'}"/>
+                        <filter string="Student" name="group_student" domain="[]" context="{'group_by': 'student_id'}"/>
+                        <filter string="Agent" name="group_agent" domain="[]" context="{'group_by': 'agent_id'}"/>
+                        <filter string="Certificate Type" name="group_certificate_type" domain="[]" context="{'group_by': 'certificate_type'}"/>
+                        <filter string="Issue Date" name="group_issue_date" domain="[]" context="{'group_by': 'issue_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Certificate Action -->
+        <record id="action_gr_certificate" model="ir.actions.act_window">
+            <field name="name">Certificates</field>
+            <field name="res_model">gr.certificate</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_this_month': 1}</field>
+            <field name="binding_model_id" ref="model_gr_certificate"/>
+            <field name="binding_view_types">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first certificate!
+                </p>
+                <p>
+                    Certificates track student achievements and course completions,
+                    including digital certificate generation, validity management, and verification.
+                </p>
+            </field>
+        </record>
+
+        <!-- ===== Phase 5.2: Certificate Automation Server Actions ===== -->
+        
+        <!-- Auto-Generate Certificates Server Action -->
+        <record id="action_certificate_auto_generate" model="ir.actions.server">
+            <field name="name">Auto-Generate Certificates</field>
+            <field name="model_id" ref="model_gr_certificate"/>
+            <field name="binding_model_id" ref="model_gr_certificate"/>
+            <field name="state">code</field>
+            <field name="code">
+# Auto-generate certificates for completed students
+result = env['gr.certificate'].auto_generate_certificates_for_completed_students()
+if result['certificates_created'] > 0:
+    message = f"Generated {result['certificates_created']} certificates"
+    if result['errors']:
+        message += f". {len(result['errors'])} errors encountered."
+    env.user.notify_success(message)
+else:
+    env.user.notify_info("No new certificates to generate.")
+            </field>
+        </record>
+
+        <!-- Certificate Automation Wizard Server Action -->
+        <record id="action_certificate_automation_wizard" model="ir.actions.server">
+            <field name="name">Certificate Automation Wizard</field>
+            <field name="model_id" ref="model_gr_certificate"/>
+            <field name="binding_model_id" ref="model_gr_certificate"/>
+            <field name="state">code</field>
+            <field name="code">
+# Open certificate automation wizard
+action = env.ref('grants_training_suite_v2.action_gr_certificate_automation_wizard').read()[0]
+action['context'] = {
+    'default_operation_type': 'auto_generate',
+    'default_date_from': (context_today() - timedelta(days=30)).strftime('%Y-%m-%d'),
+    'default_date_to': context_today().strftime('%Y-%m-%d'),
+}
+action
+            </field>
+        </record>
+
+    </data>
+</odoo>

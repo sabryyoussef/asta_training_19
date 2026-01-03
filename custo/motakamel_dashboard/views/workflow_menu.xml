@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Workflow Dashboard Menu -->
+    <menuitem id="menu_workflow_dashboard_root"
+              name="Workflow Dashboard"
+              web_icon="motakamel_dashboard,static/description/icon.png"
+              sequence="1"/>
+    
+    <!-- Workflow Dashboard Action -->
+    <record id="action_workflow_dashboard" model="ir.actions.act_window">
+        <field name="name">Workflow Dashboard</field>
+        <field name="res_model">motakamel.workflow.dashboard</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="view_id" ref="view_workflow_hub_kanban"/>
+        <field name="target">current</field>
+        <field name="context">{}</field>
+    </record>
+    
+    <!-- Workflow Dashboard Menu Item -->
+    <menuitem id="menu_workflow_dashboard"
+              name="Workflow Dashboard"
+              parent="menu_workflow_dashboard_root"
+              action="action_workflow_dashboard"
+              sequence="10"/>
+    
+</odoo>

@@ -1,0 +1,2 @@
+name,email,phone,birth_date,gender,nationality,native_language,english_level,has_certificate,certificate_type,certificate_date
+Test Student,test@email.com,+1234567890,1990-01-01,male,American,English,intermediate,true,TOEFL,2023-01-01

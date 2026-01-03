@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Enhanced Homework Attempt Form View with Grade History -->
+        <record id="view_gr_homework_attempt_form_enhanced" model="ir.ui.view">
+            <field name="name">gr.homework.attempt.form.enhanced</field>
+            <field name="model">gr.homework.attempt</field>
+            <field name="inherit_id" ref="view_gr_homework_attempt_form"/>
+            <field name="arch" type="xml">
+                <!-- Add Grade History page to notebook -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Grade History" invisible="not grade_history_ids">
+                        <field name="grade_history_ids" readonly="1">
+                            <list string="Grade History">
+                                <field name="change_date"/>
+                                <field name="old_grade"/>
+                                <field name="new_grade"/>
+                                <field name="grade_change" decoration-info="grade_change &gt; 0" decoration-warning="grade_change &lt; 0"/>
+                                <field name="old_letter_grade"/>
+                                <field name="new_letter_grade"/>
+                                <field name="changed_by_id"/>
+                                <field name="change_reason"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
+                
+                <!-- Add Grade History button to button box -->
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <div class="oe_stat_button" icon="fa-history">
+                        <field name="grade_change_count" widget="statinfo" string="Grade Changes"/>
+                    </div>
+                    <div class="oe_stat_button" icon="fa-calendar" invisible="not last_grade_change_date">
+                        <field name="last_grade_change_date" widget="statinfo" string="Last Change"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

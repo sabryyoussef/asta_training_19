@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Intake Batch Form View -->
+        <record id="view_gr_intake_batch_form" model="ir.ui.view">
+            <field name="name">gr.intake.batch.form</field>
+            <field name="model">gr.intake.batch</field>
+            <field name="arch" type="xml">
+                <form string="Intake Batch">
+                    <header>
+                        <button name="action_upload_file" string="Upload File" type="object" class="btn-primary" 
+                                invisible="state != 'draft' or not file_data"/>
+                        <button name="action_open_column_mapping" string="Map Columns" type="object" class="btn-success" 
+                                invisible="state != 'uploaded'"/>
+                        <button name="action_validate_preview" string="Preview Validation" type="object" class="btn-info" 
+                                invisible="state != 'uploaded'"/>
+                        <button name="action_validate_file" string="Validate File" type="object" class="btn-primary" 
+                                invisible="state != 'uploaded'"/>
+                        <button name="action_show_validation_details" string="Validation Details" type="object" class="btn-secondary" 
+                                invisible="not validation_errors and not validation_warnings"/>
+                        <button name="action_process_file" string="Process File" type="object" class="btn-primary" 
+                                invisible="state != 'validated'"/>
+                        <button name="action_view_imported_students" string="View Imported Students" type="object" class="btn-info" 
+                                invisible="state != 'processed'"/>
+                        <button name="action_view_created_students" string="View New Students" type="object" class="btn-success" 
+                                invisible="state != 'processed'"/>
+                        <button name="action_open_correction_wizard" string="Correct Failed Records" type="object" class="btn-warning" 
+                                invisible="not has_failed_records"/>
+                        <button name="action_view_failed_records" string="View Failed Records" type="object" class="btn-info" 
+                                invisible="not has_failed_records"/>
+                        <button name="action_reprocess_failed_records" string="Re-process Failed Records" type="object" class="btn-primary" 
+                                invisible="not has_failed_records or state not in ['error', 'processed']"/>
+                        <button name="action_send_test_notification" string="Send Test Notification" type="object" class="btn-secondary"/>
+                        <button name="action_resend_notification" string="Resend Notification" type="object" class="btn-secondary" 
+                                invisible="not notification_sent"/>
+                        <button name="action_create_sessions_for_batch" string="Create Sessions" type="object" class="btn-success" 
+                                invisible="state != 'processed' or not session_creation_enabled"/>
+                        <button name="action_view_created_sessions" string="View Created Sessions" type="object" class="btn-info" 
+                                invisible="not sessions_created_count"/>
+                        <button name="action_reset" string="Reset" type="object" class="btn-secondary" 
+                                invisible="state in ['draft', 'error']"/>
+                        <button name="action_download_template" string="Download Template" type="object" class="btn-info" 
+                                invisible="state != 'draft'"/>
+                        <button name="action_check_libraries" string="Check Libraries" type="object" class="btn-secondary" 
+                                invisible="state != 'draft'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,uploaded,mapping,validated,processed"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <div class="oe_stat_button" icon="fa-users">
+                                <field name="total_records" widget="statinfo" string="Records"/>
+                            </div>
+                            <div class="oe_stat_button" icon="fa-exclamation-triangle" 
+                                 invisible="error_records == 0">
+                                <field name="error_records" widget="statinfo" string="Errors"/>
+                            </div>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group>
+                                <field name="upload_date" required="1"/>
+                                <field name="filename" readonly="state != 'draft'"/>
+                                <field name="file_data" widget="binary" filename="filename" invisible="state != 'draft'"/>
+                                <field name="file_type" readonly="1"/>
+                                <field name="file_size" readonly="1" invisible="file_size == 0"/>
+                            </group>
+                            <group>
+                                <field name="total_records" readonly="1"/>
+                                <field name="processed_records" readonly="1"/>
+                                <field name="error_records" readonly="1"/>
+                                <field name="failed_records_count" readonly="1" invisible="not has_failed_records"/>
+                                <field name="success_rate" readonly="1" widget="progressbar"/>
+                            </group>
+                        </group>
+                        
+                        <!-- Progress Tracking Section -->
+                        <group string="Progress Tracking" invisible="state == 'draft'">
+                            <group>
+                                <field name="current_stage" readonly="1" widget="text" class="font-weight-bold"/>
+                                <field name="progress_percentage" readonly="1" widget="progressbar"/>
+                                <field name="stage_icon" readonly="1" widget="text" invisible="1"/>
+                            </group>
+                            <group>
+                                <field name="upload_progress" readonly="1"/>
+                                <field name="mapping_progress" readonly="1"/>
+                                <field name="validation_progress" readonly="1"/>
+                                <field name="processing_progress" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <!-- Notification Settings - Always Visible -->
+                        <group string="Notification Settings">
+                            <group>
+                                <field name="email_notification_enabled"/>
+                                <field name="in_app_notification_enabled"/>
+                            </group>
+                            <group>
+                                <field name="notification_sent" readonly="1"/>
+                                <field name="notification_type" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <!-- Notification Details - Visible when notifications sent -->
+                        <group string="Notification Details" invisible="not notification_sent">
+                            <group>
+                                <field name="notification_date" readonly="1"/>
+                                <field name="notification_recipients" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="notification_message" widget="text" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <!-- Session Automation Settings -->
+                        <group string="Session Automation">
+                            <group>
+                                <field name="session_creation_enabled"/>
+                                <field name="auto_create_sessions"/>
+                            </group>
+                            <group>
+                                <field name="session_template_id"/>
+                                <field name="default_session_duration"/>
+                                <field name="default_session_type"/>
+                            </group>
+                        </group>
+                        
+                        <!-- Session Creation Results - Visible when sessions created -->
+                        <group string="Session Creation Results" invisible="not sessions_created_count">
+                            <group>
+                                <field name="sessions_created_count" readonly="1"/>
+                                <field name="sessions_scheduled_count" readonly="1"/>
+                                <field name="session_creation_date" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="session_creation_errors" widget="text" readonly="1" 
+                                       invisible="not session_creation_errors" 
+                                       placeholder="No session creation errors"/>
+                            </group>
+                        </group>
+                        
+                        <!-- Session Creation Summary - Visible when sessions created -->
+                        <group string="Session Creation Summary" invisible="not session_creation_summary">
+                            <field name="session_creation_summary" widget="text" readonly="1"/>
+                        </group>
+                        
+                        
+                        <notebook>
+                            <page string="File Details" invisible="state == 'draft'">
+                                <group>
+                                    <group>
+                                        <field name="upload_date" readonly="1"/>
+                                        <field name="validation_date" readonly="1"/>
+                                        <field name="processing_date" readonly="1"/>
+                                    </group>
+                                </group>
+                                
+                                <group string="File Information" invisible="file_data == False">
+                                    <field name="file_data" widget="binary" filename="filename" readonly="1"/>
+                                </group>
+                                
+                            <group string="Validation Results" invisible="state == 'draft'">
+                                <field name="validation_errors" widget="text" readonly="1" 
+                                       invisible="not validation_errors" 
+                                       placeholder="No validation errors"/>
+                                <field name="validation_warnings" widget="text" readonly="1" 
+                                       invisible="not validation_warnings" 
+                                       placeholder="No validation warnings"/>
+                            </group>
+                            
+                            <group string="Import Statistics" invisible="state != 'processed'">
+                                <group>
+                                    <field name="created_students_count" readonly="1"/>
+                                    <field name="updated_students_count" readonly="1"/>
+                                    <field name="processed_records" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="import_errors" widget="text" readonly="1" 
+                                           invisible="not import_errors" 
+                                           placeholder="No import errors"/>
+                                    <field name="import_summary" widget="text" readonly="1" 
+                                           invisible="not import_summary" 
+                                           placeholder="No import summary available"/>
+                                </group>
+                            </group>
+                            
+                            <group string="Failed Records Management" invisible="not has_failed_records">
+                                <group>
+                                    <field name="failed_records_count" readonly="1"/>
+                                    <field name="has_failed_records" invisible="1"/>
+                                </group>
+                                <group>
+                                    <field name="failed_records_data" widget="text" readonly="1" 
+                                           invisible="not failed_records_data" 
+                                           placeholder="No failed records data"/>
+                                </group>
+                            </group>
+                            
+                            </page>
+                            
+                            <page string="Column Mapping" invisible="state not in ['mapping', 'validated', 'processed']">
+                                <group>
+                                    <group>
+                                        <field name="available_columns" widget="text" readonly="1"/>
+                                        <field name="column_mapping" widget="text" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="mapping_preview_data" widget="text" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="Students" invisible="state == 'draft'">
+                                <field name="student_ids" readonly="1">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="email"/>
+                                        <field name="phone"/>
+                                        <field name="state"/>
+                                        <field name="is_eligible"/>
+                                    </list>
+                                </field>
+                            </page>
+                            
+                            <page string="Errors" invisible="error_records == 0">
+                                <field name="validation_errors" readonly="1" widget="text"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Intake Batch List View -->
+        <record id="view_gr_intake_batch_list" model="ir.ui.view">
+            <field name="name">gr.intake.batch.list</field>
+            <field name="model">gr.intake.batch</field>
+            <field name="arch" type="xml">
+                <list string="Intake Batches" default_order="create_date desc">
+                    <field name="name"/>
+                    <field name="upload_date"/>
+                    <field name="filename"/>
+                    <field name="current_stage"/>
+                    <field name="progress_percentage" widget="progressbar"/>
+                    <field name="total_records"/>
+                    <field name="processed_records"/>
+                    <field name="error_records"/>
+                    <field name="success_rate" widget="progressbar"/>
+                    <field name="state" widget="badge" decoration-success="state == 'processed'" 
+                           decoration-warning="state == 'validated'" decoration-info="state == 'uploaded'" 
+                           decoration-danger="state == 'error'" decoration-muted="state == 'cancelled'"/>
+                    <field name="create_date"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Intake Batch Kanban View -->
+        <record id="view_gr_intake_batch_kanban" model="ir.ui.view">
+            <field name="name">gr.intake.batch.kanban</field>
+            <field name="model">gr.intake.batch</field>
+            <field name="arch" type="xml">
+                <kanban sample="1" default_group_by="state" class="o_kanban_small_column">
+                    <field name="name"/>
+                    <field name="state"/>
+                    <field name="upload_date"/>
+                    <field name="filename"/>
+                    <field name="current_stage"/>
+                    <field name="progress_percentage"/>
+                    <field name="stage_icon"/>
+                    <field name="total_records"/>
+                    <field name="processed_records"/>
+                    <field name="error_records"/>
+                    <field name="success_rate"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="name"/>
+                                            </strong>
+                                        </div>
+                                        <div class="o_kanban_record_subtitle">
+                                            <field name="filename"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <div class="o_kanban_record_details">
+                                            <div class="o_kanban_record_middle">
+                                                <div class="progress-info">
+                                                    <i class="fa" t-attf-class="fa #{record.stage_icon.value}" t-att-title="record.current_stage.value"/>
+                                                    <span t-esc="record.current_stage.value" class="stage-text"/>
+                                                </div>
+                                                <div class="progress-bar">
+                                                    <field name="progress_percentage" widget="progressbar"/>
+                                                </div>
+                                            </div>
+                                            <div class="o_kanban_record_bottom">
+                                                <div class="oe_kanban_bottom_left">
+                                                    <span>Records: <field name="total_records"/></span>
+                                                </div>
+                                                <div class="oe_kanban_bottom_right">
+                                                    <span>Success: <field name="success_rate"/>%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Intake Batch Search View -->
+        <record id="view_gr_intake_batch_search" model="ir.ui.view">
+            <field name="name">gr.intake.batch.search</field>
+            <field name="model">gr.intake.batch</field>
+            <field name="arch" type="xml">
+                <search string="Search Intake Batches">
+                    <field name="name"/>
+                    <field name="filename"/>
+                    <field name="upload_date"/>
+                    <field name="current_stage"/>
+                    <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Uploaded" name="uploaded" domain="[('state', '=', 'uploaded')]"/>
+                    <filter string="Mapping" name="mapping" domain="[('state', '=', 'mapping')]"/>
+                    <filter string="Validated" name="validated" domain="[('state', '=', 'validated')]"/>
+                    <filter string="Processed" name="processed" domain="[('state', '=', 'processed')]"/>
+                    <filter string="Error" name="error" domain="[('state', '=', 'error')]"/>
+                    <filter string="Cancelled" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                    <filter string="In Progress" name="in_progress" domain="[('state', 'in', ['uploaded', 'mapping', 'validated'])]"/>
+                    <filter string="Failed Stages" name="failed_stages" domain="['|', ('upload_progress', '=', 'failed'), ('mapping_progress', '=', 'failed'), ('validation_progress', '=', 'failed'), ('processing_progress', '=', 'failed')]"/>
+                    <filter string="This Month" name="this_month" domain="[('upload_date', '>=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+                    <filter string="This Year" name="this_year" domain="[('upload_date', '>=', (context_today() - relativedelta(years=1)).strftime('%Y-01-01'))]"/>
+                    <group>
+                        <filter string="Status" name="group_state" domain="[]" context="{'group_by': 'state'}"/>
+                        <filter string="Date" name="group_date" domain="[]" context="{'group_by': 'upload_date'}"/>
+                        <filter string="Upload Progress" name="group_upload_progress" domain="[]" context="{'group_by': 'upload_progress'}"/>
+                        <filter string="Processing Progress" name="group_processing_progress" domain="[]" context="{'group_by': 'processing_progress'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Intake Batch Action -->
+        <record id="action_gr_intake_batch" model="ir.actions.act_window">
+            <field name="name">Intake Batches</field>
+            <field name="res_model">gr.intake.batch</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_this_month': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first intake batch!
+                </p>
+                <p>
+                    Intake batches allow you to upload and process student data files.
+                    Start by creating a new batch and uploading your student data file.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

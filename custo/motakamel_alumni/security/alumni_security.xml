@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Alumni Module Category -->
+        <record id="module_category_motakamel_alumni" model="ir.module.category">
+            <field name="name">Motakamel Alumni</field>
+            <field name="description">Manage Alumni Records and Engagement</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- Alumni User Group -->
+        <record id="group_op_alumni_user" model="res.groups">
+            <field name="name">Alumni User</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Alumni Manager Group -->
+        <record id="group_op_alumni_manager" model="res.groups">
+            <field name="name">Alumni Manager</field>
+            <field name="implied_ids" eval="[(4, ref('group_op_alumni_user'))]"/>
+        </record>
+
+        <!-- Record Rules -->
+        
+        <!-- Alumni: User can see all active alumni -->
+        <record id="alumni_user_rule" model="ir.rule">
+            <field name="name">Alumni User: See All Active Alumni</field>
+            <field name="model_id" ref="model_op_alumni"/>
+            <field name="domain_force">[('state', '=', 'active')]</field>
+            <field name="groups" eval="[(4, ref('group_op_alumni_user'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="False"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Alumni: Manager can see and manage all alumni -->
+        <record id="alumni_manager_rule" model="ir.rule">
+            <field name="name">Alumni Manager: Full Access</field>
+            <field name="model_id" ref="model_op_alumni"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+            <field name="groups" eval="[(4, ref('group_op_alumni_manager'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="True"/>
+        </record>
+
+        <!-- Alumni Portal: Own record only -->
+        <record id="alumni_portal_rule" model="ir.rule">
+            <field name="name">Alumni Portal: Own Record</field>
+            <field name="model_id" ref="model_op_alumni"/>
+            <field name="domain_force">[('user_id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+    </data>
+</odoo>
+

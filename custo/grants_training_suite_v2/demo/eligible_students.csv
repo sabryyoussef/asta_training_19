@@ -1,0 +1,11 @@
+name,email,phone,birth_date,gender,nationality,native_language,english_level,has_certificate,certificate_type,certificate_date
+Sarah Johnson,sarah.johnson@email.com,+1234567890,1990-05-12,female,Canadian,English,proficient,true,Cambridge,2023-03-10
+David Kim,david.kim@email.com,+1234567891,1988-01-18,male,Korean,Korean,intermediate,true,TOEIC,2023-08-05
+Emma Wilson,emma.wilson@email.com,+1234567892,1985-04-25,female,British,English,advanced,true,IELTS,2023-07-12
+Lisa Chen,lisa.chen@email.com,+1234567893,1992-10-07,female,Chinese,Mandarin,upper_intermediate,true,HSK,2023-05-28
+Michael Brown,michael.brown@email.com,+1234567894,1987-08-14,male,American,English,intermediate,true,TOEFL,2023-09-20
+Anna Schmidt,anna.schmidt@email.com,+1234567895,1991-12-03,female,German,German,upper_intermediate,true,Goethe,2023-06-15
+James Wilson,james.wilson@email.com,+1234567896,1989-03-15,male,Australian,English,advanced,true,IELTS,2023-04-10
+Maria Rodriguez,maria.rodriguez@email.com,+1234567897,1993-07-22,female,Spanish,Spanish,intermediate,true,DELE,2023-08-30
+Ahmed Hassan,ahmed.hassan@email.com,+1234567898,1986-11-08,male,Egyptian,Arabic,intermediate,true,TOEFL,2023-09-20
+Fatima Al-Zahra,fatima.alzahra@email.com,+1234567899,1994-12-03,female,Moroccan,Arabic,intermediate,true,TOEFL,2023-10-15

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Correction Wizard Form View -->
+        <record id="view_gr_intake_batch_correction_wizard_form" model="ir.ui.view">
+            <field name="name">gr.intake.batch.correction.wizard.form</field>
+            <field name="model">gr.intake.batch.correction.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Correct Failed Records">
+                    <header>
+                        <button name="action_validate_corrected_records" string="Validate Corrections" type="object" class="btn-primary" 
+                                invisible="state != 'correcting'"/>
+                        <button name="action_process_corrected_records" string="Process Corrections" type="object" class="btn-success" 
+                                invisible="state != 'corrected'"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,correcting,corrected,processed"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="batch_name" readonly="1"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group>
+                                <field name="intake_batch_id" invisible="1"/>
+                                <field name="failed_records_count" readonly="1"/>
+                                <field name="corrected_records_count" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="failed_records_data" invisible="1"/>
+                                <field name="corrected_records" invisible="1"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Failed Records Details" name="failed_records">
+                                <group>
+                                    <field name="failed_records_list" widget="text" readonly="1" nolabel="1"/>
+                                </group>
+                            </page>
+                            
+                            <page string="Correction Interface" name="correction_interface" invisible="state == 'draft'">
+                                <div class="alert alert-info" role="alert">
+                                    <strong>Instructions:</strong>
+                                    <ul>
+                                        <li>Review the failed records in the "Failed Records Details" tab</li>
+                                        <li>Use the correction interface below to fix errors</li>
+                                        <li>Validate your corrections before processing</li>
+                                        <li>Only corrected records will be processed</li>
+                                    </ul>
+                                </div>
+                                
+                                <!-- This would be a custom widget in a real implementation -->
+                                <div class="correction-interface">
+                                    <div class="alert alert-warning" role="alert">
+                                        <strong>Note:</strong> This is a simplified interface. In a full implementation, 
+                                        this would include interactive forms for each failed record with validation 
+                                        and real-time error checking.
+                                    </div>
+                                </div>
+                            </page>
+                            
+                            <page string="Correction Summary" name="correction_summary" invisible="state not in ['corrected', 'processed']">
+                                <group>
+                                    <group>
+                                        <field name="corrected_records_count" readonly="1"/>
+                                        <field name="failed_records_count" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="state" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Correction Wizard Action -->
+        <record id="action_gr_intake_batch_correction_wizard" model="ir.actions.act_window">
+            <field name="name">Correct Failed Records</field>
+            <field name="res_model">gr.intake.batch.correction.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

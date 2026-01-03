@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Multi-Step Admission Wizard Template -->
+    <template id="admission_application_wizard" name="Admission Application Wizard">
+        <t t-call="website.layout">
+            <!-- Inline script for wizard initialization -->
+            <script type="text/javascript">
+                // Simple wizard controller that works without module loading issues
+                document.addEventListener('DOMContentLoaded', function() {
+                    const wizard = {
+                        currentStep: 1,
+                        totalSteps: 5,
+                        
+                        showStep: function(stepNum) {
+                            // Hide all steps
+                            document.querySelectorAll('.wizard-step').forEach(step => {
+                                step.classList.remove('active');
+                            });
+                            
+                            // Show current step
+                            const currentStepEl = document.querySelector('.wizard-step[data-step="' + stepNum + '"]');
+                            if (currentStepEl) {
+                                currentStepEl.classList.add('active');
+                            }
+                            
+                            // Update progress indicators
+                            document.querySelectorAll('.step').forEach((step, index) => {
+                                step.classList.remove('active', 'completed');
+                                if (index + 1 &lt; stepNum) {
+                                    step.classList.add('completed');
+                                } else if (index + 1 === stepNum) {
+                                    step.classList.add('active');
+                                }
+                            });
+                            
+                            // Update progress bar
+                            const progress = (stepNum / this.totalSteps) * 100;
+                            document.querySelector('.progress-fill').style.width = progress + '%';
+                            
+                            // Update buttons
+                            document.querySelector('.btn-wizard-prev').style.display = stepNum > 1 ? 'inline-block' : 'none';
+                            document.querySelector('.btn-wizard-next').style.display = stepNum &lt; this.totalSteps ? 'inline-block' : 'none';
+                            document.querySelector('.btn-wizard-submit').style.display = stepNum === this.totalSteps ? 'inline-block' : 'none';
+                            
+                            this.currentStep = stepNum;
+                            window.scrollTo({ top: 0, behavior: 'smooth' });
+                        },
+                        
+                        next: function() {
+                            if (this.validateStep(this.currentStep)) {
+                                if (this.currentStep === 4) {
+                                    this.populateReview();
+                                }
+                                this.showStep(this.currentStep + 1);
+                            }
+                        },
+                        
+                        previous: function() {
+                            this.showStep(this.currentStep - 1);
+                        },
+                        
+                        validateStep: function(stepNum) {
+                            const stepEl = document.querySelector('.wizard-step[data-step="' + stepNum + '"]');
+                            const requiredFields = stepEl.querySelectorAll('[required]');
+                            let isValid = true;
+                            
+                            requiredFields.forEach(field => {
+                                if (!field.value) {
+                                    field.classList.add('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    field.classList.remove('is-invalid');
+                                    field.classList.add('is-valid');
+                                }
+                            });
+                            
+                            return isValid;
+                        },
+                        
+                        populateReview: function() {
+                            // Simple review population
+                            const getName = (id) => document.getElementById(id)?.value || 'Not provided';
+                            const getSelect = (id) => {
+                                const el = document.getElementById(id);
+                                return el?.options[el.selectedIndex]?.text || 'Not provided';
+                            };
+                            
+                            document.getElementById('review-full-name').textContent = 
+                                getName('first_name') + ' ' + getName('middle_name') + ' ' + getName('last_name');
+                            document.getElementById('review-email').textContent = getName('email');
+                            document.getElementById('review-mobile').textContent = getName('mobile');
+                            document.getElementById('review-birth-date').textContent = getName('birth_date');
+                            document.getElementById('review-gender').textContent = getSelect('gender');
+                            document.getElementById('review-street').textContent = getName('street');
+                            document.getElementById('review-city').textContent = getName('city');
+                            document.getElementById('review-country').textContent = getSelect('country_id');
+                            document.getElementById('review-program').textContent = getSelect('program_id');
+                            document.getElementById('review-course').textContent = getSelect('course_id');
+                            document.getElementById('review-batch').textContent = getSelect('batch_id');
+                            document.getElementById('review-prev-institute').textContent = getName('prev_institute_id');
+                            document.getElementById('review-prev-course').textContent = getName('prev_course_id');
+                            document.getElementById('review-family-business').textContent = getName('family_business');
+                        }
+                    };
+                    
+                    // Attach event listeners
+                    document.querySelector('.btn-wizard-next')?.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        wizard.next();
+                    });
+                    
+                    document.querySelector('.btn-wizard-prev')?.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        wizard.previous();
+                    });
+                    
+                    document.querySelectorAll('.review-edit-btn').forEach(btn => {
+                        btn.addEventListener('click', function(e) {
+                            e.preventDefault();
+                            const step = parseInt(this.getAttribute('data-step'));
+                            wizard.showStep(step);
+                        });
+                    });
+                    
+                    // Initialize
+                    wizard.showStep(1);
+                });
+            </script>
+            
+            <div id="wrap" class="oe_structure">
+                <section class="s_cover parallax s_parallax_is_fixed pt96 pb96" data-snippet="s_cover">
+                    <span class="s_parallax_bg oe_img_bg" style="background-image: url('/web/image/website.s_cover_default'); background-position: 50% 0;"></span>
+                    <div class="o_we_bg_filter bg-black-50"></div>
+                    <div class="container">
+                        <h1 class="text-white">Student Admission Application</h1>
+                        <p class="lead text-white">Complete your application in 5 easy steps</p>
+                    </div>
+                </section>
+
+                <section class="pt32 pb32">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-10 offset-lg-1">
+                                
+                                <div class="admission-wizard">
+                                    <!-- Progress Indicator -->
+                                    <div class="wizard-progress">
+                                        <div class="progress-steps">
+                                            <div class="step active" data-step="1">
+                                                <div class="step-icon">1</div>
+                                                <div class="step-label">Personal</div>
+                                            </div>
+                                            <div class="step" data-step="2">
+                                                <div class="step-icon">2</div>
+                                                <div class="step-label">Address</div>
+                                            </div>
+                                            <div class="step" data-step="3">
+                                                <div class="step-icon">3</div>
+                                                <div class="step-label">Academic</div>
+                                            </div>
+                                            <div class="step" data-step="4">
+                                                <div class="step-icon">4</div>
+                                                <div class="step-label">Background</div>
+                                            </div>
+                                            <div class="step" data-step="5">
+                                                <div class="step-icon">5</div>
+                                                <div class="step-label">Review</div>
+                                            </div>
+                                        </div>
+                                        <div class="overall-progress">
+                                            <div class="progress-fill" style="width: 20%;"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Form Content -->
+                                    <form action="/admission/submit" method="POST" enctype="multipart/form-data" id="admissionWizardForm">
+                                        <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                        
+                                        <div class="wizard-content">
+                                            
+                                            <!-- Step 1: Personal Information -->
+                                            <div class="wizard-step active" data-step="1">
+                                                <div class="step-validation-summary"></div>
+                                                
+                                                <div class="step-header">
+                                                    <h3>Personal Information</h3>
+                                                    <p>Tell us about yourself</p>
+                                                </div>
+                                                
+                                                <div class="row">
+                                                    <div class="col-md-3 mb-3">
+                                                        <label for="title">Title</label>
+                                                        <select name="title" id="title" class="form-control">
+                                                            <option value="">Select...</option>
+                                                            <option value="Mr." t-att-selected="'selected' if default.get('title') == 'Mr.' else None">Mr.</option>
+                                                            <option value="Miss" t-att-selected="'selected' if default.get('title') == 'Miss' else None">Miss</option>
+                                                            <option value="Mrs." t-att-selected="'selected' if default.get('title') == 'Mrs.' else None">Mrs.</option>
+                                                            <option value="Ms." t-att-selected="'selected' if default.get('title') == 'Ms.' else None">Ms.</option>
+                                                            <option value="Dr." t-att-selected="'selected' if default.get('title') == 'Dr.' else None">Dr.</option>
+                                                            <option value="Prof." t-att-selected="'selected' if default.get('title') == 'Prof.' else None">Prof.</option>
+                                                        </select>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-3 mb-3">
+                                                        <label for="first_name" class="required">First Name</label>
+                                                        <input type="text" name="first_name" id="first_name" class="form-control" 
+                                                               required="required" t-att-value="default.get('first_name')"/>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-3 mb-3">
+                                                        <label for="middle_name">Middle Name</label>
+                                                        <input type="text" name="middle_name" id="middle_name" class="form-control"
+                                                               t-att-value="default.get('middle_name')"/>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-3 mb-3">
+                                                        <label for="last_name" class="required">Last Name</label>
+                                                        <input type="text" name="last_name" id="last_name" class="form-control"
+                                                               required="required" t-att-value="default.get('last_name')"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="email" class="required">Email Address</label>
+                                                        <input type="email" name="email" id="email" class="form-control"
+                                                               required="required" t-att-value="default.get('email')"/>
+                                                        <small class="form-text text-muted">We'll use this email to contact you about your application.</small>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="birth_date" class="required">Date of Birth</label>
+                                                        <input type="date" name="birth_date" id="birth_date" class="form-control"
+                                                               required="required" t-att-value="default.get('birth_date')"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="gender" class="required">Gender</label>
+                                                        <select name="gender" id="gender" class="form-control" required="required">
+                                                            <option value="">Select Gender...</option>
+                                                            <option value="m" t-att-selected="'selected' if default.get('gender') == 'm' else None">Male</option>
+                                                            <option value="f" t-att-selected="'selected' if default.get('gender') == 'f' else None">Female</option>
+                                                            <option value="o" t-att-selected="'selected' if default.get('gender') == 'o' else None">Other</option>
+                                                        </select>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="mobile" class="required">Mobile Number</label>
+                                                        <input type="tel" name="mobile" id="mobile" class="form-control"
+                                                               required="required" t-att-value="default.get('mobile')"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="phone">Phone Number</label>
+                                                        <input type="tel" name="phone" id="phone" class="form-control"
+                                                               t-att-value="default.get('phone')"/>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="image">Upload Photo</label>
+                                                        <input type="file" name="image" id="image" class="form-control-file" accept="image/*"/>
+                                                        <small class="form-text text-muted">Optional: Upload a passport-sized photograph</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Step 2: Address Information -->
+                                            <div class="wizard-step" data-step="2">
+                                                <div class="step-validation-summary"></div>
+                                                
+                                                <div class="step-header">
+                                                    <h3>Address Information</h3>
+                                                    <p>Where do you currently reside?</p>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <label for="street">Street Address</label>
+                                                    <input type="text" name="street" id="street" class="form-control"
+                                                           t-att-value="default.get('street')"/>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label for="street2">Street Address 2</label>
+                                                    <input type="text" name="street2" id="street2" class="form-control"
+                                                           t-att-value="default.get('street2')"/>
+                                                    <small class="form-text text-muted">Apartment, suite, unit, building, floor, etc.</small>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="city">City</label>
+                                                        <input type="text" name="city" id="city" class="form-control"
+                                                               t-att-value="default.get('city')"/>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="zip">Zip/Postal Code</label>
+                                                        <input type="text" name="zip" id="zip" class="form-control"
+                                                               t-att-value="default.get('zip')"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="country_id">Country</label>
+                                                        <select name="country_id" id="country_id" class="form-control">
+                                                            <option value="">Select Country...</option>
+                                                            <t t-foreach="countries" t-as="country">
+                                                                <option t-att-value="country.id" t-att-selected="'selected' if default.get('country_id') == str(country.id) else None">
+                                                                    <t t-esc="country.name"/>
+                                                                </option>
+                                                            </t>
+                                                        </select>
+                                                    </div>
+                                                    
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="state_id">State/Province</label>
+                                                        <select name="state_id" id="state_id" class="form-control">
+                                                            <option value="">Select State...</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Step 3: Academic Information -->
+                                            <div class="wizard-step" data-step="3">
+                                                <div class="step-validation-summary"></div>
+                                                
+                                                <div class="step-header">
+                                                    <h3>Academic Information</h3>
+                                                    <p>Choose your program and course</p>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <label for="program_id">Program <span class="optional-indicator">(Optional)</span></label>
+                                                    <select name="program_id" id="program_id" class="form-control">
+                                                        <option value="">Select Program...</option>
+                                                        <t t-foreach="programs" t-as="program">
+                                                            <option t-att-value="program.id" t-att-selected="'selected' if default.get('program_id') == str(program.id) else None">
+                                                                <t t-esc="program.name"/>
+                                                            </option>
+                                                        </t>
+                                                    </select>
+                                                    <small class="form-text text-muted">Select if applying for a specific program</small>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <label for="course_id">Course</label>
+                                                    <select name="course_id" id="course_id" class="form-control">
+                                                        <option value="">Select Course...</option>
+                                                        <t t-foreach="courses" t-as="course">
+                                                            <option t-att-value="course.id" t-att-selected="'selected' if default.get('course_id') == str(course.id) else None">
+                                                                <t t-esc="course.name"/>
+                                                            </option>
+                                                        </t>
+                                                    </select>
+                                                </div>
+                                                
+                                                <div class="mb-3">
+                                                    <label for="batch_id">Preferred Batch <span class="optional-indicator">(Optional)</span></label>
+                                                    <select name="batch_id" id="batch_id" class="form-control">
+                                                        <option value="">Select Batch...</option>
+                                                        <t t-foreach="batches" t-as="batch">
+                                                            <option t-att-value="batch.id" t-att-selected="'selected' if default.get('batch_id') == str(batch.id) else None">
+                                                                <t t-esc="batch.name"/>
+                                                            </option>
+                                                        </t>
+                                                    </select>
+                                                    <small class="form-text text-muted">Choose your preferred class batch</small>
+                                                </div>
+                                            </div>
+
+                                            <!-- Step 4: Background Information -->
+                                            <div class="wizard-step" data-step="4">
+                                                <div class="step-validation-summary"></div>
+                                                
+                                                <div class="step-header">
+                                                    <h3>Background Information</h3>
+                                                    <p>Help us understand your background (all optional)</p>
+                                                </div>
+                                                
+                                                <div class="field-group">
+                                                    <div class="field-group-title">Previous Education</div>
+                                                    
+                                                    <div class="mb-3">
+                                                        <label for="prev_institute_id">Previous Institute/School</label>
+                                                        <input type="text" name="prev_institute_id" id="prev_institute_id" 
+                                                               class="form-control" 
+                                                               t-att-value="default.get('prev_institute_id')"
+                                                               placeholder="Name of your previous educational institution"/>
+                                                        <small class="form-text text-muted">For transfer students or continuing education</small>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="prev_course_id">Previous Course/Program</label>
+                                                            <input type="text" name="prev_course_id" id="prev_course_id" 
+                                                                   class="form-control"
+                                                                   t-att-value="default.get('prev_course_id')"
+                                                                   placeholder="e.g., Grade 12, Diploma in Computer Science"/>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="prev_result">Previous Result/Grade</label>
+                                                            <input type="text" name="prev_result" id="prev_result" 
+                                                                   class="form-control"
+                                                                   t-att-value="default.get('prev_result')"
+                                                                   placeholder="e.g., 85%, GPA 3.5, A Grade"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="field-group">
+                                                    <div class="field-group-title">Family Information</div>
+                                                    
+                                                    <div class="row">
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="family_business">Family Occupation/Business</label>
+                                                            <input type="text" name="family_business" id="family_business" 
+                                                                   class="form-control"
+                                                                   t-att-value="default.get('family_business')"
+                                                                   placeholder="e.g., Self-employed, Teacher, Business owner"/>
+                                                            <small class="form-text text-muted">For scholarship consideration</small>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-6 mb-3">
+                                                            <label for="family_income">Family Annual Income</label>
+                                                            <input type="number" name="family_income" id="family_income" 
+                                                                   class="form-control"
+                                                                   t-att-value="default.get('family_income')"
+                                                                   placeholder="Annual income in your currency"
+                                                                   step="0.01" min="0"/>
+                                                            <small class="form-text text-muted">For scholarship eligibility assessment</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Step 5: Review & Submit -->
+                                            <div class="wizard-step" data-step="5">
+                                                <div class="step-header">
+                                                    <h3>Review Your Application</h3>
+                                                    <p>Please review your information before submitting</p>
+                                                </div>
+                                                
+                                                <!-- Personal Information Summary -->
+                                                <div class="review-summary">
+                                                    <div class="review-section">
+                                                        <h4>Personal Information 
+                                                            <a href="#" class="review-edit-btn" data-step="1">
+                                                                <i class="fa fa-edit"></i> Edit
+                                                            </a>
+                                                        </h4>
+                                                        <div class="review-field">
+                                                            <div class="review-field-label">Full Name:</div>
+                                                            <div class="review-field-value" id="review-full-name"></div>
+                                                        </div>
+                                                        <div class="review-field">
+                                                            <div class="review-field-label">Email:</div>
+                                                            <div class="review-field-value" id="review-email"></div>
+                                                        </div>
+                                                        <div class="review-field">
+                                                            <div class="review-field-label">Mobile:</div>
+                                                            <div class="review-field-value" id="review-mobile"></div>
+                                                        </div>
+                                                        <div class="review-field">
+                                                            <div class="review-field-label">Date of Birth:</div>
+                                                            <div class="review-field-value" id="review-birth-date"></div>
+                                                        </div>
+                                                        <div class="review-field">
+                                                            <div class="review-field-label">Gender:</div>
+                                                            <div class="review-field-value" id="review-gender"></div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Address Information Summary -->
+                                                    <div class="review-section">
+                                                        <h4>Address Information 
+                                                            <a href="#" class="review-edit-btn" data-step="2">
+                                                                <i class="fa fa-edit"></i> Edit
+                                                            </a>
+                                                        </h4>
+                                                        <div class="review-field">
+                                                            <div class="review-field-label">Street:</div>
+                                                            <div class="review-field-value" id="review-street"></div>
+                                                        </div>
+                                                        <div class="review-field">
+                                                            <div class="review-field-label">City:</div>
+                                                            <div class="review-field-value" id="review-city"></div>
+                                                        </div>
+                                                        <div class="review-field">
+                                                            <div class="review-field-label">Country:</div>
+                                                            <div class="review-field-value" id="review-country"></div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Academic Information Summary -->
+                                                    <div class="review-section">
+                                                        <h4>Academic Information 
+                                                            <a href="#" class="review-edit-btn" data-step="3">
+                                                                <i class="fa fa-edit"></i> Edit
+                                                            </a>
+                                                        </h4>
+                                                        <div class="review-field">
+                                                            <div class="review-field-label">Program:</div>
+                                                            <div class="review-field-value" id="review-program"></div>
+                                                        </div>
+                                                        <div class="review-field">
+                                                            <div class="review-field-label">Course:</div>
+                                                            <div class="review-field-value" id="review-course"></div>
+                                                        </div>
+                                                        <div class="review-field">
+                                                            <div class="review-field-label">Batch:</div>
+                                                            <div class="review-field-value" id="review-batch"></div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Background Information Summary -->
+                                                    <div class="review-section">
+                                                        <h4>Background Information 
+                                                            <a href="#" class="review-edit-btn" data-step="4">
+                                                                <i class="fa fa-edit"></i> Edit
+                                                            </a>
+                                                        </h4>
+                                                        <div class="review-field">
+                                                            <div class="review-field-label">Previous Institute:</div>
+                                                            <div class="review-field-value" id="review-prev-institute"></div>
+                                                        </div>
+                                                        <div class="review-field">
+                                                            <div class="review-field-label">Previous Course:</div>
+                                                            <div class="review-field-value" id="review-prev-course"></div>
+                                                        </div>
+                                                        <div class="review-field">
+                                                            <div class="review-field-label">Family Business:</div>
+                                                            <div class="review-field-value" id="review-family-business"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Terms and Conditions -->
+                                                <div class="terms-acceptance">
+                                                    <div class="form-check">
+                                                        <input type="checkbox" class="form-check-input" id="terms_accepted" 
+                                                               name="terms_accepted" required="required"/>
+                                                        <label class="form-check-label" for="terms_accepted">
+                                                            I have reviewed my information and agree to the 
+                                                            <a href="/terms" target="_blank">Terms and Conditions</a> 
+                                                            and <a href="/privacy" target="_blank">Privacy Policy</a>.
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Navigation Buttons -->
+                                            <div class="wizard-navigation">
+                                                <div>
+                                                    <button type="button" class="btn btn-wizard btn-wizard-prev" style="display: none;">
+                                                        <i class="fa fa-arrow-left"></i> Previous
+                                                    </button>
+                                                </div>
+                                                
+                                                <div class="autosave-indicator"></div>
+                                                
+                                                <div>
+                                                    <button type="button" class="btn btn-wizard btn-wizard-next">
+                                                        Next <i class="fa fa-arrow-right"></i>
+                                                    </button>
+                                                    
+                                                    <button type="submit" class="btn btn-wizard btn-wizard-submit" style="display: none;">
+                                                        <i class="fa fa-paper-plane"></i> Submit Application
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+
+</odoo>
+

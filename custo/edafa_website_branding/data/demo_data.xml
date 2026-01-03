@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Demo Admission Register for Testing -->
+        <record id="demo_admission_register_2025" model="op.admission.register">
+            <field name="name">Demo Online Applications 2025</field>
+            <field name="start_date" eval="(DateTime.now() - timedelta(days=30)).strftime('%Y-%m-%d')"/>
+            <field name="end_date" eval="(DateTime.now() + timedelta(days=60)).strftime('%Y-%m-%d')"/>
+            <field name="max_count">1000</field>
+            <field name="min_count">1</field>
+            <field name="product_id" ref="product_application_fee"/>
+            <field name="state">confirm</field>
+            <field name="admission_base">course</field>
+        </record>
+        
+        <!-- Demo Partner 1 -->
+        <record id="demo_partner_ahmed" model="res.partner">
+            <field name="name">Ahmed Hassan Mohamed</field>
+            <field name="email">ahmed.hassan@demo.com</field>
+            <field name="phone">+966599214084</field>
+            <field name="street">123 Tahrir Street</field>
+            <field name="city">Cairo</field>
+            <field name="zip">11511</field>
+            <field name="country_id" ref="base.eg"/>
+        </record>
+        
+        <!-- Demo Partner 2 -->
+        <record id="demo_partner_fatima" model="res.partner">
+            <field name="name">Fatima Ali Khan</field>
+            <field name="email">fatima.khan@demo.com</field>
+            <field name="phone">+966501234567</field>
+            <field name="street">456 King Fahd Road</field>
+            <field name="city">Riyadh</field>
+            <field name="zip">12345</field>
+            <field name="country_id" ref="base.sa"/>
+        </record>
+        
+        <!-- Demo Admission 1: Unpaid Application Fee -->
+        <record id="demo_admission_unpaid" model="op.admission">
+            <field name="register_id" ref="demo_admission_register_2025"/>
+            <field name="name">Ahmed Hassan Mohamed</field>
+            <field name="first_name">Ahmed</field>
+            <field name="middle_name">Hassan</field>
+            <field name="last_name">Mohamed</field>
+            <field name="title" ref="base.res_partner_title_mister"/>
+            <field name="email">ahmed.hassan@demo.com</field>
+            <field name="mobile">+966599214084</field>
+            <field name="phone">+966599214084</field>
+            <field name="birth_date">2000-01-15</field>
+            <field name="gender">m</field>
+            <field name="street">123 Tahrir Street</field>
+            <field name="street2">Apt 5B</field>
+            <field name="city">Cairo</field>
+            <field name="zip">11511</field>
+            <field name="country_id" ref="base.eg"/>
+            <field name="prev_institute_id">Cairo Secondary School</field>
+            <field name="prev_course_id">High School Diploma</field>
+            <field name="prev_result">85%</field>
+            <field name="family_business">Self-employed</field>
+            <field name="family_income">50000</field>
+            <field name="application_date" eval="DateTime.now()"/>
+            <field name="state">submit</field>
+            <field name="partner_id" ref="demo_partner_ahmed"/>
+            <field name="application_fee">50.00</field>
+            <field name="payment_status">unpaid</field>
+            <field name="access_token">demo_token_ahmed_123456789</field>
+        </record>
+        
+        <!-- Demo Admission 2: Paid Application -->
+        <record id="demo_admission_paid" model="op.admission">
+            <field name="register_id" ref="demo_admission_register_2025"/>
+            <field name="name">Fatima Ali Khan</field>
+            <field name="first_name">Fatima</field>
+            <field name="middle_name">Ali</field>
+            <field name="last_name">Khan</field>
+            <field name="title" ref="base.res_partner_title_miss"/>
+            <field name="email">fatima.khan@demo.com</field>
+            <field name="mobile">+966501234567</field>
+            <field name="birth_date">1999-05-20</field>
+            <field name="gender">f</field>
+            <field name="street">456 King Fahd Road</field>
+            <field name="city">Riyadh</field>
+            <field name="zip">12345</field>
+            <field name="country_id" ref="base.sa"/>
+            <field name="prev_institute_id">Riyadh International School</field>
+            <field name="prev_course_id">IB Diploma</field>
+            <field name="prev_result">38/42 Points</field>
+            <field name="application_date" eval="(DateTime.now() - timedelta(days=5)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="state">confirm</field>
+            <field name="partner_id" ref="demo_partner_fatima"/>
+            <field name="application_fee">50.00</field>
+            <field name="payment_status">paid</field>
+            <field name="payment_date" eval="(DateTime.now() - timedelta(days=4)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="payment_reference">DEMO-PAID-12345</field>
+            <field name="access_token">demo_token_fatima_987654321</field>
+        </record>
+        
+        <!-- Demo Admission 3: No Fee Required -->
+        <record id="demo_admission_no_fee" model="op.admission">
+            <field name="register_id" ref="demo_admission_register_2025"/>
+            <field name="name">John Smith</field>
+            <field name="first_name">John</field>
+            <field name="last_name">Smith</field>
+            <field name="email">john.smith@demo.com</field>
+            <field name="mobile">+1555123456</field>
+            <field name="birth_date">2002-03-10</field>
+            <field name="gender">m</field>
+            <field name="city">New York</field>
+            <field name="country_id" ref="base.us"/>
+            <field name="application_date" eval="(DateTime.now() - timedelta(days=2)).strftime('%Y-%m-%d %H:%M:%S')"/>
+            <field name="state">submit</field>
+            <field name="application_fee">0.00</field>
+            <field name="payment_status">none</field>
+            <field name="access_token">demo_token_john_555666777</field>
+        </record>
+        
+    </data>
+</odoo>
+

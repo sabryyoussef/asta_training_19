@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Demo Assignment 1: Draft State -->
+        <record id="demo_assignment_1" model="gr.assignment">
+            <field name="name">ASSIGN001</field>
+            <field name="student_id" ref="demo_student_3"/>
+            <field name="agent_id" ref="base.user_admin"/>
+            <field name="assignment_date">2025-03-02 10:00:00</field>
+            <field name="assigned_by_id" ref="base.user_admin"/>
+            <field name="state">draft</field>
+            <field name="assignment_notes">Initial assignment for Mohamed Ibrahim</field>
+        </record>
+        
+        <!-- Demo Assignment 2: Assigned State -->
+        <record id="demo_assignment_2" model="gr.assignment">
+            <field name="name">ASSIGN002</field>
+            <field name="student_id" ref="demo_student_4"/>
+            <field name="agent_id" ref="base.user_admin"/>
+            <field name="assignment_date">2025-03-02 10:00:00</field>
+            <field name="assigned_by_id" ref="base.user_admin"/>
+            <field name="state">assigned</field>
+            <field name="assignment_notes">Aisha Mohamed assigned to admin agent</field>
+        </record>
+        
+        <!-- Demo Assignment 3: Contacted State -->
+        <record id="demo_assignment_3" model="gr.assignment">
+            <field name="name">ASSIGN003</field>
+            <field name="student_id" ref="demo_student_5"/>
+            <field name="agent_id" ref="base.user_admin"/>
+            <field name="assignment_date">2024-12-16 09:00:00</field>
+            <field name="assigned_by_id" ref="base.user_admin"/>
+            <field name="state">contacted</field>
+            <field name="first_contact_date">2024-12-17 11:00:00</field>
+            <field name="last_contact_date">2024-12-17 11:00:00</field>
+            <field name="contact_attempts">1</field>
+            <field name="assignment_notes">Omar Ali successfully contacted</field>
+            <field name="contact_notes">Student responded positively to enrollment</field>
+        </record>
+        
+        <!-- Demo Assignment 4: Enrolled State -->
+        <record id="demo_assignment_4" model="gr.assignment">
+            <field name="name">ASSIGN004</field>
+            <field name="student_id" ref="demo_student_6"/>
+            <field name="agent_id" ref="base.user_admin"/>
+            <field name="assignment_date">2024-12-16 09:00:00</field>
+            <field name="assigned_by_id" ref="base.user_admin"/>
+            <field name="state">enrolled</field>
+            <field name="first_contact_date">2024-12-17 11:00:00</field>
+            <field name="last_contact_date">2024-12-18 14:30:00</field>
+            <field name="contact_attempts">2</field>
+            <field name="assignment_notes">Nour El-Din enrolled in course</field>
+            <field name="contact_notes">Student enrolled and started course sessions</field>
+            <field name="enrollment_time">25.5</field>
+        </record>
+        
+        <!-- Demo Assignment 5: In Progress State -->
+        <record id="demo_assignment_5" model="gr.assignment">
+            <field name="name">ASSIGN005</field>
+            <field name="student_id" ref="demo_student_7"/>
+            <field name="agent_id" ref="base.user_admin"/>
+            <field name="assignment_date">2024-12-16 09:00:00</field>
+            <field name="assigned_by_id" ref="base.user_admin"/>
+            <field name="state">in_progress</field>
+            <field name="first_contact_date">2024-12-17 11:00:00</field>
+            <field name="last_contact_date">2024-12-20 16:45:00</field>
+            <field name="contact_attempts">3</field>
+            <field name="assignment_notes">Mariam Hassan making good progress</field>
+            <field name="contact_notes">Student actively participating in course</field>
+            <field name="enrollment_time">18.0</field>
+        </record>
+        
+        <!-- Demo Assignment 6: Completed State -->
+        <record id="demo_assignment_6" model="gr.assignment">
+            <field name="name">ASSIGN006</field>
+            <field name="student_id" ref="demo_student_8"/>
+            <field name="agent_id" ref="base.user_admin"/>
+            <field name="assignment_date">2024-12-16 09:00:00</field>
+            <field name="assigned_by_id" ref="base.user_admin"/>
+            <field name="state">completed</field>
+            <field name="first_contact_date">2024-12-17 11:00:00</field>
+            <field name="last_contact_date">2024-12-25 10:15:00</field>
+            <field name="contact_attempts">4</field>
+            <field name="assignment_notes">Youssef Ahmed completed successfully</field>
+            <field name="contact_notes">Student completed all requirements and received certificate</field>
+            <field name="enrollment_time">15.0</field>
+            <field name="completion_time">72.0</field>
+        </record>
+        
+        <!-- Demo Assignment 7: Overdue State -->
+        <record id="demo_assignment_7" model="gr.assignment">
+            <field name="name">ASSIGN007</field>
+            <field name="student_id" ref="demo_student_1"/>
+            <field name="agent_id" ref="base.user_admin"/>
+            <field name="assignment_date">2025-01-10 08:00:00</field>
+            <field name="assigned_by_id" ref="base.user_admin"/>
+            <field name="state">assigned</field>
+            <field name="assignment_notes">Ahmed Hassan - overdue assignment</field>
+            <field name="is_overdue">True</field>
+            <field name="days_since_assignment">30</field>
+        </record>
+        
+        <!-- Demo Assignment 8: Draft State -->
+        <record id="demo_assignment_8" model="gr.assignment">
+            <field name="name">ASSIGN008</field>
+            <field name="student_id" ref="demo_student_2"/>
+            <field name="agent_id" ref="base.user_admin"/>
+            <field name="assignment_date">2025-02-05 14:30:00</field>
+            <field name="assigned_by_id" ref="base.user_admin"/>
+            <field name="state">draft</field>
+            <field name="assignment_notes">Fatima Al-Zahra pending assignment</field>
+        </record>
+        
+    </data>
+</odoo>

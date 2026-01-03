@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="assets_backend" name="motakamel dashboard assets" inherit_id="web.assets_web">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" type="text/css" href="/motakamel_dashboard/static/src/css/workflow_dashboard.css"/>
+        </xpath>
+    </template>
+</odoo>

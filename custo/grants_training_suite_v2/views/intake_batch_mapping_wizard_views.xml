@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Column Mapping Wizard Form View -->
+        <record id="view_gr_intake_batch_mapping_wizard_form" model="ir.ui.view">
+            <field name="name">gr.intake.batch.mapping.wizard.form</field>
+            <field name="model">gr.intake.batch.mapping.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Column Mapping">
+                    <header>
+                        <button name="action_preview_mapping" string="Preview Mapping" type="object" class="btn-info"/>
+                        <button name="action_save_mapping" string="Save &amp; Continue" type="object" class="btn-primary"/>
+                    </header>
+                    
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="intake_batch_id" invisible="1"/>
+                                <span>Column Mapping Configuration</span>
+                            </h1>
+                        </div>
+                        
+                        <div class="alert alert-info" role="alert">
+                            <strong>Instructions:</strong> Map each file column to the corresponding student field. 
+                            Required fields must be mapped before proceeding.
+                            <br/><br/>
+                            <strong>Available columns:</strong> <field name="available_columns" widget="text" readonly="1" invisible="1"/>
+                        </div>
+                        
+                        <group>
+                            <group name="required_fields" string="Required Fields">
+                                <field name="name_mapping" required="1" placeholder="Enter column name for student name"/>
+                                <field name="name_arabic_mapping" required="1" placeholder="Enter column name for Arabic name"/>
+                                <field name="name_english_mapping" required="1" placeholder="Enter column name for English name"/>
+                                <field name="email_mapping" required="1" placeholder="Enter column name for email"/>
+                            </group>
+                            
+                            <group name="optional_fields" string="Optional Fields">
+                                <field name="phone_mapping" placeholder="Enter column name for phone"/>
+                                <field name="birth_date_mapping" placeholder="Enter column name for birth date"/>
+                                <field name="gender_mapping" placeholder="Enter column name for gender"/>
+                                <field name="nationality_mapping" placeholder="Enter column name for nationality"/>
+                                <field name="native_language_mapping" placeholder="Enter column name for native language"/>
+                                <field name="english_level_mapping" placeholder="Enter column name for English level"/>
+                                <field name="has_certificate_mapping" placeholder="Enter column name for certificate"/>
+                                <field name="certificate_type_mapping" placeholder="Enter column name for certificate type"/>
+                                <field name="certificate_date_mapping" placeholder="Enter column name for certificate date"/>
+                            </group>
+                        </group>
+                        
+                        <!-- Preview Section -->
+                        <div class="oe_title" invisible="not context.get('show_preview')">
+                            <h2>Mapping Preview</h2>
+                        </div>
+                        
+                        <group invisible="not context.get('show_preview')">
+                            <field name="preview_data" widget="text" readonly="1" 
+                                   invisible="not context.get('show_preview')"/>
+                        </group>
+                        
+                    </sheet>
+                    
+                    <div class="oe_chatter">
+                        <field name="available_columns" invisible="1"/>
+                        <field name="preview_data" invisible="1"/>
+                        <field name="column_mapping" invisible="1"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!-- Column Mapping Wizard Action -->
+        <record id="action_gr_intake_batch_mapping_wizard" model="ir.actions.act_window">
+            <field name="name">Column Mapping</field>
+            <field name="res_model">gr.intake.batch.mapping.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{}</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Homework Attempt Action -->
+        <record id="action_gr_homework_attempt" model="ir.actions.act_window">
+            <field name="name">Homework Attempts</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">gr.homework.attempt</field>
+            <field name="view_mode">list,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first homework attempt!
+                </p>
+                <p>
+                    Track and manage student homework submissions here.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Homework Attempt List View -->
+        <record id="view_gr_homework_attempt_list" model="ir.ui.view">
+            <field name="name">gr.homework.attempt.list</field>
+            <field name="model">gr.homework.attempt</field>
+            <field name="arch" type="xml">
+                <list string="Homework Attempts">
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="homework_title"/>
+                    <field name="submission_date"/>
+                    <field name="state"/>
+                    <field name="grade"/>
+                    <field name="grade_letter"/>
+                </list>
+            </field>
+        </record>
+        
+        <!-- Base Homework Attempt Form View -->
+        <record id="view_gr_homework_attempt_form" model="ir.ui.view">
+            <field name="name">gr.homework.attempt.form</field>
+            <field name="model">gr.homework.attempt</field>
+            <field name="arch" type="xml">
+                <form string="Homework Attempt">
+                    <header>
+                        <button name="action_submit" string="Submit" type="object" class="btn-primary"/>
+                        <button name="action_grade" string="Grade" type="object" class="btn-secondary"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,submitted,graded"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <!-- Grade history button removed - method not implemented -->
+                        </div>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" readonly="1"/>
+                            </h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="student_id"/>
+                                <field name="homework_title"/>
+                                <field name="submission_date"/>
+                            </group>
+                            <group>
+                                <field name="grade"/>
+                                <field name="grade_letter"/>
+                                <field name="state"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Details">
+                                <group>
+                                    <field name="submission_content"/>
+                                    <field name="feedback"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Enhanced Homework Attempt Form View with Grade History -->
+        <record id="view_gr_homework_attempt_form_enhanced" model="ir.ui.view">
+            <field name="name">gr.homework.attempt.form.enhanced</field>
+            <field name="model">gr.homework.attempt</field>
+            <field name="inherit_id" ref="view_gr_homework_attempt_form"/>
+            <field name="arch" type="xml">
+                <!-- Add Grade History page to notebook -->
+                <xpath expr="//notebook" position="inside">
+                    <page string="Grade History" invisible="not grade_history_ids">
+                        <field name="grade_history_ids" readonly="1">
+                            <list string="Grade History">
+                                <field name="change_date"/>
+                                <field name="old_grade"/>
+                                <field name="new_grade"/>
+                                <field name="grade_change" decoration-info="grade_change &gt; 0" decoration-warning="grade_change &lt; 0"/>
+                                <field name="old_letter_grade"/>
+                                <field name="new_letter_grade"/>
+                                <field name="changed_by_id"/>
+                                <field name="change_reason"/>
+                            </list>
+                        </field>
+                    </page>
+                </xpath>
+                
+                <!-- Add Grade History button to button box -->
+                <xpath expr="//div[@name='button_box']" position="inside">
+                    <div class="oe_stat_button" icon="fa-history">
+                        <field name="grade_change_count" widget="statinfo" string="Grade Changes"/>
+                    </div>
+                    <div class="oe_stat_button" icon="fa-calendar" invisible="not last_grade_change_date">
+                        <field name="last_grade_change_date" widget="statinfo" string="Last Change"/>
+                    </div>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>

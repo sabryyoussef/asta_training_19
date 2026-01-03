@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Integration Status Report -->
+        <record id="view_integration_status_report" model="ir.ui.view">
+            <field name="name">gr.student.integration.status.report</field>
+            <field name="model">gr.student</field>
+            <field name="arch" type="xml">
+                <search string="Integration Status Report">
+                    <field name="name"/>
+                    <field name="email"/>
+                    <field name="integration_status"/>
+                    <field name="elearning_progress"/>
+                    <field name="completed_courses"/>
+                    <filter string="Not Integrated" name="not_integrated" domain="[('integration_status', '=', 'not_integrated')]"/>
+                    <filter string="Enrolled" name="enrolled" domain="[('integration_status', '=', 'enrolled')]"/>
+                    <filter string="In Progress" name="in_progress" domain="[('integration_status', '=', 'in_progress')]"/>
+                    <filter string="Completed" name="completed" domain="[('integration_status', '=', 'completed')]"/>
+                    <filter string="Certified" name="certified" domain="[('integration_status', '=', 'certified')]"/>
+                    <group>
+                        <filter string="Integration Status" name="group_integration_status" domain="[]" context="{'group_by': 'integration_status'}"/>
+                        <filter string="Assigned Agent" name="group_agent" domain="[]" context="{'group_by': 'assigned_agent_id'}"/>
+                        <filter string="Eligibility" name="group_eligibility" domain="[]" context="{'group_by': 'is_eligible'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Progress Tracking Report -->
+        <record id="view_progress_tracker_report" model="ir.ui.view">
+            <field name="name">gr.progress.tracker.report</field>
+            <field name="model">gr.progress.tracker</field>
+            <field name="arch" type="xml">
+                <search string="Progress Tracking Report">
+                    <field name="student_id"/>
+                    <field name="course_integration_id"/>
+                    <field name="status"/>
+                    <field name="overall_progress"/>
+                    <field name="elearning_progress"/>
+                    <filter string="Not Started" name="not_started" domain="[('status', '=', 'not_started')]"/>
+                    <filter string="In Progress" name="in_progress" domain="[('status', '=', 'in_progress')]"/>
+                    <filter string="Completed" name="completed" domain="[('status', '=', 'completed')]"/>
+                    <filter string="Certified" name="certified" domain="[('status', '=', 'certified')]"/>
+                    <filter string="Low Progress" name="low_progress" domain="[('overall_progress', '&lt;', 25)]"/>
+                    <filter string="Medium Progress" name="medium_progress" domain="[('overall_progress', '&gt;=', 25), ('overall_progress', '&lt;', 75)]"/>
+                    <filter string="High Progress" name="high_progress" domain="[('overall_progress', '&gt;=', 75)]"/>
+                    <group>
+                        <filter string="Status" name="group_status" domain="[]" context="{'group_by': 'status'}"/>
+                        <filter string="Course Integration" name="group_course" domain="[]" context="{'group_by': 'course_integration_id'}"/>
+                        <filter string="Student" name="group_student" domain="[]" context="{'group_by': 'student_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Integration Status List View -->
+        <record id="view_integration_status_list" model="ir.ui.view">
+            <field name="name">gr.student.integration.status.list</field>
+            <field name="model">gr.student</field>
+            <field name="arch" type="xml">
+                <list string="Integration Status Report" default_order="integration_status,name">
+                    <field name="name"/>
+                    <field name="email"/>
+                    <field name="phone"/>
+                    <field name="is_eligible" widget="boolean_toggle"/>
+                    <field name="integration_status" widget="badge" 
+                           decoration-success="integration_status == 'certified'" 
+                           decoration-warning="integration_status == 'in_progress'" 
+                           decoration-info="integration_status == 'enrolled'"/>
+                    <field name="elearning_progress" widget="progressbar"/>
+                    <field name="completed_courses"/>
+                    <field name="assigned_agent_id"/>
+                    <field name="create_date"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Progress Tracker List View -->
+        <record id="view_progress_tracker_list" model="ir.ui.view">
+            <field name="name">gr.progress.tracker.report.list</field>
+            <field name="model">gr.progress.tracker</field>
+            <field name="arch" type="xml">
+                <list string="Progress Tracking Report" default_order="overall_progress desc">
+                    <field name="student_id"/>
+                    <field name="course_integration_id"/>
+                    <field name="status" widget="badge" 
+                           decoration-success="status == 'certified'" 
+                           decoration-warning="status == 'in_progress'" 
+                           decoration-info="status == 'completed'"/>
+                    <field name="overall_progress" widget="progressbar"/>
+                    <field name="elearning_progress" widget="progressbar"/>
+                    <field name="custom_sessions_completed"/>
+                    <field name="homework_submissions"/>
+                    <field name="create_date"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Integration Dashboard -->
+        <record id="action_integration_dashboard" model="ir.actions.act_window">
+            <field name="name">eLearning Integration Dashboard</field>
+            <field name="res_model">gr.student</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_integration_status_list"/>
+            <field name="search_view_id" ref="view_integration_status_report"/>
+            <field name="context">{'search_default_group_integration_status': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    eLearning Integration Dashboard
+                </p>
+                <p>
+                    Monitor student enrollment status, progress tracking, and integration metrics.
+                </p>
+            </field>
+        </record>
+
+        <!-- Progress Tracking Dashboard -->
+        <record id="action_progress_dashboard" model="ir.actions.act_window">
+            <field name="name">Progress Tracking Dashboard</field>
+            <field name="res_model">gr.progress.tracker</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_progress_tracker_list"/>
+            <field name="search_view_id" ref="view_progress_tracker_report"/>
+            <field name="context">{'search_default_group_status': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Progress Tracking Dashboard
+                </p>
+                <p>
+                    Track student progress across eLearning courses and training programs.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

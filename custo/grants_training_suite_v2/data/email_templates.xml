@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Generic Batch Notification Template -->
+        <record id="email_template_batch_notification_generic" model="mail.template">
+            <field name="name">Batch Notification - Generic</field>
+            <field name="model_id" ref="grants_training_suite_v2.model_gr_intake_batch"/>
+            <field name="subject">Batch Notification: {{ object.name }}</field>
+            <field name="email_from">{{ (user.email_formatted if user.email else '') }}</field>
+            <field name="email_to">{{ email_to }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-size: 13px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Hello {{ recipient_name }},
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        This is a notification regarding batch <strong>{{ batch_name }}</strong>.
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        <strong>Message:</strong> {{ message }}
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        <strong>Batch ID:</strong> {{ batch_id }}<br/>
+                        <strong>Notification Type:</strong> {{ notification_type }}
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Best regards,<br/>
+                        {{ user.name }}
+                    </p>
+                </div>
+            </field>
+        </record>
+
+        <!-- Success Notification Template -->
+        <record id="email_template_batch_success" model="mail.template">
+            <field name="name">Batch Notification - Success</field>
+            <field name="model_id" ref="grants_training_suite_v2.model_gr_intake_batch"/>
+            <field name="subject">✅ Batch Processing Complete: {{ object.name }}</field>
+            <field name="email_from">{{ (user.email_formatted if user.email else '') }}</field>
+            <field name="email_to">{{ email_to }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-size: 13px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Hello {{ recipient_name }},
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px; color: #28a745;">
+                        🎉 <strong>Great news!</strong> Batch processing has completed successfully.
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        <strong>Batch:</strong> {{ batch_name }}<br/>
+                        <strong>Status:</strong> <span style="color: #28a745;">✅ Completed Successfully</span>
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        <strong>Processing Summary:</strong><br/>
+                        📊 Total Records: {{ details.total_records }}<br/>
+                        ✅ Students Created: {{ details.students_created }}<br/>
+                        🔄 Students Updated: {{ details.students_updated }}<br/>
+                        ⏱️ Processing Time: {{ details.processing_time }}
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        {{ message }}
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Best regards,<br/>
+                        {{ user.name }}
+                    </p>
+                </div>
+            </field>
+        </record>
+
+        <!-- Error Notification Template -->
+        <record id="email_template_batch_error" model="mail.template">
+            <field name="name">Batch Notification - Error</field>
+            <field name="model_id" ref="grants_training_suite_v2.model_gr_intake_batch"/>
+            <field name="subject">❌ Batch Processing Error: {{ object.name }}</field>
+            <field name="email_from">{{ (user.email_formatted if user.email else '') }}</field>
+            <field name="email_to">{{ email_to }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-size: 13px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Hello {{ recipient_name }},
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px; color: #dc3545;">
+                        ⚠️ <strong>Attention Required!</strong> Batch processing encountered an error.
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        <strong>Batch:</strong> {{ batch_name }}<br/>
+                        <strong>Status:</strong> <span style="color: #dc3545;">❌ Error</span><br/>
+                        <strong>Error Type:</strong> {{ details.error_type }}
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        <strong>Error Details:</strong><br/>
+                        <span style="color: #dc3545;">{{ details.error_message }}</span>
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        <strong>Additional Information:</strong><br/>
+                        📅 Failed At: {{ details.failed_at }}<br/>
+                        📊 Total Records: {{ details.total_records }}
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        {{ message }}
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Please review the batch and take appropriate action.<br/>
+                        Best regards,<br/>
+                        {{ user.name }}
+                    </p>
+                </div>
+            </field>
+        </record>
+
+        <!-- Warning Notification Template -->
+        <record id="email_template_batch_warning" model="mail.template">
+            <field name="name">Batch Notification - Warning</field>
+            <field name="model_id" ref="grants_training_suite_v2.model_gr_intake_batch"/>
+            <field name="subject">⚠️ Batch Processing Warning: {{ object.name }}</field>
+            <field name="email_from">{{ (user.email_formatted if user.email else '') }}</field>
+            <field name="email_to">{{ email_to }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-size: 13px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Hello {{ recipient_name }},
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px; color: #ffc107;">
+                        ⚠️ <strong>Warning!</strong> Batch processing completed with some issues.
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        <strong>Batch:</strong> {{ batch_name }}<br/>
+                        <strong>Status:</strong> <span style="color: #ffc107;">⚠️ Completed with Warnings</span>
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        <strong>Processing Summary:</strong><br/>
+                        📊 Total Records: {{ details.total_records }}<br/>
+                        ✅ Students Created: {{ details.students_created }}<br/>
+                        🔄 Students Updated: {{ details.students_updated }}<br/>
+                        ❌ Errors: {{ details.errors }}<br/>
+                        ⏱️ Processing Time: {{ details.processing_time }}
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        {{ message }}
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Please review the errors and take appropriate action if needed.<br/>
+                        Best regards,<br/>
+                        {{ user.name }}
+                    </p>
+                </div>
+            </field>
+        </record>
+
+        <!-- Info Notification Template -->
+        <record id="email_template_batch_info" model="mail.template">
+            <field name="name">Batch Notification - Info</field>
+            <field name="model_id" ref="grants_training_suite_v2.model_gr_intake_batch"/>
+            <field name="subject">ℹ️ Batch Information: {{ object.name }}</field>
+            <field name="email_from">{{ (user.email_formatted if user.email else '') }}</field>
+            <field name="email_to">{{ email_to }}</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px; font-size: 13px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Hello {{ recipient_name }},
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px; color: #17a2b8;">
+                        ℹ️ <strong>Information Update</strong> regarding batch processing.
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        <strong>Batch:</strong> {{ batch_name }}<br/>
+                        <strong>Status:</strong> <span style="color: #17a2b8;">ℹ️ Information</span>
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        <strong>Details:</strong><br/>
+                        📊 Total Records: {{ details.total_records or 'N/A' }}<br/>
+                        📅 Batch Status: {{ details.batch_status or 'N/A' }}<br/>
+                        ⏱️ Processing Time: {{ details.processing_time or 'N/A' }}
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        {{ message }}
+                    </p>
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Best regards,<br/>
+                        {{ user.name }}
+                    </p>
+                </div>
+            </field>
+        </record>
+
+    </data>
+</odoo>

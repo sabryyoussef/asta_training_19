@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Admission Menu in Website Header -->
+        <record id="website_menu_admission" model="website.menu">
+            <field name="name">Apply Now</field>
+            <field name="url">/admission/apply</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence">50</field>
+        </record>
+        
+        <!-- Check Status Menu -->
+        <record id="website_menu_check_status" model="website.menu">
+            <field name="name">Check Status</field>
+            <field name="url">/admission/check-status</field>
+            <field name="parent_id" ref="website.main_menu"/>
+            <field name="sequence">51</field>
+        </record>
+        
+    </data>
+</odoo>
+

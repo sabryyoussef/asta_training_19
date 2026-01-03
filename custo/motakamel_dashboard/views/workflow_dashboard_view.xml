@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Workflow Dashboard Kanban View -->
+    <record id="view_workflow_hub_kanban" model="ir.ui.view">
+        <field name="name">motakamel.workflow.dashboard.kanban</field>
+        <field name="model">motakamel.workflow.dashboard</field>
+        <field name="arch" type="xml">
+            <kanban sample="1" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="description"/>
+                <field name="icon"/>
+                <field name="color"/>
+                <field name="sequence"/>
+                <field name="stage_ids"/>
+                <templates>
+                    <!-- Load Mermaid.js for Kanban view -->
+                    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+                    <script>
+                        console.log('Mermaid script loaded for Kanban');
+                        
+                        // Initialize Mermaid for Kanban
+                        mermaid.initialize({
+                            startOnLoad: false,
+                            theme: 'default',
+                            flowchart: {
+                                useMaxWidth: true,
+                                htmlLabels: true
+                            }
+                        });
+                        
+                        // Function to render diagrams in Kanban
+                        function renderKanbanMermaidDiagrams() {
+                            console.log('Attempting to render Kanban Mermaid diagrams...');
+                            const mermaidElements = document.querySelectorAll('.o_kanban_view .mermaid');
+                            console.log('Found', mermaidElements.length, 'Kanban Mermaid elements');
+                            
+                            mermaidElements.forEach(function(element, index) {
+                                console.log('Processing Kanban element', index, element);
+                                if (!element.hasAttribute('data-processed')) {
+                                    element.setAttribute('data-processed', 'true');
+                                    try {
+                                        console.log('Rendering Kanban element', index);
+                                        mermaid.init(undefined, element);
+                                        console.log('Successfully rendered Kanban element', index);
+                                    } catch (error) {
+                                        console.error('Kanban Mermaid rendering error for element', index, ':', error);
+                                    }
+                                }
+                            });
+                        }
+                        
+                        // Render diagrams when Kanban loads
+                        document.addEventListener('DOMContentLoaded', function() {
+                            console.log('DOM loaded, scheduling Kanban Mermaid render');
+                            setTimeout(renderKanbanMermaidDiagrams, 500);
+                        });
+                        
+                        // Also render when Odoo Kanban loads
+                        setTimeout(function() {
+                            console.log('Timeout reached, attempting Kanban Mermaid render');
+                            renderKanbanMermaidDiagrams();
+                        }, 1000);
+                        
+                        // Additional attempts
+                        setTimeout(renderKanbanMermaidDiagrams, 2000);
+                        setTimeout(renderKanbanMermaidDiagrams, 3000);
+                    </script>
+                    
+                    <t t-name="card">
+                        <div class="workflow_card oe_kanban_card oe_kanban_global_click" t-attf-style="border-left: 6px solid #{record.color.raw_value || '#00A0B0'}; background: linear-gradient(135deg, #{record.color.raw_value || '#00A0B0'}15, #{record.color.raw_value || '#00A0B0'}05);">
+                            <!-- Card Header with Icon and Title -->
+                            <div class="workflow_card_header">
+                                <div class="workflow_card_icon_container">
+                                    <div class="workflow_card_icon" t-attf-style="background: linear-gradient(135deg, #{record.color.raw_value || '#00A0B0'}, #{record.color.raw_value || '#00A0B0'}CC);">
+                                        <i t-attf-class="fa #{record.icon.raw_value or 'fa-cogs'}" style="color: white; font-size: 24px;"/>
+                                    </div>
+                                </div>
+                                <div class="workflow_card_title_section">
+                                    <h4 class="workflow_card_title">
+                                        <field name="name"/>
+                                    </h4>
+                                    <div class="workflow_card_subtitle">
+                                        <span class="workflow_stage_count">
+                                            <i class="fa fa-sitemap"/> <t t-esc="record.stage_ids.length"/> Stages
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="workflow_card_actions">
+                                <div class="o_dropdown_kanban dropdown">
+                                        <a class="dropdown-toggle o-no-caret btn btn-sm btn-outline-secondary" role="button" data-toggle="dropdown" href="#" aria-label="More options" title="More options">
+                                        <span class="fa fa-ellipsis-v"/>
+                                    </a>
+                                        <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                        <a role="menuitem" type="object" name="action_open_workflow_dashboard" class="dropdown-item">
+                                            <i class="fa fa-dashboard"/> Open Dashboard
+                                        </a>
+                                            <a role="menuitem" href="#" class="dropdown-item">
+                                                <i class="fa fa-chart-line"/> View Analytics
+                                            </a>
+                                            <a role="menuitem" href="#" class="dropdown-item">
+                                                <i class="fa fa-cog"/> Configure
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Card Content with Description -->
+                            <div class="workflow_card_content">
+                                <div class="workflow_description">
+                                <field name="description"/>
+                                </div>
+                                
+                                <!-- Progress Indicator -->
+                                <div class="workflow_progress_section">
+                                    <div class="workflow_progress_bar">
+                                        <div class="workflow_progress_fill" t-attf-style="width: 65%; background: linear-gradient(90deg, #{record.color.raw_value || '#00A0B0'}, #{record.color.raw_value || '#00A0B0'}CC);"></div>
+                                    </div>
+                                    <div class="workflow_progress_text">
+                                        <span class="progress_percentage">65% Complete</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Quick Stats -->
+                                <div class="workflow_quick_stats">
+                                    <div class="stat_item">
+                                        <i class="fa fa-users text-success"/>
+                                        <span class="stat_value">24</span>
+                                        <span class="stat_label">Active</span>
+                                    </div>
+                                    <div class="stat_item">
+                                        <i class="fa fa-clock text-warning"/>
+                                        <span class="stat_value">3</span>
+                                        <span class="stat_label">Pending</span>
+                            </div>
+                                    <div class="stat_item">
+                                        <i class="fa fa-check-circle text-info"/>
+                                        <span class="stat_value">156</span>
+                                        <span class="stat_label">Completed</span>
+                                    </div>
+                                </div>
+                                
+                                <!-- Simple Test Box -->
+                                <div style="background: #e8f4fd; padding: 8px; margin-top: 8px; border-radius: 4px; border: 1px solid #3498db;">
+                                    <h6 style="color: #2980b9; margin: 0 0 5px 0; font-size: 11px;">🧪 Test Box</h6>
+                                    <p style="margin: 0; font-size: 10px; color: #666;">This is a simple test box to verify the module update is working.</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Card Footer with Action Button -->
+                            <div class="workflow_card_footer">
+                                <button type="object" name="action_open_workflow_dashboard" class="workflow_action_btn btn btn-primary">
+                                    <i class="fa fa-arrow-right"/> Launch Workflow
+                                </button>
+                            </div>
+                            
+                            <!-- Decorative Elements -->
+                            <div class="workflow_card_decoration">
+                                <div class="decoration_circle decoration_circle_1"></div>
+                                <div class="decoration_circle decoration_circle_2"></div>
+                                <div class="decoration_circle decoration_circle_3"></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Workflow Dashboard Form View -->
+    <record id="view_workflow_dashboard_form" model="ir.ui.view">
+        <field name="name">motakamel.workflow.dashboard.form</field>
+        <field name="model">motakamel.workflow.dashboard</field>
+        <field name="arch" type="xml">
+            <form class="workflow_form_view">
+                <sheet>
+                    <!-- Enhanced Header Section -->
+                    <div class="workflow_form_header">
+                        <div class="workflow_form_title_section">
+                            <div class="workflow_form_icon_container">
+                                <div class="workflow_form_icon">
+                                    <i class="fa fa-cogs" style="color: white; font-size: 32px;" title="Workflow Icon"/>
+                                </div>
+                            </div>
+                            <div class="workflow_form_title_content">
+                                <h1 class="workflow_form_title">
+                                    <field name="name" placeholder="e.g. Student Lifecycle"/>
+                                </h1>
+                                <div class="workflow_form_subtitle">
+                                    <span class="workflow_status_badge">
+                                        <i class="fa fa-sitemap"/> Workflow Management
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="workflow_form_actions">
+                            <button name="action_open_workflow_dashboard" type="object" class="workflow_form_action_btn btn btn-primary">
+                                <i class="fa fa-dashboard"/> View Dashboard
+                        </button>
+                    </div>
+                    </div>
+
+                    <!-- Enhanced Form Fields -->
+                    <div class="workflow_form_fields">
+                        <group>
+                            <group>
+                                <field name="sequence" string="Sequence Order"/>
+                                <field name="icon" string="Icon Class"/>
+                                <field name="color" widget="color" string="Theme Color"/>
+                        </group>
+                        <group>
+                                <field name="is_active" string="Active Status"/>
+                            </group>
+                        </group>
+                    </div>
+
+                    <!-- Enhanced Notebook -->
+                    <notebook class="workflow_form_notebook">
+                        <page string="Workflow Diagram" class="workflow_diagram_page">
+                            <div class="workflow_diagram_container">
+                                <div class="workflow_diagram_header">
+                                    <h3 class="workflow_diagram_title">
+                                        <i class="fa fa-sitemap"/> Workflow Visualization
+                                    </h3>
+                                    <p class="workflow_diagram_subtitle">Visual representation of the workflow stages and their connections</p>
+                                </div>
+                                <div class="workflow_diagram_content">
+                                    <!-- Student Lifecycle Workflow -->
+                                    <div class="workflow-diagram-container" invisible="name != 'Student Lifecycle'">
+                                        <div class="workflow-stages">
+                                            <div class="workflow-stage stage-inquiry">
+                                                <div class="stage-title">Inquiry</div>
+                                                <div class="stage-subtitle">View Inquiries</div>
+                                                <div class="stage-arrow">→</div>
+                                            </div>
+                                            <div class="workflow-stage stage-application">
+                                                <div class="stage-title">Application</div>
+                                                <div class="stage-subtitle">Process Applications</div>
+                                                <div class="stage-arrow">→</div>
+                                            </div>
+                                            <div class="workflow-stage stage-registration">
+                                                <div class="stage-title">Registration</div>
+                                                <div class="stage-subtitle">Student Registration</div>
+                                                <div class="stage-arrow">→</div>
+                                            </div>
+                                            <div class="workflow-stage stage-enrollment">
+                                                <div class="stage-title">Enrollment</div>
+                                                <div class="stage-subtitle">Course Enrollment</div>
+                                                <div class="stage-arrow">→</div>
+                                            </div>
+                                            <div class="workflow-stage stage-academic">
+                                                <div class="stage-title">Academic</div>
+                                                <div class="stage-subtitle">Progress Tracking</div>
+                                                <div class="stage-arrow">→</div>
+                                            </div>
+                                            <div class="workflow-stage stage-graduation">
+                                                <div class="stage-title">Graduation</div>
+                                                <div class="stage-subtitle">Degree Completion</div>
+                                            </div>
+                                        </div>
+                                        <div class="workflow-description">
+                                            <h4>Student Lifecycle Workflow</h4>
+                                            <p>Complete journey from initial inquiry to graduation. Each stage represents a key milestone in the student's educational path.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Grant Training Program Workflow -->
+                                    <div class="workflow-diagram-container" invisible="name != 'Grant Training Program'">
+                                        <div class="workflow-stages">
+                                            <div class="workflow-stage stage-intake">
+                                                <div class="stage-title">Intake</div>
+                                                <div class="stage-subtitle">Manage Intake</div>
+                                                <div class="stage-arrow">→</div>
+                                            </div>
+                                            <div class="workflow-stage stage-assignment">
+                                                <div class="stage-title">Assignment</div>
+                                                <div class="stage-subtitle">Agent Assignment</div>
+                                                <div class="stage-arrow">→</div>
+                                            </div>
+                                            <div class="workflow-stage stage-enrollment">
+                                                <div class="stage-title">Enrollment</div>
+                                                <div class="stage-subtitle">Student Enrollment</div>
+                                                <div class="stage-arrow">→</div>
+                                            </div>
+                                            <div class="workflow-stage stage-sessions">
+                                                <div class="stage-title">Sessions</div>
+                                                <div class="stage-subtitle">Course Sessions</div>
+                                                <div class="stage-arrow">→</div>
+                                            </div>
+                                            <div class="workflow-stage stage-assessments">
+                                                <div class="stage-title">Assessments</div>
+                                                <div class="stage-subtitle">Homework</div>
+                                                <div class="stage-arrow">→</div>
+                                            </div>
+                                            <div class="workflow-stage stage-certification">
+                                                <div class="stage-title">Certification</div>
+                                                <div class="stage-subtitle">Certificates</div>
+                                            </div>
+                                        </div>
+                                        <div class="workflow-description">
+                                            <h4>Grant Training Program Workflow</h4>
+                                            <p>Comprehensive grant-based training management from intake to certification. Each stage represents a key milestone in the training process.</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Default workflow diagram -->
+                                    <div class="workflow-diagram-container" invisible="name == 'Student Lifecycle' or name == 'Grant Training Program'">
+                                        <div class="workflow-stages">
+                                            <div class="workflow-stage" style="background: #95a5a6;">
+                                                <div class="stage-title">Stage 1</div>
+                                                <div class="stage-subtitle">Initial Stage</div>
+                                                <div class="stage-arrow">→</div>
+                                            </div>
+                                            <div class="workflow-stage" style="background: #95a5a6;">
+                                                <div class="stage-title">Stage 2</div>
+                                                <div class="stage-subtitle">Processing</div>
+                                                <div class="stage-arrow">→</div>
+                                            </div>
+                                            <div class="workflow-stage" style="background: #95a5a6;">
+                                                <div class="stage-title">Stage 3</div>
+                                                <div class="stage-subtitle">Completion</div>
+                                            </div>
+                                        </div>
+                                        <div class="workflow-description">
+                                            <h4>Workflow Diagram</h4>
+                                            <p>Visual representation of the workflow stages and their connections.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </page>
+                        <page string="Workflow Stages" class="workflow_stages_page">
+                            <div class="workflow_stages_header">
+                                <h3 class="workflow_stages_title">
+                                    <i class="fa fa-sitemap"/> Workflow Stages
+                                </h3>
+                                <p class="workflow_stages_subtitle">Manage and configure the stages of this workflow</p>
+                            </div>
+                            <field name="stage_ids">
+                                <kanban sample="1" class="workflow_stages_kanban">
+                                    <field name="name"/>
+                                    <field name="description"/>
+                                    <field name="icon"/>
+                                    <field name="color"/>
+                                    <field name="sequence"/>
+                                    <field name="button_label"/>
+                                    <field name="technical_name"/>
+                                    <field name="is_completed"/>
+                                    <field name="is_current"/>
+                                    <templates>
+                                        <t t-name="card">
+                                            <div class="workflow_stage_card">
+                                                <!-- Stage Card Header -->
+                                                <div class="workflow_stage_card_header">
+                                                    <div class="workflow_stage_card_icon_container">
+                                                        <div class="workflow_stage_card_icon">
+                                                            <i class="fa fa-circle" style="color: white; font-size: 18px;" title="Stage color indicator" aria-label="Stage color indicator"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="workflow_stage_card_title_section">
+                                                        <h4 class="workflow_stage_card_title">
+                                                            <field name="name"/>
+                                                        </h4>
+                                                        <div class="workflow_stage_card_status">
+                                                            <span t-attf-class="workflow_status_badge workflow_status_current #{record.is_current.raw_value ? '' : 'o_hidden'}">
+                                                                <i class="fa fa-play-circle" title="Current Stage"/> Current
+                                                            </span>
+                                                            <span t-attf-class="workflow_status_badge workflow_status_completed #{record.is_completed.raw_value ? '' : 'o_hidden'}">
+                                                                <i class="fa fa-check-circle"/> Completed
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Stage Card Content -->
+                                                <div class="workflow_stage_card_content">
+                                                    <div class="workflow_stage_description">
+                                                    <field name="description"/>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Stage Card Footer -->
+                                                <div class="workflow_stage_card_footer">
+                                                    <button type="object" name="action_execute_stage" class="workflow_stage_action_btn btn btn-primary">
+                                                                <i class="fa fa-play" title="Execute Stage"/> <field name="button_label"/>
+                                                            </button>
+                                                        </div>
+                                                
+                                                <!-- Decorative Elements -->
+                                                <div class="workflow_stage_card_decoration">
+                                                    <div class="decoration_circle decoration_circle_1"></div>
+                                                    <div class="decoration_circle decoration_circle_2"></div>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Workflow Dashboard Action -->
+    <record id="action_workflow_dashboard" model="ir.actions.act_window">
+        <field name="name">Workflow Dashboard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">motakamel.workflow.dashboard</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="view_id" ref="view_workflow_hub_kanban"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Welcome to Workflow Dashboard!
+            </p>
+            <p>
+                This dashboard shows the Student Lifecycle workflow with all its stages.
+                Click on any workflow card to view detailed stages and execute actions.
+            </p>
+        </field>
+    </record>
+
+</odoo>
+

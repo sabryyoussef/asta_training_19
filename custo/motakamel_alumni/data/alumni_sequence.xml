@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Alumni Number Sequence -->
+        <record id="seq_op_alumni" model="ir.sequence">
+            <field name="name">Alumni Number</field>
+            <field name="code">op.alumni</field>
+            <field name="prefix">ALM/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+        <!-- Alumni Event Number Sequence -->
+        <record id="seq_op_alumni_event" model="ir.sequence">
+            <field name="name">Alumni Event Number</field>
+            <field name="code">op.alumni.event</field>
+            <field name="prefix">EVT/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+        <!-- Alumni Job Number Sequence -->
+        <record id="seq_op_alumni_job" model="ir.sequence">
+            <field name="name">Alumni Job Number</field>
+            <field name="code">op.alumni.job</field>
+            <field name="prefix">JOB/</field>
+            <field name="padding">5</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+    </data>
+</odoo>
+

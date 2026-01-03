@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- Portal: My Applications List -->
+    <template id="portal_my_applications" name="My Applications">
+        <t t-call="portal.portal_layout">
+            <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+            <t t-call="portal.portal_searchbar">
+                <t t-set="title">My Applications</t>
+            </t>
+
+            <t t-if="not applications">
+                <div class="alert alert-warning mt-3" role="alert">
+                    <p class="mb-0">
+                        You don't have any applications yet.
+                        <a href="/admission/apply" class="alert-link">Apply Now</a>
+                    </p>
+                </div>
+            </t>
+
+            <t t-if="applications" t-call="portal.portal_table">
+                <thead>
+                    <tr class="active">
+                        <th>Application #</th>
+                        <th>Name</th>
+                        <th>Course</th>
+                        <th>Application Date</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="applications" t-as="application">
+                        <tr>
+                            <td><t t-esc="application.application_number"/></td>
+                            <td><t t-esc="application.name"/></td>
+                            <td><t t-esc="application.course_id.name"/></td>
+                            <td><span t-field="application.application_date"/></td>
+                            <td>
+                                <span t-att-class="'badge ' + ('badge-success' if application.state == 'admission' else 'badge-warning' if application.state == 'submit' else 'badge-info')">
+                                    <t t-esc="dict(application._fields['state'].selection).get(application.state)"/>
+                                </span>
+                            </td>
+                            <td class="text-right">
+                                <a t-attf-href="/my/application/#{application.id}" class="btn btn-sm btn-primary">
+                                    <i class="fa fa-eye"></i> View
+                                </a>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </t>
+        </t>
+    </template>
+
+    <!-- Portal: Application Detail View -->
+    <template id="portal_application_detail" name="Application Details">
+        <t t-call="portal.portal_layout">
+            <t t-call="portal.portal_record_layout">
+                <t t-set="card_header">
+                    <h5 class="mb-0">
+                        <i class="fa fa-file-text-o"></i>
+                        Application <t t-esc="admission.application_number"/>
+                        <span t-att-class="'badge float-right ' + ('badge-success' if admission.state == 'admission' else 'badge-warning' if admission.state == 'submit' else 'badge-info')">
+                            <t t-esc="dict(admission._fields['state'].selection).get(admission.state)"/>
+                        </span>
+                    </h5>
+                </t>
+                <t t-set="card_body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Personal Information</h5>
+                            <table class="table table-sm">
+                                <tr>
+                                    <th class="w-50">Full Name:</th>
+                                    <td><t t-esc="admission.name"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Email:</th>
+                                    <td><t t-esc="admission.email"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Mobile:</th>
+                                    <td><t t-esc="admission.mobile"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Date of Birth:</th>
+                                    <td><span t-field="admission.birth_date"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h5>Academic Information</h5>
+                            <table class="table table-sm">
+                                <tr>
+                                    <th class="w-50">Course:</th>
+                                    <td><t t-esc="admission.course_id.name"/></td>
+                                </tr>
+                                <tr t-if="admission.batch_id">
+                                    <th>Batch:</th>
+                                    <td><t t-esc="admission.batch_id.name"/></td>
+                                </tr>
+                                <tr>
+                                    <th>Application Date:</th>
+                                    <td><span t-field="admission.application_date"/></td>
+                                </tr>
+                                <tr t-if="admission.admission_date">
+                                    <th>Admission Date:</th>
+                                    <td><span t-field="admission.admission_date"/></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3" t-if="admission.street or admission.city">
+                        <div class="col-12">
+                            <h5>Address</h5>
+                            <address>
+                                <t t-if="admission.street"><t t-esc="admission.street"/><br/></t>
+                                <t t-if="admission.street2"><t t-esc="admission.street2"/><br/></t>
+                                <t t-if="admission.city">
+                                    <t t-esc="admission.city"/><t t-if="admission.state_id">, <t t-esc="admission.state_id.name"/></t> <t t-esc="admission.zip"/><br/>
+                                </t>
+                                <t t-if="admission.country_id"><t t-esc="admission.country_id.name"/></t>
+                            </address>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <a href="/my/applications" class="btn btn-secondary">
+                                <i class="fa fa-arrow-left"></i> Back to Applications
+                            </a>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <!-- Add to Portal Menu -->
+    <template id="portal_my_home_menu_applications" name="Portal My Home Menu : Applications" inherit_id="portal.portal_my_home" priority="40">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="application_count" t-value="application_count if application_count is not None else 0"/>
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/edafa_website_branding/static/description/icon.png'"/>
+                <t t-set="title">Applications</t>
+                <t t-set="url" t-value="'/my/applications'"/>
+                <t t-set="placeholder_count" t-value="'application_count'"/>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>
+

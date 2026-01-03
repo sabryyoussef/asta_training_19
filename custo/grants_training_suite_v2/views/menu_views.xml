@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Main Menu -->
+        <menuitem id="menu_grants_training_main"
+                  name="Grants Training"
+                  sequence="10"
+                  web_icon="grants_training_suite_v2,static/description/icon.png"/>
+        
+        <!-- Intake Management Menu -->
+        <menuitem id="menu_grants_training_intake"
+                  name="Intake Management"
+                  parent="menu_grants_training_main"
+                  sequence="10"/>
+        
+        <menuitem id="menu_grants_training_intake_batch"
+                  name="Intake Batches"
+                  parent="menu_grants_training_intake"
+                  action="action_gr_intake_batch"
+                  sequence="10"/>
+        
+        <!-- Student Management Menu -->
+        <menuitem id="menu_grants_training_students"
+                  name="Student Management"
+                  parent="menu_grants_training_main"
+                  sequence="20"/>
+        
+        <menuitem id="menu_grants_training_students_list"
+                  name="Students"
+                  parent="menu_grants_training_students"
+                  action="action_gr_student"
+                  sequence="10"/>
+        
+        <menuitem id="menu_grants_training_assignments"
+                  name="Assignments"
+                  parent="menu_grants_training_students"
+                  action="action_gr_assignment"
+                  sequence="20"/>
+        
+        <!-- Document Management Menu -->
+        <menuitem id="menu_grants_training_documents"
+                  name="Document Management"
+                  parent="menu_grants_training_main"
+                  sequence="30"/>
+        
+        <menuitem id="menu_grants_training_document_requests"
+                  name="Document Requests"
+                  parent="menu_grants_training_documents"
+                  action="action_gr_document_request"
+                  sequence="10"/>
+        
+        <!-- Training Management Menu -->
+        <menuitem id="menu_grants_training_training"
+                  name="Training Management"
+                  parent="menu_grants_training_main"
+                  sequence="40"/>
+        
+        <menuitem id="menu_grants_training_course_sessions"
+                  name="Course Sessions"
+                  parent="menu_grants_training_training"
+                  action="action_gr_course_session"
+                  sequence="10"/>
+        
+        <menuitem id="menu_grants_training_homework_attempts"
+                  name="Homework Attempts"
+                  parent="menu_grants_training_training"
+                  action="action_gr_homework_attempt"
+                  sequence="20"/>
+        
+        <!-- eLearning Integration Menu -->
+        <menuitem id="menu_grants_training_elearning"
+                  name="eLearning Integration"
+                  parent="menu_grants_training_main"
+                  sequence="50"/>
+        
+        <menuitem id="menu_grants_training_training_programs"
+                  name="Training Programs"
+                  parent="menu_grants_training_elearning"
+                  action="action_gr_training_program"
+                  sequence="10"/>
+        
+        <menuitem id="menu_grants_training_course_integrations"
+                  name="Course Integrations"
+                  parent="menu_grants_training_elearning"
+                  action="action_gr_course_integration"
+                  sequence="20"/>
+        
+        <menuitem id="menu_grants_training_progress_trackers"
+                  name="Progress Trackers"
+                  parent="menu_grants_training_elearning"
+                  action="action_gr_progress_tracker"
+                  sequence="30"/>
+        
+        <menuitem id="menu_grants_training_integration_dashboard"
+                  name="Integration Dashboard"
+                  parent="menu_grants_training_elearning"
+                  action="action_integration_dashboard"
+                  sequence="40"/>
+        
+        <menuitem id="menu_grants_training_progress_dashboard"
+                  name="Progress Dashboard"
+                  parent="menu_grants_training_elearning"
+                  action="action_progress_dashboard"
+                  sequence="50"/>
+        
+        <!-- Certification Menu -->
+        <menuitem id="menu_grants_training_certification"
+                  name="Certification"
+                  parent="menu_grants_training_main"
+                  sequence="60"/>
+        
+        <menuitem id="menu_grants_training_certificates"
+                  name="Certificates"
+                  parent="menu_grants_training_certification"
+                  action="action_gr_certificate"
+                  sequence="10"/>
+        
+        <!-- ===== Phase 5.1: Certificate Templates Menu ===== -->
+        <menuitem id="menu_grants_training_certificate_templates"
+                  name="Certificate Templates"
+                  parent="menu_grants_training_certification"
+                  action="action_gr_certificate_template"
+                  sequence="20"/>
+        
+        <!-- Configuration Menu -->
+        <menuitem id="menu_grants_training_config"
+                  name="Configuration"
+                  parent="menu_grants_training_main"
+                  sequence="100"/>
+        
+        <!-- Security Groups Menu (for managers) -->
+        <menuitem id="menu_grants_training_security"
+                  name="Security"
+                  parent="menu_grants_training_config"
+                  groups="grants_training_suite_v2.group_manager"
+                  sequence="10"/>
+        <!-- Reports Menu -->
+        <menuitem id="menu_grants_training_reports"
+                  name="Reports"
+                  parent="menu_grants_training_main"
+                  sequence="200"/>
+        
+        <menuitem id="menu_grants_training_integration_reports"
+                  name="Integration Reports"
+                  parent="menu_grants_training_reports"
+                  action="action_integration_dashboard"
+                  sequence="10"/>
+        
+        <!-- Dashboard Menu -->
+        <menuitem id="menu_grants_training_dashboard"
+                  name="Dashboard"
+                  parent="menu_grants_training_main"
+                  sequence="5"
+                  groups="grants_training_suite_v2.group_manager,grants_training_suite_v2.group_agent"/>
+        
+        <!-- Phase 3: Advanced Features Menu -->
+        <menuitem id="menu_grants_training_advanced"
+                  name="Advanced Features"
+                  parent="menu_grants_training_main"
+                  sequence="70"/>
+        
+        <!-- Training Dashboard Menu -->
+        <menuitem id="menu_grants_training_advanced_dashboard"
+                  name="Training Dashboard"
+                  parent="menu_grants_training_advanced"
+                  action="action_training_dashboard_kanban"
+                  sequence="10"/>
+        
+        <!-- Notification System Menu -->
+        <menuitem id="menu_grants_training_notifications"
+                  name="Notification System"
+                  parent="menu_grants_training_advanced"
+                  action="action_progress_notification_kanban"
+                  sequence="20"/>
+        
+        <!-- Certificate Automation Menu -->
+        <menuitem id="menu_grants_training_certificate_automation"
+                  name="Certificate Automation"
+                  parent="menu_grants_training_advanced"
+                  action="action_certificate_automation_kanban"
+                  sequence="30"/>
+        
+    </data>
+</odoo>

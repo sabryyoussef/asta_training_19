@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Demo eLearning Courses -->
+        <record id="elearning_course_basic_english" model="slide.channel">
+            <field name="name">Basic English Communication</field>
+            <field name="description">Learn fundamental English communication skills for daily interactions and professional environments.</field>
+            <field name="is_published">True</field>
+            <field name="enroll">public</field>
+            <field name="visibility">public</field>
+            <field name="channel_type">training</field>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+        
+        <record id="elearning_course_business_writing" model="slide.channel">
+            <field name="name">Business Writing Skills</field>
+            <field name="description">Master professional business writing including emails, reports, and presentations.</field>
+            <field name="is_published">True</field>
+            <field name="enroll">public</field>
+            <field name="visibility">public</field>
+            <field name="channel_type">training</field>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+        
+        <record id="elearning_course_digital_literacy" model="slide.channel">
+            <field name="name">Digital Literacy Fundamentals</field>
+            <field name="description">Essential digital skills for modern workplace including computer basics, internet usage, and digital tools.</field>
+            <field name="is_published">True</field>
+            <field name="enroll">public</field>
+            <field name="visibility">public</field>
+            <field name="channel_type">training</field>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+        
+        <record id="elearning_course_project_management" model="slide.channel">
+            <field name="name">Project Management Basics</field>
+            <field name="description">Introduction to project management principles, planning, and execution techniques.</field>
+            <field name="is_published">True</field>
+            <field name="enroll">public</field>
+            <field name="visibility">public</field>
+            <field name="channel_type">training</field>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+        
+        <record id="elearning_course_customer_service" model="slide.channel">
+            <field name="name">Customer Service Excellence</field>
+            <field name="description">Develop essential customer service skills including communication, problem-solving, and relationship building.</field>
+            <field name="is_published">True</field>
+            <field name="enroll">public</field>
+            <field name="visibility">public</field>
+            <field name="channel_type">training</field>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+        
+    </data>
+</odoo>

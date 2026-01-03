@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Demo Training Programs -->
+        <record id="training_program_english_communication" model="gr.training.program">
+            <field name="name">English Communication Program</field>
+            <field name="description">Comprehensive program to develop English communication skills for professional and personal use.</field>
+            <field name="duration_weeks">4</field>
+            <field name="status">active</field>
+            <field name="eligibility_criteria">Basic English knowledge and willingness to learn</field>
+        </record>
+        
+        <record id="training_program_digital_skills" model="gr.training.program">
+            <field name="name">Digital Skills Development Program</field>
+            <field name="description">Modern digital literacy program covering computer basics, internet usage, and workplace digital tools.</field>
+            <field name="duration_weeks">6</field>
+            <field name="status">active</field>
+            <field name="eligibility_criteria">No prior computer experience required</field>
+        </record>
+        
+        <record id="training_program_professional_development" model="gr.training.program">
+            <field name="name">Professional Development Program</field>
+            <field name="description">Comprehensive professional skills program including business writing, project management, and customer service.</field>
+            <field name="duration_weeks">8</field>
+            <field name="status">active</field>
+            <field name="eligibility_criteria">Intermediate English level and work experience preferred</field>
+        </record>
+        
+    </data>
+</odoo>

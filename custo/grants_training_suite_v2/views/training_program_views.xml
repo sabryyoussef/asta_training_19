@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Training Program Form View -->
+    <record id="view_gr_training_program_form" model="ir.ui.view">
+        <field name="name">gr.training.program.form</field>
+        <field name="model">gr.training.program</field>
+        <field name="arch" type="xml">
+            <form string="Training Program">
+                <header>
+                    <button name="action_activate" string="Activate" type="object" 
+                            class="btn-primary" invisible="status != 'draft'"/>
+                    <button name="action_archive" string="Archive" type="object" 
+                            class="btn-secondary" invisible="status != 'active'"/>
+                    <button name="action_enroll_eligible_students" string="Enroll Eligible Students" 
+                            type="object" class="btn-info" invisible="status != 'active'"/>
+                    <button name="action_enroll_with_wizard" string="Advanced Enrollment" 
+                            type="object" class="btn-success" invisible="status != 'active'"/>
+                    <button name="action_generate_certificates" string="Generate Certificates" 
+                            type="object" class="btn-success" invisible="status != 'active'"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,active,archived"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Enter program name..."/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Program Information">
+                            <field name="description" placeholder="Enter program description..."/>
+                            <field name="duration_weeks"/>
+                            <!-- TODO: Uncomment when gr.certificate.template model is created -->
+                            <!-- <field name="certificate_template_id"/> -->
+                        </group>
+                        <group string="Statistics">
+                            <field name="total_courses" readonly="1"/>
+                            <field name="enrolled_students" readonly="1"/>
+                            <field name="completed_students" readonly="1"/>
+                            <field name="completion_rate" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Eligibility Criteria">
+                            <field name="eligibility_criteria" placeholder="Enter eligibility criteria..."/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Course Integrations" name="course_integrations">
+                            <field name="course_integrations">
+                                <list>
+                                    <field name="name"/>
+                                    <field name="elearning_course_id"/>
+                                    <field name="status"/>
+                                    <field name="enrolled_students"/>
+                                    <field name="completion_rate"/>
+                                </list>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Training Program List View -->
+    <record id="view_gr_training_program_list" model="ir.ui.view">
+        <field name="name">gr.training.program.list</field>
+        <field name="model">gr.training.program</field>
+        <field name="arch" type="xml">
+            <list string="Training Programs">
+                <field name="name"/>
+                <field name="duration_weeks"/>
+                <field name="total_courses"/>
+                <field name="enrolled_students"/>
+                <field name="completed_students"/>
+                <field name="completion_rate"/>
+                <field name="status"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Training Program Kanban View -->
+    <record id="view_gr_training_program_kanban" model="ir.ui.view">
+        <field name="name">gr.training.program.kanban</field>
+        <field name="model">gr.training.program</field>
+            <field name="arch" type="xml">
+                <kanban sample="1">
+                    <field name="name"/>
+                <field name="duration_weeks"/>
+                <field name="total_courses"/>
+                <field name="enrolled_students"/>
+                <field name="completion_rate"/>
+                <field name="status"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="name"/>
+                                        </strong>
+                                        <div class="o_kanban_record_subtitle">
+                                            <span t-if="record.duration_weeks.value">
+                                                <field name="duration_weeks"/> weeks
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_top_right">
+                                        <field name="status" widget="label_selection"/>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div class="o_kanban_stats">
+                                        <div class="o_kanban_stat">
+                                            <span class="o_kanban_stat_value">
+                                                <field name="total_courses"/>
+                                            </span>
+                                            <span class="o_kanban_stat_label">Courses</span>
+                                        </div>
+                                        <div class="o_kanban_stat">
+                                            <span class="o_kanban_stat_value">
+                                                <field name="enrolled_students"/>
+                                            </span>
+                                            <span class="o_kanban_stat_label">Students</span>
+                                        </div>
+                                        <div class="o_kanban_stat">
+                                            <span class="o_kanban_stat_value">
+                                                <field name="completion_rate"/>
+                                            </span>
+                                            <span class="o_kanban_stat_label">% Complete</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Training Program Search View -->
+    <record id="view_gr_training_program_search" model="ir.ui.view">
+        <field name="name">gr.training.program.search</field>
+        <field name="model">gr.training.program</field>
+        <field name="arch" type="xml">
+            <search string="Training Programs">
+                <field name="name"/>
+                <field name="description"/>
+                <filter string="Draft" name="draft" domain="[('status', '=', 'draft')]"/>
+                <filter string="Active" name="active" domain="[('status', '=', 'active')]"/>
+                <filter string="Archived" name="archived" domain="[('status', '=', 'archived')]"/>
+                <group>
+                    <filter string="Status" name="group_status" domain="[]" context="{'group_by': 'status'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Training Program Action -->
+    <record id="action_gr_training_program" model="ir.actions.act_window">
+        <field name="name">Training Programs</field>
+        <field name="res_model">gr.training.program</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first training program!
+            </p>
+            <p>
+                Training programs define structured learning paths by combining
+                multiple eLearning courses with your custom training requirements.
+            </p>
+        </field>
+    </record>
+
+</odoo>

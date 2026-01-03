@@ -1,0 +1,11 @@
+name,email,phone,birth_date,gender,nationality,native_language,english_level,has_certificate,certificate_type,certificate_date
+John Smith,john.smith@email.com,+1234567890,1990-01-01,male,American,English,intermediate,true,TOEFL,2023-01-01
+Jane Doe,jane.doe@email.com,+1234567891,1985-05-15,female,Canadian,English,advanced,true,IELTS,2023-02-01
+Mike Johnson,mike.johnson@email.com,+1234567892,1988-12-10,male,British,English,intermediate,true,Cambridge,2023-03-01
+Sarah Williams,sarah.williams@email.com,+1234567893,1992-08-20,female,Australian,English,upper_intermediate,true,IELTS,2023-04-01
+David Brown,david.brown@email.com,+1234567894,1987-03-25,male,American,English,intermediate,true,TOEFL,2023-05-01
+Lisa Davis,lisa.davis@email.com,+1234567895,1991-11-12,female,Canadian,English,advanced,true,IELTS,2023-06-01
+Tom Wilson,tom.wilson@email.com,+1234567896,1989-07-08,male,British,English,intermediate,true,Cambridge,2023-07-01
+Emma Taylor,emma.taylor@email.com,+1234567897,1993-04-18,female,Australian,English,upper_intermediate,true,IELTS,2023-08-01
+Chris Anderson,chris.anderson@email.com,+1234567898,1986-09-30,male,American,English,intermediate,true,TOEFL,2023-09-01
+Maria Garcia,maria.garcia@email.com,+1234567899,1994-06-05,female,Spanish,Spanish,intermediate,true,DELE,2023-10-01

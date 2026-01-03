@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Student Form View -->
+        <record id="view_gr_student_form" model="ir.ui.view">
+            <field name="name">gr.student.form</field>
+            <field name="model">gr.student</field>
+            <field name="arch" type="xml">
+                <form string="Student">
+                    <header>
+                        <button name="action_assign_agent" string="Assign Agent" type="object" class="btn-primary" 
+                                invisible="state != 'eligible'"/>
+                        <button name="action_mark_contacted" string="Mark Contacted" type="object" class="btn-primary" 
+                                invisible="state != 'assigned'"/>
+                        <button name="action_enroll" string="Enroll" type="object" class="btn-primary" 
+                                invisible="state != 'contacted'"/>
+                        <button name="action_start_course" string="Start Course" type="object" class="btn-primary" 
+                                invisible="state != 'enrolled'"/>
+                        <button name="action_complete_course" string="Complete Course" type="object" class="btn-primary" 
+                                invisible="state != 'in_progress'"/>
+                        <!-- eLearning Integration Buttons -->
+                        <button name="action_auto_enroll_eligible_courses" string="Auto-Enroll eLearning" type="object" class="btn-success" 
+                                invisible="not is_eligible or integration_status != 'not_integrated'"/>
+                        <button name="action_manual_enroll_course" string="Manual Enroll" type="object" class="btn-info" 
+                                invisible="not is_eligible"/>
+                        <button name="action_sync_elearning_progress" string="Sync Progress" type="object" class="btn-warning" 
+                                invisible="integration_status == 'not_integrated'"/>
+                        <button name="action_reset" string="Reset" type="object" class="btn-secondary" 
+                                invisible="state in ['draft', 'rejected']"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,eligible,assigned,contacted,enrolled,in_progress,completed,certified"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <div class="oe_stat_button" icon="fa-graduation-cap">
+                                <field name="total_sessions" widget="statinfo" string="Sessions"/>
+                            </div>
+                            <div class="oe_stat_button" icon="fa-check-circle">
+                                <field name="completed_sessions" widget="statinfo" string="Completed"/>
+                            </div>
+                            <div class="oe_stat_button" icon="fa-percentage">
+                                <field name="progress_percentage" widget="statinfo" string="Progress"/>
+                            </div>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" required="1"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="Name Information">
+                                <field name="name_arabic" required="1"/>
+                                <field name="name_english" required="1"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <group string="Personal Information">
+                                <field name="email"/>
+                                <field name="phone"/>
+                                <field name="birth_date"/>
+                                <field name="age" readonly="1"/>
+                                <field name="gender"/>
+                                <field name="nationality"/>
+                                <field name="native_language"/>
+                                <field name="english_level"/>
+                            </group>
+                            <group string="Eligibility &amp; Status">
+                                <field name="is_eligible"/>
+                                <field name="eligibility_reason" invisible="is_eligible == True"/>
+                                <field name="state"/>
+                                <field name="intake_batch_id"/>
+                                <field name="intake_date" readonly="1"/>
+                                <field name="assigned_agent_id"/>
+                                <field name="assignment_date" readonly="1"/>
+                                <field name="first_contact_date" readonly="1"/>
+                            </group>
+                            <group string="Course Preferences">
+                                <field name="enrollment_type"/>
+                                <field name="preferred_course_integration_id" 
+                                       domain="[('status', '=', 'active')]"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <group string="Certification">
+                                <field name="has_certificate"/>
+                                <field name="certificate_type" invisible="has_certificate == False"/>
+                                <field name="certificate_date" invisible="has_certificate == False"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Progress" invisible="state == 'draft'">
+                                <group>
+                                    <group>
+                                        <field name="total_sessions" readonly="1"/>
+                                        <field name="completed_sessions" readonly="1"/>
+                                        <field name="progress_percentage" readonly="1" widget="progressbar"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="eLearning Integration" invisible="integration_status == 'not_integrated'">
+                                <group>
+                                    <group>
+                                        <field name="integration_status" readonly="1" widget="badge"/>
+                                        <field name="elearning_progress" readonly="1" widget="progressbar"/>
+                                        <field name="completed_courses" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="elearning_enrollments" readonly="1" nolabel="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="History" invisible="state == 'draft'">
+                                <group>
+                                    <group>
+                                        <field name="intake_date" readonly="1"/>
+                                        <field name="assignment_date" readonly="1"/>
+                                        <field name="first_contact_date" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Student List View -->
+        <record id="view_gr_student_list" model="ir.ui.view">
+            <field name="name">gr.student.list</field>
+            <field name="model">gr.student</field>
+            <field name="arch" type="xml">
+                <list string="Students" default_order="create_date desc">
+                    <field name="name"/>
+                    <field name="name_arabic"/>
+                    <field name="name_english"/>
+                    <field name="email"/>
+                    <field name="phone"/>
+                    <field name="age"/>
+                    <field name="gender"/>
+                    <field name="english_level"/>
+                    <field name="is_eligible"/>
+                    <field name="enrollment_type" widget="badge"/>
+                    <field name="preferred_course_integration_id"/>
+                    <field name="integration_status" widget="badge" 
+                           decoration-success="integration_status == 'certified'" 
+                           decoration-warning="integration_status == 'in_progress'" 
+                           decoration-info="integration_status == 'enrolled'"/>
+                    <field name="elearning_progress" widget="progressbar"/>
+                    <field name="completed_courses"/>
+                    <field name="state" widget="badge" decoration-success="state == 'completed'" 
+                           decoration-warning="state == 'enrolled'" decoration-info="state == 'contacted'" 
+                           decoration-danger="state == 'rejected'"/>
+                    <field name="assigned_agent_id"/>
+                    <field name="intake_date"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Student Kanban View -->
+        <record id="view_gr_student_kanban" model="ir.ui.view">
+            <field name="name">gr.student.kanban</field>
+            <field name="model">gr.student</field>
+            <field name="arch" type="xml">
+                <kanban sample="1" default_group_by="state" class="o_kanban_small_column">
+                    <field name="name"/>
+                    <field name="state"/>
+                    <field name="email"/>
+                    <field name="phone"/>
+                    <field name="age"/>
+                    <field name="english_level"/>
+                    <field name="is_eligible"/>
+                    <field name="assigned_agent_id"/>
+                    <field name="progress_percentage"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="name"/>
+                                            </strong>
+                                        </div>
+                                        <div class="o_kanban_record_subtitle">
+                                            <field name="email"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <div class="o_kanban_record_details">
+                                            <div class="o_kanban_record_bottom">
+                                                <div class="oe_kanban_bottom_left">
+                                                    <span>Age: <field name="age"/></span>
+                                                </div>
+                                                <div class="oe_kanban_bottom_right">
+                                                    <span>Progress: <field name="progress_percentage"/>%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Student Search View -->
+        <record id="view_gr_student_search" model="ir.ui.view">
+            <field name="name">gr.student.search</field>
+            <field name="model">gr.student</field>
+            <field name="arch" type="xml">
+                <search string="Search Students">
+                    <field name="name"/>
+                    <field name="name_arabic"/>
+                    <field name="name_english"/>
+                    <field name="email"/>
+                    <field name="phone"/>
+                    <field name="nationality"/>
+                    <field name="assigned_agent_id"/>
+                    <field name="intake_batch_id"/>
+                    <field name="preferred_course_integration_id"/>
+                    <field name="enrollment_type"/>
+                    <filter string="Draft" name="draft" domain="[('state', '=', 'draft')]"/>
+                    <filter string="Eligible" name="eligible" domain="[('state', '=', 'eligible')]"/>
+                    <filter string="Assigned" name="assigned" domain="[('state', '=', 'assigned')]"/>
+                    <filter string="Contacted" name="contacted" domain="[('state', '=', 'contacted')]"/>
+                    <filter string="Enrolled" name="enrolled" domain="[('state', '=', 'enrolled')]"/>
+                    <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                    <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                    <filter string="Certified" name="certified" domain="[('state', '=', 'certified')]"/>
+                    <filter string="Rejected" name="rejected" domain="[('state', '=', 'rejected')]"/>
+                    <filter string="Eligible Students" name="eligible_students" domain="[('is_eligible', '=', True)]"/>
+                    <filter string="With Certificates" name="with_certificates" domain="[('has_certificate', '=', True)]"/>
+                    <filter string="Auto Enroll" name="auto_enroll" domain="[('enrollment_type', '=', 'auto')]"/>
+                    <filter string="Manual Enroll" name="manual_enroll" domain="[('enrollment_type', '=', 'manual')]"/>
+                    <filter string="Import Enrollment" name="import_enroll" domain="[('enrollment_type', '=', 'import')]"/>
+                    <filter string="This Month" name="this_month" domain="[('intake_date', '>=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+                    <filter string="This Year" name="this_year" domain="[('intake_date', '>=', (context_today() - relativedelta(years=1)).strftime('%Y-01-01'))]"/>
+                    <group>
+                        <filter string="Status" name="group_state" domain="[]" context="{'group_by': 'state'}"/>
+                        <filter string="Agent" name="group_agent" domain="[]" context="{'group_by': 'assigned_agent_id'}"/>
+                        <filter string="Intake Batch" name="group_intake_batch" domain="[]" context="{'group_by': 'intake_batch_id'}"/>
+                        <filter string="English Level" name="group_english_level" domain="[]" context="{'group_by': 'english_level'}"/>
+                        <filter string="Gender" name="group_gender" domain="[]" context="{'group_by': 'gender'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Student Action -->
+        <record id="action_gr_student" model="ir.actions.act_window">
+            <field name="name">Students</field>
+            <field name="res_model">gr.student</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_this_month': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first student!
+                </p>
+                <p>
+                    Students are the core of the training program. Add student information
+                    and track their progress through the training workflow.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

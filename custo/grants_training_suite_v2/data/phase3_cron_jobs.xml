@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Phase 3: Advanced Features Cron Jobs -->
+        
+        <!-- Dashboard Auto Refresh -->
+        <record id="ir_cron_dashboard_auto_refresh" model="ir.cron">
+            <field name="name">Dashboard Auto Refresh</field>
+            <field name="model_id" ref="model_gr_training_dashboard"/>
+            <field name="state">code</field>
+            <field name="code">model.refresh_all_dashboards()</field>
+            <field name="interval_number">15</field>
+            <field name="interval_type">minutes</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+        
+        <!-- Milestone Notifications -->
+        <record id="ir_cron_milestone_notifications" model="ir.cron">
+            <field name="name">Create Milestone Notifications</field>
+            <field name="model_id" ref="model_gr_progress_notification"/>
+            <field name="state">code</field>
+            <field name="code">model.create_milestone_notifications()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+        
+        <!-- Stalled Progress Alerts -->
+        <record id="ir_cron_stalled_progress_alerts" model="ir.cron">
+            <field name="name">Stalled Progress Alerts</field>
+            <field name="model_id" ref="model_gr_progress_notification"/>
+            <field name="state">code</field>
+            <field name="code">model.create_stalled_progress_alerts()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+        
+        <!-- Completion Notifications -->
+        <record id="ir_cron_completion_notifications" model="ir.cron">
+            <field name="name">Completion Notifications</field>
+            <field name="model_id" ref="model_gr_progress_notification"/>
+            <field name="state">code</field>
+            <field name="code">model.create_completion_notifications()</field>
+            <field name="interval_number">6</field>
+            <field name="interval_type">hours</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+        
+        <!-- Notification Cleanup -->
+        <record id="ir_cron_notification_cleanup" model="ir.cron">
+            <field name="name">Notification Cleanup</field>
+            <field name="model_id" ref="model_gr_progress_notification"/>
+            <field name="state">code</field>
+            <field name="code">model.cleanup_old_notifications()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+        
+        <!-- Certificate Automation Processing -->
+        <record id="ir_cron_certificate_automation" model="ir.cron">
+            <field name="name">Certificate Automation Processing</field>
+            <field name="model_id" ref="model_gr_certificate_automation"/>
+            <field name="state">code</field>
+            <field name="code">model.process_automatic_certificates()</field>
+            <field name="interval_number">4</field>
+            <field name="interval_type">hours</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+        
+        <!-- Failed Certificate Cleanup -->
+        <record id="ir_cron_certificate_cleanup" model="ir.cron">
+            <field name="name">Failed Certificate Cleanup</field>
+            <field name="model_id" ref="model_gr_certificate_automation"/>
+            <field name="state">code</field>
+            <field name="code">model.cleanup_failed_certificates()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+        
+    </data>
+</odoo>

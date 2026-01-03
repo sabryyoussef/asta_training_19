@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Demo Student 1: Draft State -->
+        <record id="demo_student_1" model="gr.student">
+            <field name="name">Ahmed Hassan</field>
+            <field name="name_arabic">أحمد حسن</field>
+            <field name="name_english">Ahmed Hassan</field>
+            <field name="email">ahmed.hassan@email.com</field>
+            <field name="phone">+966 59 921 4084</field>
+            <field name="birth_date">1995-03-15</field>
+            <field name="gender">male</field>
+            <field name="nationality">Egyptian</field>
+            <field name="native_language">Arabic</field>
+            <field name="english_level">intermediate</field>
+            <field name="has_certificate">False</field>
+            <field name="state">draft</field>
+            <field name="intake_batch_id" ref="demo_intake_batch_1"/>
+            <field name="intake_date">2025-01-15 10:30:00</field>
+            <field name="is_eligible">True</field>
+            <field name="eligibility_reason">Meets all eligibility criteria for the program</field>
+        </record>
+        
+        <!-- Demo Student 2: Eligible State -->
+        <record id="demo_student_2" model="gr.student">
+            <field name="name">Fatima Al-Zahra</field>
+            <field name="name_arabic">فاطمة الزهراء</field>
+            <field name="name_english">Fatima Al-Zahra</field>
+            <field name="email">fatima.alzahra@email.com</field>
+            <field name="phone">+201234567891</field>
+            <field name="birth_date">1998-07-22</field>
+            <field name="gender">female</field>
+            <field name="nationality">Egyptian</field>
+            <field name="native_language">Arabic</field>
+            <field name="english_level">beginner</field>
+            <field name="has_certificate">False</field>
+            <field name="state">eligible</field>
+            <field name="intake_batch_id" ref="demo_intake_batch_2"/>
+            <field name="intake_date">2025-02-01 14:15:00</field>
+            <field name="is_eligible">True</field>
+            <field name="eligibility_reason">Qualified candidate with good potential</field>
+        </record>
+        
+        <!-- Demo Student 3: Assigned State -->
+        <record id="demo_student_3" model="gr.student">
+            <field name="name">Mohamed Ibrahim</field>
+            <field name="name_arabic">محمد إبراهيم</field>
+            <field name="name_english">Mohamed Ibrahim</field>
+            <field name="email">mohamed.ibrahim@email.com</field>
+            <field name="phone">+201234567892</field>
+            <field name="birth_date">1993-11-08</field>
+            <field name="gender">male</field>
+            <field name="nationality">Egyptian</field>
+            <field name="native_language">Arabic</field>
+            <field name="english_level">advanced</field>
+            <field name="has_certificate">True</field>
+            <field name="certificate_type">TOEFL</field>
+            <field name="certificate_date">2024-06-15</field>
+            <field name="state">assigned</field>
+            <field name="intake_batch_id" ref="demo_intake_batch_3"/>
+            <field name="intake_date">2025-03-01 09:45:00</field>
+            <field name="assignment_date">2025-03-02 10:00:00</field>
+            <field name="is_eligible">True</field>
+            <field name="eligibility_reason">Excellent candidate with advanced English skills</field>
+        </record>
+        
+        <!-- Demo Student 4: Contacted State -->
+        <record id="demo_student_4" model="gr.student">
+            <field name="name">Aisha Mohamed</field>
+            <field name="name_arabic">عائشة محمد</field>
+            <field name="name_english">Aisha Mohamed</field>
+            <field name="email">aisha.mohamed@email.com</field>
+            <field name="phone">+201234567893</field>
+            <field name="birth_date">1996-05-12</field>
+            <field name="gender">female</field>
+            <field name="nationality">Egyptian</field>
+            <field name="native_language">Arabic</field>
+            <field name="english_level">intermediate</field>
+            <field name="has_certificate">False</field>
+            <field name="state">contacted</field>
+            <field name="intake_batch_id" ref="demo_intake_batch_3"/>
+            <field name="intake_date">2025-03-01 09:45:00</field>
+            <field name="assignment_date">2025-03-02 10:00:00</field>
+            <field name="first_contact_date">2025-03-03 14:30:00</field>
+            <field name="is_eligible">True</field>
+            <field name="eligibility_reason">Good candidate, ready for enrollment</field>
+        </record>
+        
+        <!-- Demo Student 5: Enrolled State -->
+        <record id="demo_student_5" model="gr.student">
+            <field name="name">Omar Ali</field>
+            <field name="name_arabic">عمر علي</field>
+            <field name="name_english">Omar Ali</field>
+            <field name="email">omar.ali@email.com</field>
+            <field name="phone">+201234567894</field>
+            <field name="birth_date">1994-09-18</field>
+            <field name="gender">male</field>
+            <field name="nationality">Egyptian</field>
+            <field name="native_language">Arabic</field>
+            <field name="english_level">intermediate</field>
+            <field name="has_certificate">False</field>
+            <field name="state">enrolled</field>
+            <field name="intake_batch_id" ref="demo_intake_batch_4"/>
+            <field name="intake_date">2024-12-15 16:20:00</field>
+            <field name="assignment_date">2024-12-16 09:00:00</field>
+            <field name="first_contact_date">2024-12-17 11:00:00</field>
+            <field name="is_eligible">True</field>
+            <field name="eligibility_reason">Enrolled and ready to start course</field>
+        </record>
+        
+        <!-- Demo Student 6: In Progress State -->
+        <record id="demo_student_6" model="gr.student">
+            <field name="name">Nour El-Din</field>
+            <field name="name_arabic">نور الدين</field>
+            <field name="name_english">Nour El-Din</field>
+            <field name="email">nour.eldin@email.com</field>
+            <field name="phone">+201234567895</field>
+            <field name="birth_date">1997-01-25</field>
+            <field name="gender">male</field>
+            <field name="nationality">Egyptian</field>
+            <field name="native_language">Arabic</field>
+            <field name="english_level">beginner</field>
+            <field name="has_certificate">False</field>
+            <field name="state">in_progress</field>
+            <field name="intake_batch_id" ref="demo_intake_batch_4"/>
+            <field name="intake_date">2024-12-15 16:20:00</field>
+            <field name="assignment_date">2024-12-16 09:00:00</field>
+            <field name="first_contact_date">2024-12-17 11:00:00</field>
+            <field name="total_sessions">10</field>
+            <field name="completed_sessions">6</field>
+            <field name="progress_percentage">60.0</field>
+            <field name="is_eligible">True</field>
+            <field name="eligibility_reason">Active student making good progress</field>
+        </record>
+        
+        <!-- Demo Student 7: Completed State -->
+        <record id="demo_student_7" model="gr.student">
+            <field name="name">Mariam Hassan</field>
+            <field name="name_arabic">مريم حسن</field>
+            <field name="name_english">Mariam Hassan</field>
+            <field name="email">mariam.hassan@email.com</field>
+            <field name="phone">+201234567896</field>
+            <field name="birth_date">1995-12-03</field>
+            <field name="gender">female</field>
+            <field name="nationality">Egyptian</field>
+            <field name="native_language">Arabic</field>
+            <field name="english_level">intermediate</field>
+            <field name="has_certificate">False</field>
+            <field name="state">completed</field>
+            <field name="intake_batch_id" ref="demo_intake_batch_4"/>
+            <field name="intake_date">2024-12-15 16:20:00</field>
+            <field name="assignment_date">2024-12-16 09:00:00</field>
+            <field name="first_contact_date">2024-12-17 11:00:00</field>
+            <field name="total_sessions">10</field>
+            <field name="completed_sessions">10</field>
+            <field name="progress_percentage">100.0</field>
+            <field name="is_eligible">True</field>
+            <field name="eligibility_reason">Successfully completed all course requirements</field>
+        </record>
+        
+        <!-- Demo Student 8: Certified State -->
+        <record id="demo_student_8" model="gr.student">
+            <field name="name">Youssef Ahmed</field>
+            <field name="name_arabic">يوسف أحمد</field>
+            <field name="name_english">Youssef Ahmed</field>
+            <field name="email">youssef.ahmed@email.com</field>
+            <field name="phone">+201234567897</field>
+            <field name="birth_date">1992-08-14</field>
+            <field name="gender">male</field>
+            <field name="nationality">Egyptian</field>
+            <field name="native_language">Arabic</field>
+            <field name="english_level">advanced</field>
+            <field name="has_certificate">True</field>
+            <field name="certificate_type">IELTS</field>
+            <field name="certificate_date">2024-08-20</field>
+            <field name="state">certified</field>
+            <field name="intake_batch_id" ref="demo_intake_batch_4"/>
+            <field name="intake_date">2024-12-15 16:20:00</field>
+            <field name="assignment_date">2024-12-16 09:00:00</field>
+            <field name="first_contact_date">2024-12-17 11:00:00</field>
+            <field name="total_sessions">10</field>
+            <field name="completed_sessions">10</field>
+            <field name="progress_percentage">100.0</field>
+            <field name="is_eligible">True</field>
+            <field name="eligibility_reason">Certified graduate with excellent performance</field>
+        </record>
+        
+        <!-- Demo Student 9: Rejected State -->
+        <record id="demo_student_9" model="gr.student">
+            <field name="name">Sara Mahmoud</field>
+            <field name="name_arabic">سارة محمود</field>
+            <field name="name_english">Sara Mahmoud</field>
+            <field name="email">sara.mahmoud@email.com</field>
+            <field name="phone">+201234567898</field>
+            <field name="birth_date">1999-04-30</field>
+            <field name="gender">female</field>
+            <field name="nationality">Egyptian</field>
+            <field name="native_language">Arabic</field>
+            <field name="english_level">beginner</field>
+            <field name="has_certificate">False</field>
+            <field name="state">rejected</field>
+            <field name="intake_batch_id" ref="demo_intake_batch_5"/>
+            <field name="intake_date">2024-11-20 11:10:00</field>
+            <field name="is_eligible">False</field>
+            <field name="eligibility_reason">Does not meet minimum age requirement for the program</field>
+        </record>
+        
+        <!-- Demo Student 10: Draft State -->
+        <record id="demo_student_10" model="gr.student">
+            <field name="name">Khaled Mostafa</field>
+            <field name="name_arabic">خالد مصطفى</field>
+            <field name="name_english">Khaled Mostafa</field>
+            <field name="email">khaled.mostafa@email.com</field>
+            <field name="phone">+201234567899</field>
+            <field name="birth_date">1996-06-07</field>
+            <field name="gender">male</field>
+            <field name="nationality">Egyptian</field>
+            <field name="native_language">Arabic</field>
+            <field name="english_level">intermediate</field>
+            <field name="has_certificate">False</field>
+            <field name="state">draft</field>
+            <field name="intake_batch_id" ref="demo_intake_batch_1"/>
+            <field name="intake_date">2025-01-15 10:30:00</field>
+            <field name="is_eligible">True</field>
+            <field name="eligibility_reason">New applicant pending initial review</field>
+        </record>
+        
+    </data>
+</odoo>

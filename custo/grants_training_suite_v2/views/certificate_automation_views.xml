@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Certificate Automation Form View -->
+        <record id="view_certificate_automation_form" model="ir.ui.view">
+            <field name="name">gr.certificate.automation.form</field>
+            <field name="model">gr.certificate.automation</field>
+            <field name="arch" type="xml">
+                <form string="Certificate Automation">
+                    <header>
+                        <button name="action_activate_automation" string="Activate" type="object" class="btn-success" invisible="status != 'draft'"/>
+                        <button name="action_pause_automation" string="Pause" type="object" class="btn-warning" invisible="status != 'active'"/>
+                        <button name="action_archive_automation" string="Archive" type="object" class="btn-secondary" invisible="status == 'archived'"/>
+                        <button name="action_test_automation" string="Test Rules" type="object" class="btn-info"/>
+                        <button name="action_generate_manual_certificates" string="Generate Now" type="object" class="btn-primary" invisible="status != 'active'"/>
+                        <field name="status" widget="statusbar" statusbar_visible="draft,active,paused,archived"/>
+                    </header>
+                    
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_generate_manual_certificates" type="object" class="oe_stat_button" icon="fa-certificate">
+                                <field name="generated_certificates_count" widget="statinfo" string="Generated"/>
+                            </button>
+                            <button type="object" class="oe_stat_button" icon="fa-clock-o" name="action_test_automation">
+                                <field name="pending_verifications_count" widget="statinfo" string="Pending"/>
+                            </button>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Certificate Automation Name"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group>
+                                <field name="certificate_template_name"/>
+                                <field name="training_program_id"/>
+                                <field name="auto_generate"/>
+                            </group>
+                            <group>
+                                <field name="completion_threshold"/>
+                                <field name="generation_delay_hours"/>
+                                <field name="last_generation_date" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Certificate Template" name="certificate_template">
+                                <group>
+                                    <field name="certificate_template_content" nolabel="1"/>
+                                </group>
+                            </page>
+                            
+                            <page string="Automation Rules" name="automation_rules">
+                                <group>
+                                    <group>
+                                        <field name="require_all_courses"/>
+                                        <field name="require_elearning_completion"/>
+                                        <field name="require_custom_assessment"/>
+                                    </group>
+                                    <group>
+                                        <field name="min_attendance_percentage"/>
+                                        <field name="require_homework_submission"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="Generated Certificates" name="generated_certificates">
+                                <field name="generated_certificates" readonly="1">
+                                    <list>
+                                        <field name="name"/>
+                                        <field name="student_id"/>
+                                        <field name="completion_date"/>
+                                        <field name="state"/>
+                                        <field name="issued_by_id"/>
+                                    </list>
+                                    <form>
+                                        <sheet>
+                                            <group>
+                                                <group>
+                                                    <field name="name"/>
+                                                    <field name="student_id"/>
+                                                    <field name="training_program_id"/>
+                                                </group>
+                                                <group>
+                                                    <field name="completion_date"/>
+                                                    <field name="state"/>
+                                                    <field name="issued_by_id"/>
+                                                </group>
+                                            </group>
+                                            <group>
+                                                <field name="notes"/>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        
+        <!-- Certificate Automation Tree View -->
+        <record id="view_certificate_automation_tree" model="ir.ui.view">
+            <field name="name">gr.certificate.automation.tree</field>
+            <field name="model">gr.certificate.automation</field>
+            <field name="arch" type="xml">
+                <list string="Certificate Automations" decoration-success="status == 'active'" decoration-warning="status == 'paused'" decoration-muted="status == 'archived'">
+                    <field name="name"/>
+                    <field name="training_program_id"/>
+                    <field name="certificate_template_name"/>
+                    <field name="status"/>
+                    <field name="auto_generate"/>
+                    <field name="completion_threshold"/>
+                    <field name="generated_certificates_count"/>
+                    <field name="last_generation_date"/>
+                </list>
+            </field>
+        </record>
+        
+        <!-- Certificate Automation Search View -->
+        <record id="view_certificate_automation_search" model="ir.ui.view">
+            <field name="name">gr.certificate.automation.search</field>
+            <field name="model">gr.certificate.automation</field>
+            <field name="arch" type="xml">
+                <search string="Search Certificate Automations">
+                    <field name="name"/>
+                    <field name="training_program_id"/>
+                    <field name="certificate_template_name"/>
+                    
+                    <filter string="Active" name="active" domain="[('status', '=', 'active')]"/>
+                    <filter string="Paused" name="paused" domain="[('status', '=', 'paused')]"/>
+                    <filter string="Draft" name="draft" domain="[('status', '=', 'draft')]"/>
+                    <filter string="Archived" name="archived" domain="[('status', '=', 'archived')]"/>
+                    
+                    <filter string="Auto Generate" name="auto_generate" domain="[('auto_generate', '=', True)]"/>
+                    <filter string="Manual Only" name="manual_only" domain="[('auto_generate', '=', False)]"/>
+                    
+                    <filter string="This Month" name="this_month" domain="[('last_generation_date', '>=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-%d'))]"/>
+                    <filter string="Last 30 Days" name="last_30_days" domain="[('last_generation_date', '>=', (context_today() - relativedelta(days=30)).strftime('%Y-%m-%d'))]"/>
+                    
+                    <group>
+                        <filter string="Status" name="group_status" domain="[]" context="{'group_by': 'status'}"/>
+                        <filter string="Training Program" name="group_program" domain="[]" context="{'group_by': 'training_program_id'}"/>
+                        <filter string="Auto Generate" name="group_auto" domain="[]" context="{'group_by': 'auto_generate'}"/>
+                        <filter string="Created Date" name="group_date" domain="[]" context="{'group_by': 'create_date:month'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        
+        <!-- Certificate Automation Action -->
+        <record id="action_certificate_automation" model="ir.actions.act_window">
+            <field name="name">Certificate Automation</field>
+            <field name="res_model">gr.certificate.automation</field>
+            <field name="view_mode">list,form</field>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first Certificate Automation!
+                </p>
+                <p>
+                    Automate certificate generation based on program completion criteria.
+                    Set up rules for automatic certificate generation when students meet requirements.
+                </p>
+            </field>
+        </record>
+        
+        <!-- Certificate Automation Kanban View -->
+        <record id="view_certificate_automation_kanban" model="ir.ui.view">
+            <field name="name">gr.certificate.automation.kanban</field>
+            <field name="model">gr.certificate.automation</field>
+            <field name="arch" type="xml">
+                <kanban sample="1" string="Certificate Automations" class="o_kanban_mobile">
+                    <field name="name"/>
+                    <field name="training_program_id"/>
+                    <field name="certificate_template_name"/>
+                    <field name="status"/>
+                    <field name="auto_generate"/>
+                    <field name="completion_threshold"/>
+                    <field name="generated_certificates_count"/>
+                    <field name="last_generation_date"/>
+                    
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_card oe_kanban_global_click" t-att-class="{
+                                'oe_kanban_card_success': record.status.raw_value == 'active',
+                                'oe_kanban_card_warning': record.status.raw_value == 'paused',
+                                'oe_kanban_card_muted': record.status.raw_value == 'archived'
+                            }">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="name"/>
+                                            </strong>
+                                            <div class="o_kanban_record_subtitle">
+                                                <field name="training_program_id"/>
+                                            </div>
+                                        </div>
+                                        <div class="o_kanban_record_top_right">
+                                            <span t-if="record.auto_generate.raw_value" class="badge badge-success">
+                                                Auto
+                                            </span>
+                                            <span class="badge badge-primary">
+                                                <field name="completion_threshold"/>%
+                                            </span>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="o_kanban_record_body">
+                                        <div class="o_kanban_record_bottom">
+                                            <div class="oe_kanban_bottom_left">
+                                                <span class="badge badge-info">
+                                                    <field name="generated_certificates_count"/> Generated
+                                                </span>
+                                            </div>
+                                            <div class="oe_kanban_bottom_right">
+                                                <field name="status" widget="label_selection"/>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="o_kanban_record_bottom">
+                                            <small class="text-muted">
+                                                Last: <field name="last_generation_date"/>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        
+        <!-- Certificate Automation Kanban Action -->
+        <record id="action_certificate_automation_kanban" model="ir.actions.act_window">
+            <field name="name">Certificate Automation Dashboard</field>
+            <field name="res_model">gr.certificate.automation</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Certificate Automation Dashboard
+                </p>
+                <p>
+                    Monitor and manage automated certificate generation systems.
+                    Track certificate generation rules, success rates, and automation status.
+                </p>
+            </field>
+        </record>
+        
+    </data>
+</odoo>

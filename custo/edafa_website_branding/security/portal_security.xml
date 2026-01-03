@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Portal User: Can only see their own admissions -->
+        <record id="admission_portal_rule" model="ir.rule">
+            <field name="name">Portal User: Own Admissions Only</field>
+            <field name="model_id" ref="openeducat_admission.model_op_admission"/>
+            <field name="domain_force">['|', ('partner_id', '=', user.partner_id.id), ('email', '=', user.partner_id.email)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="True"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Portal User: Can only see their own student record -->
+        <record id="student_portal_rule" model="ir.rule">
+            <field name="name">Portal User: Own Student Record Only</field>
+            <field name="model_id" ref="openeducat_core.model_op_student"/>
+            <field name="domain_force">['|', ('user_id', '=', user.id), ('partner_id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Portal User: Can only see their own partner record -->
+        <record id="partner_portal_rule" model="ir.rule">
+            <field name="name">Portal User: Own Partner Record Only</field>
+            <field name="model_id" ref="base.model_res_partner"/>
+            <field name="domain_force">[('id', '=', user.partner_id.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+        <!-- Portal User: Can only see their own user record -->
+        <record id="user_portal_rule" model="ir.rule">
+            <field name="name">Portal User: Own User Record Only</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="domain_force">[('id', '=', user.id)]</field>
+            <field name="groups" eval="[(4, ref('base.group_portal'))]"/>
+            <field name="perm_read" eval="True"/>
+            <field name="perm_write" eval="True"/>
+            <field name="perm_create" eval="False"/>
+            <field name="perm_unlink" eval="False"/>
+        </record>
+
+    </data>
+</odoo>
+

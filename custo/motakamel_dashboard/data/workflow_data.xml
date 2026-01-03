@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        
+        <!-- Student Lifecycle Workflow -->
+        <record id="workflow_student_lifecycle" model="motakamel.workflow.dashboard">
+            <field name="name">Student Lifecycle</field>
+            <field name="description">Complete student journey from inquiry to graduation</field>
+        <field name="diagram_content"><![CDATA[
+            <div class="mermaid">
+                graph LR
+                    A["🔍 Inquiry<br/>View Inquiries<br/>Admission Applications"] --> B["📝 Application<br/>Process Applications<br/>Admission Registers"]
+                    B --> C["📋 Registration<br/>Student Registration<br/>Student Management"]
+                    C --> D["🎓 Enrollment<br/>Course Enrollment<br/>Student Management"]
+                    D --> E["📊 Academic<br/>Progress Tracking<br/>Assignments"]
+                    E --> F["🎉 Graduation<br/>Degree Completion<br/>Exam Results"]
+                    
+                    classDef inquiry fill:#3498db,stroke:#2980b9,stroke-width:3px,color:#fff
+                    classDef application fill:#e74c3c,stroke:#c0392b,stroke-width:3px,color:#fff
+                    classDef registration fill:#f39c12,stroke:#e67e22,stroke-width:3px,color:#fff
+                    classDef enrollment fill:#27ae60,stroke:#229954,stroke-width:3px,color:#fff
+                    classDef academic fill:#9b59b6,stroke:#8e44ad,stroke-width:3px,color:#fff
+                    classDef graduation fill:#1abc9c,stroke:#16a085,stroke-width:3px,color:#fff
+                    
+                    class A inquiry
+                    class B application
+                    class C registration
+                    class D enrollment
+                    class E academic
+                    class F graduation
+            </div>
+            
+            <div class="workflow_diagram_legend">
+                <h4>Student Lifecycle Workflow</h4>
+                <p>Complete journey from initial inquiry to graduation. Each stage represents a key milestone in the student's educational path.</p>
+            </div>
+        ]]></field>
+            <field name="sequence">10</field>
+            <field name="icon">fa-graduation-cap</field>
+            <field name="color">#3498db</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- Academic Operations Workflow -->
+        <record id="workflow_academic_operations" model="motakamel.workflow.dashboard">
+            <field name="name">Academic Operations</field>
+            <field name="description">Complete academic process from planning to results</field>
+        <field name="diagram_content"><![CDATA[
+            <div class="mermaid">
+                graph TD
+                    A["📅 Planning<br/>Course Planning<br/>Timetables"] --> B["⏰ Scheduling<br/>Session Planning<br/>Timetable Sessions"]
+                    B --> C["📚 Execution<br/>Class Delivery<br/>Attendance"]
+                    C --> D["📝 Assessment<br/>Student Evaluation<br/>Exam Management"]
+                    D --> E["📊 Results<br/>Grade Processing<br/>Assignment Submission"]
+                    E --> F["📈 Reporting<br/>Academic Reports<br/>Exam Results"]
+                    
+                    classDef planning fill:#3498db,stroke:#2980b9,stroke-width:3px,color:#fff
+                    classDef scheduling fill:#e74c3c,stroke:#c0392b,stroke-width:3px,color:#fff
+                    classDef execution fill:#f39c12,stroke:#e67e22,stroke-width:3px,color:#fff
+                    classDef assessment fill:#27ae60,stroke:#229954,stroke-width:3px,color:#fff
+                    classDef results fill:#9b59b6,stroke:#8e44ad,stroke-width:3px,color:#fff
+                    classDef reporting fill:#1abc9c,stroke:#16a085,stroke-width:3px,color:#fff
+                    
+                    class A planning
+                    class B scheduling
+                    class C execution
+                    class D assessment
+                    class E results
+                    class F reporting
+            </div>
+            
+            <div class="workflow_diagram_legend">
+                <h4>Academic Operations Workflow</h4>
+                <p>Complete academic cycle from planning to reporting. Each stage ensures quality education delivery and student success.</p>
+            </div>
+        ]]></field>
+            <field name="sequence">20</field>
+            <field name="icon">fa-chalkboard-teacher</field>
+            <field name="color">#e67e22</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- Financial Management Workflow -->
+        <record id="workflow_financial_management" model="motakamel.workflow.dashboard">
+            <field name="name">Financial Management</field>
+            <field name="description">Complete financial process from setup to reporting</field>
+        <field name="diagram_content"><![CDATA[
+            <div class="mermaid">
+                graph LR
+                    A["💰 Setup<br/>Fee Terms<br/>Fee Structure"] --> B["💳 Collection<br/>Student Fees<br/>Payment Processing"]
+                    B --> C["📊 Processing<br/>Accounting<br/>Financial Records"]
+                    C --> D["📈 Reporting<br/>Fees Analysis<br/>Financial Reports"]
+                    
+                    classDef setup fill:#27ae60,stroke:#229954,stroke-width:3px,color:#fff
+                    classDef collection fill:#f39c12,stroke:#e67e22,stroke-width:3px,color:#fff
+                    classDef processing fill:#3498db,stroke:#2980b9,stroke-width:3px,color:#fff
+                    classDef reporting fill:#9b59b6,stroke:#8e44ad,stroke-width:3px,color:#fff
+                    
+                    class A setup
+                    class B collection
+                    class C processing
+                    class D reporting
+            </div>
+            
+            <div class="workflow_diagram_legend">
+                <h4>Financial Management Workflow</h4>
+                <p>Complete financial process from fee setup to reporting. Ensures transparent and efficient financial operations.</p>
+            </div>
+        ]]></field>
+            <field name="sequence">30</field>
+            <field name="icon">fa-dollar-sign</field>
+            <field name="color">#27ae60</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- Resource Administration Workflow -->
+        <record id="workflow_resource_administration" model="motakamel.workflow.dashboard">
+            <field name="name">Resource Administration</field>
+            <field name="description">Complete resource management from planning to maintenance</field>
+            <field name="sequence">40</field>
+            <field name="icon">fa-building</field>
+            <field name="color">#9b59b6</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- Student Support Services Workflow -->
+        <record id="workflow_student_support_services" model="motakamel.workflow.dashboard">
+            <field name="name">Student Support Services</field>
+            <field name="description">Complete student support from enrollment to career guidance</field>
+            <field name="sequence">50</field>
+            <field name="icon">fa-hands-helping</field>
+            <field name="color">#17a2b8</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- Inquiry Stage -->
+        <record id="stage_inquiry" model="motakamel.workflow.stage">
+            <field name="name">Inquiry</field>
+            <field name="workflow_id" ref="workflow_student_lifecycle"/>
+            <field name="sequence">10</field>
+            <field name="description">Initial contact and information gathering from prospective students</field>
+            <field name="icon">fa-question-circle</field>
+            <field name="color">#e74c3c</field>
+            <field name="button_label">View Inquiries</field>
+            <field name="action_method">action_open_admission_applications</field>
+            <field name="technical_name">openeducat_admission</field>
+        </record>
+
+        <!-- Admission Stage -->
+        <record id="stage_admission" model="motakamel.workflow.stage">
+            <field name="name">Admission</field>
+            <field name="workflow_id" ref="workflow_student_lifecycle"/>
+            <field name="sequence">20</field>
+            <field name="description">Processing applications and admitting eligible students</field>
+            <field name="icon">fa-file-text-o</field>
+            <field name="color">#f39c12</field>
+            <field name="button_label">Manage Admissions</field>
+            <field name="action_method">action_open_admission_registers</field>
+            <field name="technical_name">openeducat_admission</field>
+        </record>
+
+        <!-- Registration Stage -->
+        <record id="stage_registration" model="motakamel.workflow.stage">
+            <field name="name">Registration</field>
+            <field name="workflow_id" ref="workflow_student_lifecycle"/>
+            <field name="sequence">30</field>
+            <field name="description">Formal registration of admitted students into courses and programs</field>
+            <field name="icon">fa-user-plus</field>
+            <field name="color">#2ecc71</field>
+            <field name="button_label">Student Registration</field>
+            <field name="action_method">action_open_module</field>
+            <field name="technical_name">openeducat_core</field>
+        </record>
+
+        <!-- Enrollment Stage -->
+        <record id="stage_enrollment" model="motakamel.workflow.stage">
+            <field name="name">Enrollment</field>
+            <field name="workflow_id" ref="workflow_student_lifecycle"/>
+            <field name="sequence">40</field>
+            <field name="description">Course enrollment and class assignment</field>
+            <field name="icon">fa-book</field>
+            <field name="color">#9b59b6</field>
+            <field name="button_label">Course Enrollment</field>
+            <field name="action_method">action_open_module</field>
+            <field name="technical_name">openeducat_core</field>
+        </record>
+
+        <!-- Academic Progress Stage -->
+        <record id="stage_academic_progress" model="motakamel.workflow.stage">
+            <field name="name">Academic Progress</field>
+            <field name="workflow_id" ref="workflow_student_lifecycle"/>
+            <field name="sequence">50</field>
+            <field name="description">Track academic performance, assignments, and exams</field>
+            <field name="icon">fa-chart-line</field>
+            <field name="color">#1abc9c</field>
+            <field name="button_label">View Progress</field>
+            <field name="action_method">action_open_assignment_main</field>
+            <field name="technical_name">openeducat_assignment</field>
+        </record>
+
+        <!-- Graduation Stage -->
+        <record id="stage_graduation" model="motakamel.workflow.stage">
+            <field name="name">Graduation</field>
+            <field name="workflow_id" ref="workflow_student_lifecycle"/>
+            <field name="sequence">60</field>
+            <field name="description">Final assessment and graduation processing</field>
+            <field name="icon">fa-graduation-cap</field>
+            <field name="color">#34495e</field>
+            <field name="button_label">Graduation Process</field>
+            <field name="action_method">action_open_exam_results</field>
+            <field name="technical_name">openeducat_exam</field>
+        </record>
+
+        <!-- Academic Operations Stages -->
+
+        <!-- Planning Stage -->
+        <record id="stage_academic_planning" model="motakamel.workflow.stage">
+            <field name="name">Planning</field>
+            <field name="workflow_id" ref="workflow_academic_operations"/>
+            <field name="sequence">10</field>
+            <field name="description">Course and curriculum design</field>
+            <field name="icon">fa-clipboard-list</field>
+            <field name="color">#8e44ad</field>
+            <field name="button_label">Course Planning</field>
+            <field name="action_method">action_open_module</field>
+            <field name="technical_name">openeducat_core</field>
+        </record>
+
+        <!-- Scheduling Stage -->
+        <record id="stage_academic_scheduling" model="motakamel.workflow.stage">
+            <field name="name">Scheduling</field>
+            <field name="workflow_id" ref="workflow_academic_operations"/>
+            <field name="sequence">20</field>
+            <field name="description">Timetable creation and resource allocation</field>
+            <field name="icon">fa-calendar-alt</field>
+            <field name="color">#f39c12</field>
+            <field name="button_label">Manage Timetables</field>
+            <field name="action_method">action_open_timetable_main</field>
+            <field name="technical_name">openeducat_timetable</field>
+        </record>
+
+        <!-- Execution Stage -->
+        <record id="stage_academic_execution" model="motakamel.workflow.stage">
+            <field name="name">Execution</field>
+            <field name="workflow_id" ref="workflow_academic_operations"/>
+            <field name="sequence">30</field>
+            <field name="description">Class delivery and teaching</field>
+            <field name="icon">fa-chalkboard-teacher</field>
+            <field name="color">#27ae60</field>
+            <field name="button_label">Track Attendance</field>
+            <field name="action_method">action_open_attendance_main</field>
+            <field name="technical_name">openeducat_attendance</field>
+        </record>
+
+        <!-- Assessment Stage -->
+        <record id="stage_academic_assessment" model="motakamel.workflow.stage">
+            <field name="name">Assessment</field>
+            <field name="workflow_id" ref="workflow_academic_operations"/>
+            <field name="sequence">40</field>
+            <field name="description">Assignment and examination management</field>
+            <field name="icon">fa-tasks</field>
+            <field name="color">#e74c3c</field>
+            <field name="button_label">Manage Assignments</field>
+            <field name="action_method">action_open_assignment_main</field>
+            <field name="technical_name">openeducat_assignment</field>
+        </record>
+
+        <!-- Results Stage -->
+        <record id="stage_academic_results" model="motakamel.workflow.stage">
+            <field name="name">Results</field>
+            <field name="workflow_id" ref="workflow_academic_operations"/>
+            <field name="sequence">50</field>
+            <field name="description">Grading and performance tracking</field>
+            <field name="icon">fa-chart-bar</field>
+            <field name="color">#16a085</field>
+            <field name="button_label">View Results</field>
+            <field name="action_method">action_open_exam_results</field>
+            <field name="technical_name">openeducat_exam</field>
+        </record>
+
+        <!-- Financial Management Stages -->
+
+        <!-- Setup Stage -->
+        <record id="stage_financial_setup" model="motakamel.workflow.stage">
+            <field name="name">Setup</field>
+            <field name="workflow_id" ref="workflow_financial_management"/>
+            <field name="sequence">10</field>
+            <field name="description">Fee structure and payment terms definition</field>
+            <field name="icon">fa-cogs</field>
+            <field name="color">#8e44ad</field>
+            <field name="button_label">Fee Setup</field>
+            <field name="action_method">action_open_fees_main</field>
+            <field name="technical_name">openeducat_fees</field>
+        </record>
+
+        <!-- Collection Stage -->
+        <record id="stage_financial_collection" model="motakamel.workflow.stage">
+            <field name="name">Collection</field>
+            <field name="workflow_id" ref="workflow_financial_management"/>
+            <field name="sequence">20</field>
+            <field name="description">Fee collection and payment processing</field>
+            <field name="icon">fa-credit-card</field>
+            <field name="color">#f39c12</field>
+            <field name="button_label">Process Payments</field>
+            <field name="action_method">action_open_fees_collection</field>
+            <field name="technical_name">openeducat_fees</field>
+        </record>
+
+        <!-- Processing Stage -->
+        <record id="stage_financial_processing" model="motakamel.workflow.stage">
+            <field name="name">Processing</field>
+            <field name="workflow_id" ref="workflow_financial_management"/>
+            <field name="sequence">30</field>
+            <field name="description">Payment reconciliation and accounting</field>
+            <field name="icon">fa-calculator</field>
+            <field name="color">#27ae60</field>
+            <field name="button_label">Accounting</field>
+            <field name="action_method">action_open_accounting_main</field>
+            <field name="technical_name">account</field>
+        </record>
+
+        <!-- Reporting Stage -->
+        <record id="stage_financial_reporting" model="motakamel.workflow.stage">
+            <field name="name">Reporting</field>
+            <field name="workflow_id" ref="workflow_financial_management"/>
+            <field name="sequence">40</field>
+            <field name="description">Financial reports and analytics</field>
+            <field name="icon">fa-chart-pie</field>
+            <field name="color">#e74c3c</field>
+            <field name="button_label">Financial Reports</field>
+            <field name="action_method">action_open_financial_reports</field>
+            <field name="technical_name">openeducat_fees</field>
+        </record>
+
+        <!-- Resource Administration Stages -->
+
+        <!-- Planning Stage -->
+        <record id="stage_resource_planning" model="motakamel.workflow.stage">
+            <field name="name">Planning</field>
+            <field name="workflow_id" ref="workflow_resource_administration"/>
+            <field name="sequence">10</field>
+            <field name="description">Resource requirements and capacity planning</field>
+            <field name="icon">fa-clipboard-check</field>
+            <field name="color">#8e44ad</field>
+            <field name="button_label">Resource Planning</field>
+            <field name="action_method">action_open_facility_main</field>
+            <field name="technical_name">openeducat_facility</field>
+        </record>
+
+        <!-- Allocation Stage -->
+        <record id="stage_resource_allocation" model="motakamel.workflow.stage">
+            <field name="name">Allocation</field>
+            <field name="workflow_id" ref="workflow_resource_administration"/>
+            <field name="sequence">20</field>
+            <field name="description">Resource assignment and scheduling</field>
+            <field name="icon">fa-tasks</field>
+            <field name="color">#f39c12</field>
+            <field name="button_label">Manage Classrooms</field>
+            <field name="action_method">action_open_classroom_main</field>
+            <field name="technical_name">openeducat_classroom</field>
+        </record>
+
+        <!-- Management Stage -->
+        <record id="stage_resource_management" model="motakamel.workflow.stage">
+            <field name="name">Management</field>
+            <field name="workflow_id" ref="workflow_resource_administration"/>
+            <field name="sequence">30</field>
+            <field name="description">Ongoing resource oversight</field>
+            <field name="icon">fa-users-cog</field>
+            <field name="color">#27ae60</field>
+            <field name="button_label">Staff Management</field>
+            <field name="action_method">action_open_module</field>
+            <field name="technical_name">openeducat_core</field>
+        </record>
+
+        <!-- Maintenance Stage -->
+        <record id="stage_resource_maintenance" model="motakamel.workflow.stage">
+            <field name="name">Maintenance</field>
+            <field name="workflow_id" ref="workflow_resource_administration"/>
+            <field name="sequence">40</field>
+            <field name="description">Resource upkeep and optimization</field>
+            <field name="icon">fa-tools</field>
+            <field name="color">#e74c3c</field>
+            <field name="button_label">Resource Maintenance</field>
+            <field name="action_method">action_open_facility_maintenance</field>
+            <field name="technical_name">openeducat_facility</field>
+        </record>
+
+        <!-- Student Support Services Stages -->
+
+        <!-- Enrollment Support Stage -->
+        <record id="stage_support_enrollment" model="motakamel.workflow.stage">
+            <field name="name">Enrollment Support</field>
+            <field name="workflow_id" ref="workflow_student_support_services"/>
+            <field name="sequence">10</field>
+            <field name="description">Student enrollment assistance and orientation</field>
+            <field name="icon">fa-user-plus</field>
+            <field name="color">#8e44ad</field>
+            <field name="button_label">Student Management</field>
+            <field name="action_method">action_open_module</field>
+            <field name="technical_name">openeducat_core</field>
+        </record>
+
+        <!-- Academic Support Stage -->
+        <record id="stage_support_academic" model="motakamel.workflow.stage">
+            <field name="name">Academic Support</field>
+            <field name="workflow_id" ref="workflow_student_support_services"/>
+            <field name="sequence">20</field>
+            <field name="description">Tutoring, study groups, and learning resources</field>
+            <field name="icon">fa-graduation-cap</field>
+            <field name="color">#f39c12</field>
+            <field name="button_label">Activity Management</field>
+            <field name="action_method">action_open_activity_main</field>
+            <field name="technical_name">openeducat_activity</field>
+        </record>
+
+        <!-- Resource Access Stage -->
+        <record id="stage_support_resources" model="motakamel.workflow.stage">
+            <field name="name">Resource Access</field>
+            <field name="workflow_id" ref="workflow_student_support_services"/>
+            <field name="sequence">30</field>
+            <field name="description">Library, facilities, and technology support</field>
+            <field name="icon">fa-book</field>
+            <field name="color">#27ae60</field>
+            <field name="button_label">Library Access</field>
+            <field name="action_method">action_open_library_main</field>
+            <field name="technical_name">openeducat_library</field>
+        </record>
+
+        <!-- Career Guidance Stage -->
+        <record id="stage_support_career" model="motakamel.workflow.stage">
+            <field name="name">Career Guidance</field>
+            <field name="workflow_id" ref="workflow_student_support_services"/>
+            <field name="sequence">40</field>
+            <field name="description">Job placement, skill assessment, and professional development</field>
+            <field name="icon">fa-briefcase</field>
+            <field name="color">#e74c3c</field>
+            <field name="button_label">Career Development</field>
+            <field name="action_method">action_open_assignment_main</field>
+            <field name="technical_name">openeducat_assignment</field>
+        </record>
+
+        <!-- Core Module Workflow -->
+        <record id="workflow_core_management" model="motakamel.workflow.dashboard">
+            <field name="name">Core Management</field>
+            <field name="description">Core educational management covering students, faculty, courses, and batches</field>
+            <field name="sequence">60</field>
+            <field name="icon">fa-university</field>
+            <field name="color">#8e44ad</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- Activity Module Workflow -->
+        <record id="workflow_activity_management" model="motakamel.workflow.dashboard">
+            <field name="name">Activity Management</field>
+            <field name="description">Student activities, extracurricular events, and activity tracking</field>
+            <field name="sequence">70</field>
+            <field name="icon">fa-calendar-check</field>
+            <field name="color">#f1c40f</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- Classroom Module Workflow -->
+        <record id="workflow_classroom_management" model="motakamel.workflow.dashboard">
+            <field name="name">Classroom Management</field>
+            <field name="description">Classroom allocation, room types, and booking management</field>
+            <field name="sequence">80</field>
+            <field name="icon">fa-chalkboard</field>
+            <field name="color">#e67e22</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- Facility Module Workflow -->
+        <record id="workflow_facility_management" model="motakamel.workflow.dashboard">
+            <field name="name">Facility Management</field>
+            <field name="description">Infrastructure management, facility maintenance, and asset tracking</field>
+            <field name="sequence">90</field>
+            <field name="icon">fa-wrench</field>
+            <field name="color">#95a5a6</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- Fees Module Workflow -->
+        <record id="workflow_fees_management" model="motakamel.workflow.dashboard">
+            <field name="name">Fees Management</field>
+            <field name="description">Fee structure setup, collection management, and payment tracking</field>
+            <field name="sequence">100</field>
+            <field name="icon">fa-money-bill</field>
+            <field name="color">#27ae60</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- Student Support Services Workflow -->
+        <record id="workflow_parent_management" model="motakamel.workflow.dashboard">
+            <field name="name">Student Support Services</field>
+            <field name="description">Student support services portal, communication management, and guidance coordination</field>
+            <field name="sequence">110</field>
+            <field name="icon">fa-users</field>
+            <field name="color">#3498db</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- Timetable Module Workflow -->
+        <record id="workflow_timetable_management" model="motakamel.workflow.dashboard">
+            <field name="name">Timetable Management</field>
+            <field name="description">Schedule creation, session management, and timetable coordination</field>
+            <field name="sequence">120</field>
+            <field name="icon">fa-clock</field>
+            <field name="color">#e74c3c</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- Core Module Stages -->
+        <record id="stage_core_students" model="motakamel.workflow.stage">
+            <field name="name">Student Management</field>
+            <field name="workflow_id" ref="workflow_core_management"/>
+            <field name="sequence">10</field>
+            <field name="description">Manage student records, enrollment, and basic information</field>
+            <field name="icon">fa-graduation-cap</field>
+            <field name="color">#3498db</field>
+            <field name="button_label">Manage Students</field>
+            <field name="action_method">action_open_students</field>
+            <field name="technical_name">openeducat_core</field>
+        </record>
+
+        <record id="stage_core_faculty" model="motakamel.workflow.stage">
+            <field name="name">Faculty Management</field>
+            <field name="workflow_id" ref="workflow_core_management"/>
+            <field name="sequence">20</field>
+            <field name="description">Manage faculty members, assignments, and qualifications</field>
+            <field name="icon">fa-chalkboard-teacher</field>
+            <field name="color">#e67e22</field>
+            <field name="button_label">Manage Faculty</field>
+            <field name="action_method">action_open_faculty</field>
+            <field name="technical_name">openeducat_core</field>
+        </record>
+
+        <record id="stage_core_courses" model="motakamel.workflow.stage">
+            <field name="name">Course Management</field>
+            <field name="workflow_id" ref="workflow_core_management"/>
+            <field name="sequence">30</field>
+            <field name="description">Manage courses, curriculum, and academic programs</field>
+            <field name="icon">fa-book</field>
+            <field name="color">#27ae60</field>
+            <field name="button_label">Manage Courses</field>
+            <field name="action_method">action_open_courses</field>
+            <field name="technical_name">openeducat_core</field>
+        </record>
+
+        <record id="stage_core_batches" model="motakamel.workflow.stage">
+            <field name="name">Batch Management</field>
+            <field name="workflow_id" ref="workflow_core_management"/>
+            <field name="sequence">40</field>
+            <field name="description">Manage student batches, groups, and class divisions</field>
+            <field name="icon">fa-users</field>
+            <field name="color">#9b59b6</field>
+            <field name="button_label">Manage Batches</field>
+            <field name="action_method">action_open_batches</field>
+            <field name="technical_name">openeducat_core</field>
+        </record>
+
+        <!-- Activity Module Stages -->
+        <record id="stage_activity_main" model="motakamel.workflow.stage">
+            <field name="name">Activity Overview</field>
+            <field name="workflow_id" ref="workflow_activity_management"/>
+            <field name="sequence">10</field>
+            <field name="description">View and manage all student activities and events</field>
+            <field name="icon">fa-calendar</field>
+            <field name="color">#f1c40f</field>
+            <field name="button_label">View Activities</field>
+            <field name="action_method">action_open_activity_main</field>
+            <field name="technical_name">openeducat_activity</field>
+        </record>
+
+        <record id="stage_activity_types" model="motakamel.workflow.stage">
+            <field name="name">Activity Types</field>
+            <field name="workflow_id" ref="workflow_activity_management"/>
+            <field name="sequence">20</field>
+            <field name="description">Configure different types of activities and their parameters</field>
+            <field name="icon">fa-list</field>
+            <field name="color">#e67e22</field>
+            <field name="button_label">Activity Types</field>
+            <field name="action_method">action_open_activity_types</field>
+            <field name="technical_name">openeducat_activity</field>
+        </record>
+
+        <record id="stage_activity_logs" model="motakamel.workflow.stage">
+            <field name="name">Activity Logs</field>
+            <field name="workflow_id" ref="workflow_activity_management"/>
+            <field name="sequence">30</field>
+            <field name="description">Track and review activity participation and history</field>
+            <field name="icon">fa-history</field>
+            <field name="color">#17a2b8</field>
+            <field name="button_label">Activity Logs</field>
+            <field name="action_method">action_open_activity_logs</field>
+            <field name="technical_name">openeducat_activity</field>
+        </record>
+
+        <!-- Classroom Module Stages -->
+        <record id="stage_classroom_main" model="motakamel.workflow.stage">
+            <field name="name">Classroom Overview</field>
+            <field name="workflow_id" ref="workflow_classroom_management"/>
+            <field name="sequence">10</field>
+            <field name="description">View and manage all classroom facilities</field>
+            <field name="icon">fa-door-open</field>
+            <field name="color">#3498db</field>
+            <field name="button_label">View Classrooms</field>
+            <field name="action_method">action_open_classroom_main</field>
+            <field name="technical_name">openeducat_classroom</field>
+        </record>
+
+        <record id="stage_classroom_types" model="motakamel.workflow.stage">
+            <field name="name">Room Types</field>
+            <field name="workflow_id" ref="workflow_classroom_management"/>
+            <field name="sequence">20</field>
+            <field name="description">Configure different types of rooms and their specifications</field>
+            <field name="icon">fa-cogs</field>
+            <field name="color">#e67e22</field>
+            <field name="button_label">Room Types</field>
+            <field name="action_method">action_open_classroom_types</field>
+            <field name="technical_name">openeducat_classroom</field>
+        </record>
+
+        <record id="stage_room_booking" model="motakamel.workflow.stage">
+            <field name="name">Room Booking</field>
+            <field name="workflow_id" ref="workflow_classroom_management"/>
+            <field name="sequence">30</field>
+            <field name="description">Manage room reservations and scheduling</field>
+            <field name="icon">fa-calendar-alt</field>
+            <field name="color">#27ae60</field>
+            <field name="button_label">Book Rooms</field>
+            <field name="action_method">action_open_room_booking</field>
+            <field name="technical_name">openeducat_classroom</field>
+        </record>
+
+        <!-- Facility Module Stages -->
+        <record id="stage_facility_main" model="motakamel.workflow.stage">
+            <field name="name">Facility Overview</field>
+            <field name="workflow_id" ref="workflow_facility_management"/>
+            <field name="sequence">10</field>
+            <field name="description">View and manage all facilities and infrastructure</field>
+            <field name="icon">fa-building</field>
+            <field name="color">#95a5a6</field>
+            <field name="button_label">View Facilities</field>
+            <field name="action_method">action_open_facility_main</field>
+            <field name="technical_name">openeducat_facility</field>
+        </record>
+
+        <record id="stage_facility_lines" model="motakamel.workflow.stage">
+            <field name="name">Facility Details</field>
+            <field name="workflow_id" ref="workflow_facility_management"/>
+            <field name="sequence">20</field>
+            <field name="description">Manage detailed facility information and specifications</field>
+            <field name="icon">fa-list-alt</field>
+            <field name="color">#34495e</field>
+            <field name="button_label">Facility Details</field>
+            <field name="action_method">action_open_facility_lines</field>
+            <field name="technical_name">openeducat_facility</field>
+        </record>
+
+        <record id="stage_facility_maintenance" model="motakamel.workflow.stage">
+            <field name="name">Maintenance</field>
+            <field name="workflow_id" ref="workflow_facility_management"/>
+            <field name="sequence">30</field>
+            <field name="description">Track and manage facility maintenance and repairs</field>
+            <field name="icon">fa-tools</field>
+            <field name="color">#e74c3c</field>
+            <field name="button_label">Maintenance</field>
+            <field name="action_method">action_open_facility_maintenance</field>
+            <field name="technical_name">openeducat_facility</field>
+        </record>
+
+        <!-- Fees Module Stages -->
+        <record id="stage_fees_main" model="motakamel.workflow.stage">
+            <field name="name">Fee Structure</field>
+            <field name="workflow_id" ref="workflow_fees_management"/>
+            <field name="sequence">10</field>
+            <field name="description">Setup and manage fee structures and terms</field>
+            <field name="icon">fa-file-invoice-dollar</field>
+            <field name="color">#27ae60</field>
+            <field name="button_label">Fee Structure</field>
+            <field name="action_method">action_open_fees_main</field>
+            <field name="technical_name">openeducat_fees</field>
+        </record>
+
+        <record id="stage_fees_collection" model="motakamel.workflow.stage">
+            <field name="name">Fee Collection</field>
+            <field name="workflow_id" ref="workflow_fees_management"/>
+            <field name="sequence">20</field>
+            <field name="description">Manage fee collection and student payments</field>
+            <field name="icon">fa-cash-register</field>
+            <field name="color">#2ecc71</field>
+            <field name="button_label">Collections</field>
+            <field name="action_method">action_open_fees_collection</field>
+            <field name="technical_name">openeducat_fees</field>
+        </record>
+
+        <record id="stage_fees_payments" model="motakamel.workflow.stage">
+            <field name="name">Payment Tracking</field>
+            <field name="workflow_id" ref="workflow_fees_management"/>
+            <field name="sequence">30</field>
+            <field name="description">Track and manage student fee payments</field>
+            <field name="icon">fa-credit-card</field>
+            <field name="color">#f39c12</field>
+            <field name="button_label">Payments</field>
+            <field name="action_method">action_open_fees_payments</field>
+            <field name="technical_name">openeducat_fees</field>
+        </record>
+
+        <record id="stage_financial_reports" model="motakamel.workflow.stage">
+            <field name="name">Financial Reports</field>
+            <field name="workflow_id" ref="workflow_fees_management"/>
+            <field name="sequence">40</field>
+            <field name="description">Generate and view financial reports and analytics</field>
+            <field name="icon">fa-chart-bar</field>
+            <field name="color">#9b59b6</field>
+            <field name="button_label">Reports</field>
+            <field name="action_method">action_open_financial_reports</field>
+            <field name="technical_name">openeducat_fees</field>
+        </record>
+
+        <!-- Student Support Services Stages -->
+        <record id="stage_parent_main" model="motakamel.workflow.stage">
+            <field name="name">Student Support Overview</field>
+            <field name="workflow_id" ref="workflow_parent_management"/>
+            <field name="sequence">10</field>
+            <field name="description">View and manage student support services and portal access</field>
+            <field name="icon">fa-user-friends</field>
+            <field name="color">#3498db</field>
+            <field name="button_label">View Support Services</field>
+            <field name="action_method">action_open_parent_main</field>
+            <field name="technical_name">openeducat_parent</field>
+        </record>
+
+        <record id="stage_parent_meetings" model="motakamel.workflow.stage">
+            <field name="name">Student Guidance Sessions</field>
+            <field name="workflow_id" ref="workflow_parent_management"/>
+            <field name="sequence">20</field>
+            <field name="description">Schedule and manage student guidance and support sessions</field>
+            <field name="icon">fa-handshake</field>
+            <field name="color">#e67e22</field>
+            <field name="button_label">Schedule Guidance</field>
+            <field name="action_method">action_open_parent_meetings</field>
+            <field name="technical_name">openeducat_parent</field>
+        </record>
+
+        <record id="stage_parent_communications" model="motakamel.workflow.stage">
+            <field name="name">Student Communications</field>
+            <field name="workflow_id" ref="workflow_parent_management"/>
+            <field name="sequence">30</field>
+            <field name="description">Manage communication channels with students and support services</field>
+            <field name="icon">fa-comments</field>
+            <field name="color">#17a2b8</field>
+            <field name="button_label">Manage Communications</field>
+            <field name="action_method">action_open_parent_communications</field>
+            <field name="technical_name">openeducat_parent</field>
+        </record>
+
+        <!-- Timetable Module Stages -->
+        <record id="stage_timetable_main" model="motakamel.workflow.stage">
+            <field name="name">Timetable Overview</field>
+            <field name="workflow_id" ref="workflow_timetable_management"/>
+            <field name="sequence">10</field>
+            <field name="description">View and manage all timetables and schedules</field>
+            <field name="icon">fa-calendar-alt</field>
+            <field name="color">#e74c3c</field>
+            <field name="button_label">View Timetables</field>
+            <field name="action_method">action_open_timetable_main</field>
+            <field name="technical_name">openeducat_timetable</field>
+        </record>
+
+        <record id="stage_timetable_sessions" model="motakamel.workflow.stage">
+            <field name="name">Sessions</field>
+            <field name="workflow_id" ref="workflow_timetable_management"/>
+            <field name="sequence">20</field>
+            <field name="description">Manage individual sessions and time slots</field>
+            <field name="icon">fa-clock</field>
+            <field name="color">#f39c12</field>
+            <field name="button_label">Sessions</field>
+            <field name="action_method">action_open_timetable_sessions</field>
+            <field name="technical_name">openeducat_timetable</field>
+        </record>
+
+        <record id="stage_timetable_schedule" model="motakamel.workflow.stage">
+            <field name="name">Schedule Planning</field>
+            <field name="workflow_id" ref="workflow_timetable_management"/>
+            <field name="sequence">30</field>
+            <field name="description">Plan and optimize class schedules</field>
+            <field name="icon">fa-calendar-check</field>
+            <field name="color">#2ecc71</field>
+            <field name="button_label">Schedule</field>
+            <field name="action_method">action_open_timetable_schedule</field>
+            <field name="technical_name">openeducat_timetable</field>
+        </record>
+
+        <!-- Grant Training Program Workflow -->
+        <record id="workflow_grant_training" model="motakamel.workflow.dashboard">
+            <field name="name">Grant Training Program</field>
+            <field name="description">Comprehensive grant-based training management from intake to certification</field>
+            <field name="sequence">130</field>
+            <field name="icon">fa-graduation-cap</field>
+            <field name="color">#8E44AD</field>
+            <field name="is_active">True</field>
+        </record>
+
+        <!-- Grant Training Workflow Stages -->
+        <record id="stage_grant_intake" model="motakamel.workflow.stage">
+            <field name="workflow_id" ref="workflow_grant_training"/>
+            <field name="name">Intake Management</field>
+            <field name="sequence">10</field>
+            <field name="description">Upload and process student Excel files with column mapping</field>
+            <field name="icon">fa-upload</field>
+            <field name="color">#e74c3c</field>
+            <field name="button_label">Manage Intake</field>
+            <field name="action_method">action_open_module</field>
+            <field name="technical_name">grants_training_suite_v2</field>
+            <field name="menu_xmlid">grants_training_suite_v2.menu_grants_training_intake_batch</field>
+        </record>
+
+        <record id="stage_grant_assignment" model="motakamel.workflow.stage">
+            <field name="workflow_id" ref="workflow_grant_training"/>
+            <field name="name">Agent Assignment</field>
+            <field name="sequence">20</field>
+            <field name="description">Assign students to agents for follow-up</field>
+            <field name="icon">fa-user-tie</field>
+            <field name="color">#f39c12</field>
+            <field name="button_label">Manage Assignments</field>
+            <field name="action_method">action_open_module</field>
+            <field name="technical_name">grants_training_suite_v2</field>
+            <field name="menu_xmlid">grants_training_suite_v2.menu_grants_training_assignments</field>
+        </record>
+
+        <record id="stage_grant_enrollment" model="motakamel.workflow.stage">
+            <field name="workflow_id" ref="workflow_grant_training"/>
+            <field name="name">Student Enrollment</field>
+            <field name="sequence">30</field>
+            <field name="description">Enroll students in training programs</field>
+            <field name="icon">fa-user-plus</field>
+            <field name="color">#2ecc71</field>
+            <field name="button_label">Manage Students</field>
+            <field name="action_method">action_open_module</field>
+            <field name="technical_name">grants_training_suite_v2</field>
+            <field name="menu_xmlid">grants_training_suite_v2.menu_grants_training_students_list</field>
+        </record>
+
+        <record id="stage_grant_sessions" model="motakamel.workflow.stage">
+            <field name="workflow_id" ref="workflow_grant_training"/>
+            <field name="name">Training Sessions</field>
+            <field name="sequence">40</field>
+            <field name="description">Manage course sessions and attendance</field>
+            <field name="icon">fa-chalkboard-teacher</field>
+            <field name="color">#9b59b6</field>
+            <field name="button_label">Course Sessions</field>
+            <field name="action_method">action_open_module</field>
+            <field name="technical_name">grants_training_suite_v2</field>
+            <field name="menu_xmlid">grants_training_suite_v2.menu_grants_training_course_sessions</field>
+        </record>
+
+        <record id="stage_grant_assessments" model="motakamel.workflow.stage">
+            <field name="workflow_id" ref="workflow_grant_training"/>
+            <field name="name">Assessments</field>
+            <field name="sequence">50</field>
+            <field name="description">Manage homework submissions and grading</field>
+            <field name="icon">fa-tasks</field>
+            <field name="color">#1abc9c</field>
+            <field name="button_label">Homework</field>
+            <field name="action_method">action_open_module</field>
+            <field name="technical_name">grants_training_suite_v2</field>
+            <field name="menu_xmlid">grants_training_suite_v2.menu_grants_training_homework_attempts</field>
+        </record>
+
+        <record id="stage_grant_certification" model="motakamel.workflow.stage">
+            <field name="workflow_id" ref="workflow_grant_training"/>
+            <field name="name">Certification</field>
+            <field name="sequence">60</field>
+            <field name="description">Issue and manage student certificates</field>
+            <field name="icon">fa-certificate</field>
+            <field name="color">#34495e</field>
+            <field name="button_label">Certificates</field>
+            <field name="action_method">action_open_module</field>
+            <field name="technical_name">grants_training_suite_v2</field>
+            <field name="menu_xmlid">grants_training_suite_v2.menu_grants_training_certificates</field>
+        </record>
+
+    </data>
+</odoo>

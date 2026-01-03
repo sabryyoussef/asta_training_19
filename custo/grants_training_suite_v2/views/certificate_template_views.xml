@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Certificate Template Form View -->
+        <record id="view_gr_certificate_template_form" model="ir.ui.view">
+            <field name="name">gr.certificate.template.form</field>
+            <field name="model">gr.certificate.template</field>
+            <field name="arch" type="xml">
+                <form string="Certificate Template">
+                    <header>
+                        <button name="action_preview_template" string="Preview Template" type="object" class="btn-primary"/>
+                        <button name="action_duplicate_template" string="Duplicate" type="object" class="btn-secondary"/>
+                        <field name="active" widget="boolean_toggle"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <div class="oe_stat_button" icon="fa-file-text-o">
+                                <field name="certificate_count" widget="statinfo" string="Certificates"/>
+                            </div>
+                            <div class="oe_stat_button" icon="fa-bar-chart">
+                                <field name="usage_count" widget="statinfo" string="Usage Count"/>
+                            </div>
+                            <div class="oe_stat_button" icon="fa-calendar" invisible="not last_used_date">
+                                <field name="last_used_date" widget="statinfo" string="Last Used"/>
+                            </div>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Template Name"/>
+                            </h1>
+                            <field name="is_default" widget="boolean_toggle"/>
+                        </div>
+                        
+                        <group>
+                            <group string="Template Configuration">
+                                <field name="template_type" required="1"/>
+                                <field name="description"/>
+                            </group>
+                            <group string="Status">
+                                <field name="active" readonly="1"/>
+                                <field name="usage_count" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <notebook>
+                            <!-- Content Tab -->
+                            <page string="Content" name="content">
+                                <group string="Certificate Content">
+                                    <field name="header_content" widget="html" placeholder="Certificate header content..."/>
+                                </group>
+                                <group string="Body Content">
+                                    <field name="body_content" widget="html" placeholder="Certificate body content... Use placeholders like {student_name}, {program_name}, etc."/>
+                                </group>
+                                <group string="Footer Content">
+                                    <field name="footer_content" widget="html" placeholder="Certificate footer content..."/>
+                                </group>
+                            </page>
+                            
+                            <!-- Styling Tab -->
+                            <page string="Styling" name="styling">
+                                <group string="Colors">
+                                    <group>
+                                        <field name="background_color" widget="color"/>
+                                        <field name="text_color" widget="color"/>
+                                    </group>
+                                    <group>
+                                        <field name="accent_color" widget="color"/>
+                                    </group>
+                                </group>
+                                <group string="Typography">
+                                    <field name="font_family"/>
+                                </group>
+                                <group string="Page Layout">
+                                    <group>
+                                        <field name="page_width"/>
+                                        <field name="page_height"/>
+                                    </group>
+                                    <group>
+                                        <field name="margin_top"/>
+                                        <field name="margin_bottom"/>
+                                    </group>
+                                    <group>
+                                        <field name="margin_left"/>
+                                        <field name="margin_right"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <!-- Images Tab -->
+                            <page string="Images" name="images">
+                                <group string="Logo Configuration">
+                                    <group>
+                                        <field name="logo_image" widget="image" class="oe_avatar"/>
+                                        <field name="logo_filename"/>
+                                    </group>
+                                    <group>
+                                        <field name="logo_position"/>
+                                    </group>
+                                </group>
+                                <group string="Signature Configuration">
+                                    <group>
+                                        <field name="signature_image" widget="image" class="oe_avatar"/>
+                                        <field name="signature_filename"/>
+                                    </group>
+                                    <group>
+                                        <field name="signature_position"/>
+                                        <field name="signature_text"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <!-- Related Certificates -->
+                            <page string="Related Certificates" name="certificates" invisible="not certificate_ids">
+                                <field name="certificate_ids" readonly="1">
+                                    <list string="Certificates Using This Template">
+                                        <field name="name"/>
+                                        <field name="student_id"/>
+                                        <field name="certificate_title"/>
+                                        <field name="issue_date"/>
+                                        <field name="state"/>
+                                    </list>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Certificate Template List View -->
+        <record id="view_gr_certificate_template_list" model="ir.ui.view">
+            <field name="name">gr.certificate.template.list</field>
+            <field name="model">gr.certificate.template</field>
+            <field name="arch" type="xml">
+                <list string="Certificate Templates">
+                    <field name="name"/>
+                    <field name="template_type"/>
+                    <field name="description"/>
+                    <field name="is_default" widget="boolean_toggle"/>
+                    <field name="active" widget="boolean_toggle"/>
+                    <field name="usage_count"/>
+                    <field name="certificate_count"/>
+                    <field name="last_used_date"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Certificate Template Kanban View -->
+        <record id="view_gr_certificate_template_kanban" model="ir.ui.view">
+            <field name="name">gr.certificate.template.kanban</field>
+            <field name="model">gr.certificate.template</field>
+            <field name="arch" type="xml">
+                <kanban sample="1" default_group_by="template_type">
+                    <field name="name"/>
+                    <field name="template_type"/>
+                    <field name="description"/>
+                    <field name="is_default"/>
+                    <field name="active"/>
+                    <field name="usage_count"/>
+                    <field name="certificate_count"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="name"/>
+                                            </strong>
+                                            <div class="o_kanban_record_subtitle">
+                                                <field name="template_type"/>
+                                            </div>
+                                        </div>
+                                        <div class="o_kanban_record_top_right">
+                                            <field name="is_default" widget="boolean_toggle"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <field name="description"/>
+                                    </div>
+                                    <div class="o_kanban_record_bottom">
+                                        <div class="oe_kanban_bottom_left">
+                                            <span class="badge badge-info" invisible="not usage_count">
+                                                <field name="usage_count"/> uses
+                                            </span>
+                                            <span class="badge badge-success" invisible="not certificate_count">
+                                                <field name="certificate_count"/> certificates
+                                            </span>
+                                        </div>
+                                        <div class="oe_kanban_bottom_right">
+                                            <field name="active" widget="boolean_toggle"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Certificate Template Search View -->
+        <record id="view_gr_certificate_template_search" model="ir.ui.view">
+            <field name="name">gr.certificate.template.search</field>
+            <field name="model">gr.certificate.template</field>
+            <field name="arch" type="xml">
+                <search string="Certificate Templates">
+                    <field name="name"/>
+                    <field name="description"/>
+                    <field name="template_type"/>
+                    
+                    <filter string="Active" name="active" domain="[('active', '=', True)]"/>
+                    <filter string="Inactive" name="inactive" domain="[('active', '=', False)]"/>
+                    <filter string="Default Templates" name="default" domain="[('is_default', '=', True)]"/>
+                    <filter string="Program Completion" name="program_completion" domain="[('template_type', '=', 'program_completion')]"/>
+                    <filter string="Course Completion" name="course_completion" domain="[('template_type', '=', 'course_completion')]"/>
+                    <filter string="Achievement" name="achievement" domain="[('template_type', '=', 'achievement')]"/>
+                    <filter string="Participation" name="participation" domain="[('template_type', '=', 'participation')]"/>
+                    <filter string="Excellence" name="excellence" domain="[('template_type', '=', 'excellence')]"/>
+                    <filter string="Custom" name="custom" domain="[('template_type', '=', 'custom')]"/>
+                    <filter string="Recently Used" name="recently_used" domain="[('last_used_date', '!=', False)]" context="{'order_by': 'last_used_date desc'}"/>
+                    <filter string="Most Used" name="most_used" domain="[('usage_count', '>', 0)]" context="{'order_by': 'usage_count desc'}"/>
+                    <group>
+                        <filter string="Template Type" name="group_type" domain="[]" context="{'group_by': 'template_type'}"/>
+                        <filter string="Default Status" name="group_default" domain="[]" context="{'group_by': 'is_default'}"/>
+                        <filter string="Active Status" name="group_active" domain="[]" context="{'group_by': 'active'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Certificate Template Actions -->
+        <record id="action_gr_certificate_template" model="ir.actions.act_window">
+            <field name="name">Certificate Templates</field>
+            <field name="res_model">gr.certificate.template</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_active': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first certificate template!
+                </p>
+                <p>
+                    Certificate templates allow you to create reusable designs for generating certificates.
+                    You can customize the layout, styling, and content with placeholders for dynamic data.
+                </p>
+            </field>
+        </record>
+
+        <!-- Certificate Template Preview Form View -->
+        <record id="view_gr_certificate_template_preview_form" model="ir.ui.view">
+            <field name="name">gr.certificate.template.preview.form</field>
+            <field name="model">gr.certificate.template.preview</field>
+            <field name="arch" type="xml">
+                <form string="Template Preview">
+                    <header>
+                        <button name="action_close_preview" string="Close" type="object" class="btn-primary"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="template_name" readonly="1"/>
+                            </h1>
+                        </div>
+                        
+                        <notebook>
+                            <!-- Full Preview -->
+                            <page string="Full Preview" name="full_preview">
+                                <field name="full_preview" widget="html" readonly="1"/>
+                            </page>
+                            
+                            <!-- Content Breakdown -->
+                            <page string="Content Breakdown" name="content_breakdown">
+                                <group string="Header Content">
+                                    <field name="header_content" widget="html" readonly="1"/>
+                                </group>
+                                <group string="Body Content">
+                                    <field name="body_content" widget="html" readonly="1"/>
+                                </group>
+                                <group string="Footer Content">
+                                    <field name="footer_content" widget="html" readonly="1"/>
+                                </group>
+                            </page>
+                            
+                            <!-- Context Data -->
+                            <page string="Context Data" name="context_data">
+                                <field name="context_data" widget="text" readonly="1"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Certificate Template Preview Action -->
+        <record id="action_gr_certificate_template_preview" model="ir.actions.act_window">
+            <field name="name">Certificate Template Preview</field>
+            <field name="res_model">gr.certificate.template.preview</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</odoo>

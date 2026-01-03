@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="student_lifecycle_diagram" name="Student Lifecycle Diagram">
+        <t t-call="motakamel_dashboard.student_lifecycle_diagram_template"/>
+    </template>
+    
+    <template id="grant_training_diagram" name="Grant Training Diagram">
+        <t t-call="motakamel_dashboard.grant_training_diagram_template"/>
+    </template>
+    
+    <!-- Student Lifecycle Template -->
+    <template id="student_lifecycle_diagram_template" name="Student Lifecycle Diagram Template">
+        <div class="workflow-diagram-container">
+            <div class="workflow-stages">
+                <div class="workflow-stage stage-inquiry">
+                    <div class="stage-title">Inquiry</div>
+                    <div class="stage-subtitle">View Inquiries</div>
+                    <div class="stage-arrow">→</div>
+                </div>
+                
+                <div class="workflow-stage stage-application">
+                    <div class="stage-title">Application</div>
+                    <div class="stage-subtitle">Process Applications</div>
+                    <div class="stage-arrow">→</div>
+                </div>
+                
+                <div class="workflow-stage stage-registration">
+                    <div class="stage-title">Registration</div>
+                    <div class="stage-subtitle">Student Registration</div>
+                    <div class="stage-arrow">→</div>
+                </div>
+                
+                <div class="workflow-stage stage-enrollment">
+                    <div class="stage-title">Enrollment</div>
+                    <div class="stage-subtitle">Course Enrollment</div>
+                    <div class="stage-arrow">→</div>
+                </div>
+                
+                <div class="workflow-stage stage-academic">
+                    <div class="stage-title">Academic</div>
+                    <div class="stage-subtitle">Progress Tracking</div>
+                    <div class="stage-arrow">→</div>
+                </div>
+                
+                <div class="workflow-stage stage-graduation">
+                    <div class="stage-title">Graduation</div>
+                    <div class="stage-subtitle">Degree Completion</div>
+                </div>
+            </div>
+            
+            <div class="workflow-description">
+                <h4>Student Lifecycle Workflow</h4>
+                <p>Complete journey from initial inquiry to graduation. Each stage represents a key milestone in the student's educational path.</p>
+            </div>
+        </div>
+    </template>
+    
+    <!-- Grant Training Template -->
+    <template id="grant_training_diagram_template" name="Grant Training Diagram Template">
+        <div class="workflow-diagram-container">
+            <div class="workflow-stages">
+                <div class="workflow-stage stage-intake">
+                    <div class="stage-title">Intake</div>
+                    <div class="stage-subtitle">Manage Intake</div>
+                    <div class="stage-arrow">→</div>
+                </div>
+                
+                <div class="workflow-stage stage-assignment">
+                    <div class="stage-title">Assignment</div>
+                    <div class="stage-subtitle">Agent Assignment</div>
+                    <div class="stage-arrow">→</div>
+                </div>
+                
+                <div class="workflow-stage stage-enrollment">
+                    <div class="stage-title">Enrollment</div>
+                    <div class="stage-subtitle">Student Enrollment</div>
+                    <div class="stage-arrow">→</div>
+                </div>
+                
+                <div class="workflow-stage stage-sessions">
+                    <div class="stage-title">Sessions</div>
+                    <div class="stage-subtitle">Course Sessions</div>
+                    <div class="stage-arrow">→</div>
+                </div>
+                
+                <div class="workflow-stage stage-assessments">
+                    <div class="stage-title">Assessments</div>
+                    <div class="stage-subtitle">Homework</div>
+                    <div class="stage-arrow">→</div>
+                </div>
+                
+                <div class="workflow-stage stage-certification">
+                    <div class="stage-title">Certification</div>
+                    <div class="stage-subtitle">Certificates</div>
+                </div>
+            </div>
+            
+            <div class="workflow-description">
+                <h4>Grant Training Program Workflow</h4>
+                <p>Comprehensive grant-based training management from intake to certification. Each stage represents a key milestone in the training process.</p>
+            </div>
+        </div>
+    </template>
+</odoo>

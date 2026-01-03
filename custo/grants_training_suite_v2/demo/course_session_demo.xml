@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Demo Course Session 1: Scheduled State -->
+        <record id="demo_course_session_1" model="gr.course.session">
+            <field name="name">SESSION001</field>
+            <field name="student_id" ref="demo_student_5"/>
+            <field name="session_name">Introduction to English Grammar</field>
+            <field name="session_date">2024-12-20 10:00:00</field>
+            <field name="duration_hours">2.0</field>
+            <field name="state">scheduled</field>
+            <field name="description">Basic English grammar fundamentals and sentence structure</field>
+        </record>
+        
+        <!-- Demo Course Session 2: In Progress State -->
+        <record id="demo_course_session_2" model="gr.course.session">
+            <field name="name">SESSION002</field>
+            <field name="student_id" ref="demo_student_6"/>
+            <field name="session_name">Vocabulary Building</field>
+            <field name="session_date">2024-12-21 14:00:00</field>
+            <field name="duration_hours">1.5</field>
+            <field name="state">in_progress</field>
+            <field name="attendance_status">present</field>
+            <field name="description">Expanding vocabulary through interactive exercises</field>
+        </record>
+        
+        <!-- Demo Course Session 3: Completed State -->
+        <record id="demo_course_session_3" model="gr.course.session">
+            <field name="name">SESSION003</field>
+            <field name="student_id" ref="demo_student_7"/>
+            <field name="session_name">Reading Comprehension</field>
+            <field name="session_date">2024-12-22 09:30:00</field>
+            <field name="duration_hours">2.5</field>
+            <field name="state">completed</field>
+            <field name="attendance_status">present</field>
+            <field name="completion_date">2024-12-22 12:00:00</field>
+            <field name="description">Reading skills development and comprehension techniques</field>
+        </record>
+        
+        <!-- Demo Course Session 4: Cancelled State -->
+        <record id="demo_course_session_4" model="gr.course.session">
+            <field name="name">SESSION004</field>
+            <field name="student_id" ref="demo_student_8"/>
+            <field name="session_name">Writing Skills Workshop</field>
+            <field name="session_date">2024-12-23 11:00:00</field>
+            <field name="duration_hours">2.0</field>
+            <field name="state">cancelled</field>
+            <field name="attendance_status">absent</field>
+            <field name="cancellation_reason">Student emergency - rescheduled for next week</field>
+            <field name="description">Creative writing and essay structure</field>
+        </record>
+        
+        <!-- Demo Course Session 5: Completed State -->
+        <record id="demo_course_session_5" model="gr.course.session">
+            <field name="name">SESSION005</field>
+            <field name="student_id" ref="demo_student_5"/>
+            <field name="session_name">Speaking Practice</field>
+            <field name="session_date">2024-12-24 15:30:00</field>
+            <field name="duration_hours">1.0</field>
+            <field name="state">completed</field>
+            <field name="attendance_status">present</field>
+            <field name="completion_date">2024-12-24 16:30:00</field>
+            <field name="description">Conversational English and pronunciation practice</field>
+        </record>
+        
+        <!-- Demo Course Session 6: In Progress State -->
+        <record id="demo_course_session_6" model="gr.course.session">
+            <field name="name">SESSION006</field>
+            <field name="student_id" ref="demo_student_6"/>
+            <field name="session_name">Listening Skills</field>
+            <field name="session_date">2024-12-25 10:00:00</field>
+            <field name="duration_hours">1.5</field>
+            <field name="state">in_progress</field>
+            <field name="attendance_status">present</field>
+            <field name="description">Audio comprehension and listening exercises</field>
+        </record>
+        
+        <!-- Demo Course Session 7: Completed State -->
+        <record id="demo_course_session_7" model="gr.course.session">
+            <field name="name">SESSION007</field>
+            <field name="student_id" ref="demo_student_7"/>
+            <field name="session_name">Grammar Review</field>
+            <field name="session_date">2024-12-26 13:00:00</field>
+            <field name="duration_hours">2.0</field>
+            <field name="state">completed</field>
+            <field name="attendance_status">present</field>
+            <field name="completion_date">2024-12-26 15:00:00</field>
+            <field name="description">Comprehensive grammar review and practice</field>
+        </record>
+        
+        <!-- Demo Course Session 8: Scheduled State -->
+        <record id="demo_course_session_8" model="gr.course.session">
+            <field name="name">SESSION008</field>
+            <field name="student_id" ref="demo_student_8"/>
+            <field name="session_name">Final Assessment</field>
+            <field name="session_date">2024-12-27 09:00:00</field>
+            <field name="duration_hours">3.0</field>
+            <field name="state">scheduled</field>
+            <field name="description">Comprehensive final assessment covering all topics</field>
+        </record>
+        
+        <!-- Demo Course Session 9: Completed State -->
+        <record id="demo_course_session_9" model="gr.course.session">
+            <field name="name">SESSION009</field>
+            <field name="student_id" ref="demo_student_5"/>
+            <field name="session_name">Business English</field>
+            <field name="session_date">2024-12-28 14:30:00</field>
+            <field name="duration_hours">2.5</field>
+            <field name="state">completed</field>
+            <field name="attendance_status">present</field>
+            <field name="completion_date">2024-12-28 17:00:00</field>
+            <field name="description">Professional communication and business vocabulary</field>
+        </record>
+        
+        <!-- Demo Course Session 10: In Progress State -->
+        <record id="demo_course_session_10" model="gr.course.session">
+            <field name="name">SESSION010</field>
+            <field name="student_id" ref="demo_student_6"/>
+            <field name="session_name">Presentation Skills</field>
+            <field name="session_date">2024-12-29 11:00:00</field>
+            <field name="duration_hours">2.0</field>
+            <field name="state">in_progress</field>
+            <field name="attendance_status">present</field>
+            <field name="description">Public speaking and presentation techniques</field>
+        </record>
+        
+        <!-- Demo Course Session 11: Completed State -->
+        <record id="demo_course_session_11" model="gr.course.session">
+            <field name="name">SESSION011</field>
+            <field name="student_id" ref="demo_student_7"/>
+            <field name="session_name">Cultural Communication</field>
+            <field name="session_date">2024-12-30 16:00:00</field>
+            <field name="duration_hours">1.5</field>
+            <field name="state">completed</field>
+            <field name="attendance_status">present</field>
+            <field name="completion_date">2024-12-30 17:30:00</field>
+            <field name="description">Cross-cultural communication and etiquette</field>
+        </record>
+        
+        <!-- Demo Course Session 12: Scheduled State -->
+        <record id="demo_course_session_12" model="gr.course.session">
+            <field name="name">SESSION012</field>
+            <field name="student_id" ref="demo_student_8"/>
+            <field name="session_name">Course Completion Ceremony</field>
+            <field name="session_date">2024-12-31 10:00:00</field>
+            <field name="duration_hours">1.0</field>
+            <field name="state">scheduled</field>
+            <field name="description">Final ceremony and certificate presentation</field>
+        </record>
+        
+    </data>
+</odoo>

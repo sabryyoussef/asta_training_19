@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Premium Program Completion Template -->
+        <record id="demo_certificate_template_premium_program" model="gr.certificate.template">
+            <field name="name">Premium Program Completion Template</field>
+            <field name="description">Premium template for program completion certificates with enhanced styling</field>
+            <field name="template_type">program_completion</field>
+            <field name="is_default">False</field>
+            <field name="active">True</field>
+            
+            <field name="header_content"><![CDATA[
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <div style="border: 3px solid #2c3e50; border-radius: 10px; padding: 20px; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+                        <h1 style="color: #2c3e50; font-size: 28px; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">CERTIFICATE OF EXCELLENCE</h1>
+                        <h2 style="color: #3498db; font-size: 20px; margin: 10px 0 0 0; font-weight: normal;">Program Completion</h2>
+                    </div>
+                </div>
+            ]]></field>
+            
+            <field name="body_content"><![CDATA[
+                <div style="text-align: center; margin: 40px 0; padding: 30px; background: rgba(52, 152, 219, 0.05); border-radius: 15px;">
+                    <p style="font-size: 18px; color: #34495e; margin: 0 0 20px 0;">This is to certify that</p>
+                    <h2 style="color: #2c3e50; font-size: 32px; margin: 20px 0; text-decoration: underline; text-decoration-color: #3498db;">{student_name}</h2>
+                    <p style="font-size: 18px; color: #34495e; margin: 20px 0;">has successfully completed the comprehensive training program</p>
+                    <h3 style="color: #3498db; font-size: 24px; margin: 20px 0; font-style: italic;">"{program_name}"</h3>
+                    <div style="margin: 30px 0; padding: 20px; background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+                        <p style="margin: 5px 0;"><strong>Duration:</strong> {duration}</p>
+                        <p style="margin: 5px 0;"><strong>Completion Date:</strong> {completion_date}</p>
+                        <p style="margin: 5px 0;"><strong>Final Grade:</strong> {grade}</p>
+                    </div>
+                    <p style="font-size: 16px; color: #7f8c8d; margin: 20px 0 0 0;">This achievement demonstrates dedication, perseverance, and excellence in learning.</p>
+                </div>
+            ]]></field>
+            
+            <field name="footer_content"><![CDATA[
+                <div style="text-align: center; margin-top: 50px; padding: 20px; border-top: 2px solid #3498db;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; max-width: 600px; margin: 0 auto;">
+                        <div style="text-align: left; flex: 1;">
+                            <p style="margin: 5px 0; font-size: 12px; color: #7f8c8d;">Certificate No: {certificate_number}</p>
+                            <p style="margin: 5px 0; font-size: 12px; color: #7f8c8d;">Issued: {issue_date}</p>
+                        </div>
+                        <div style="text-align: center; flex: 1;">
+                            <p style="margin: 5px 0; font-size: 14px; font-weight: bold; color: #2c3e50;">{organization_name}</p>
+                        </div>
+                        <div style="text-align: right; flex: 1;">
+                            <p style="margin: 5px 0; font-size: 12px; color: #7f8c8d;">Program Director</p>
+                            <p style="margin: 20px 0; font-size: 12px; color: #7f8c8d;">Signature</p>
+                        </div>
+                    </div>
+                </div>
+            ]]></field>
+            
+            <field name="background_color">#ffffff</field>
+            <field name="text_color">#2c3e50</field>
+            <field name="accent_color">#3498db</field>
+            <field name="font_family">Georgia</field>
+        </record>
+
+        <!-- Modern Course Completion Template -->
+        <record id="demo_certificate_template_modern_course" model="gr.certificate.template">
+            <field name="name">Modern Course Completion Template</field>
+            <field name="description">Modern, minimalist template for course completion certificates</field>
+            <field name="template_type">course_completion</field>
+            <field name="is_default">False</field>
+            <field name="active">True</field>
+            
+            <field name="header_content"><![CDATA[
+                <div style="text-align: center; margin-bottom: 40px;">
+                    <div style="width: 80px; height: 80px; background: #27ae60; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center;">
+                        <span style="color: white; font-size: 36px; font-weight: bold;">✓</span>
+                    </div>
+                    <h1 style="color: #27ae60; font-size: 24px; margin: 0; font-weight: 300; letter-spacing: 2px;">CERTIFICATE OF COMPLETION</h1>
+                </div>
+            ]]></field>
+            
+            <field name="body_content"><![CDATA[
+                <div style="text-align: center; margin: 40px 0;">
+                    <p style="font-size: 16px; color: #95a5a6; margin: 0 0 30px 0;">This certifies that</p>
+                    <h2 style="color: #2c3e50; font-size: 28px; margin: 20px 0; font-weight: 400;">{student_name}</h2>
+                    <p style="font-size: 16px; color: #95a5a6; margin: 20px 0;">has successfully completed</p>
+                    <h3 style="color: #27ae60; font-size: 20px; margin: 20px 0; font-weight: 500;">{course_name}</h3>
+                    <div style="margin: 40px auto; max-width: 300px; padding: 20px; background: #f8f9fa; border-radius: 8px;">
+                        <p style="margin: 8px 0; font-size: 14px; color: #34495e;"><span style="font-weight: bold;">Duration:</span> {duration}</p>
+                        <p style="margin: 8px 0; font-size: 14px; color: #34495e;"><span style="font-weight: bold;">Completed:</span> {completion_date}</p>
+                    </div>
+                </div>
+            ]]></field>
+            
+            <field name="footer_content"><![CDATA[
+                <div style="text-align: center; margin-top: 60px; padding-top: 20px; border-top: 1px solid #ecf0f1;">
+                    <p style="font-size: 12px; color: #95a5a6; margin: 5px 0;">Certificate ID: {certificate_number} • {issue_date}</p>
+                    <p style="font-size: 14px; color: #2c3e50; margin: 10px 0; font-weight: 500;">{organization_name}</p>
+                </div>
+            ]]></field>
+            
+            <field name="background_color">#ffffff</field>
+            <field name="text_color">#2c3e50</field>
+            <field name="accent_color">#27ae60</field>
+            <field name="font_family">Helvetica</field>
+        </record>
+
+        <!-- Achievement Certificate Template -->
+        <record id="demo_certificate_template_achievement" model="gr.certificate.template">
+            <field name="name">Achievement Certificate Template</field>
+            <field name="description">Template for recognizing outstanding achievements and excellence</field>
+            <field name="template_type">achievement</field>
+            <field name="is_default">False</field>
+            <field name="active">True</field>
+            
+            <field name="header_content"><![CDATA[
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <div style="display: inline-block; padding: 15px 30px; background: linear-gradient(45deg, #e74c3c, #c0392b); border-radius: 25px; box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);">
+                        <h1 style="color: white; font-size: 22px; margin: 0; text-shadow: 1px 1px 2px rgba(0,0,0,0.3);">🏆 ACHIEVEMENT CERTIFICATE 🏆</h1>
+                    </div>
+                </div>
+            ]]></field>
+            
+            <field name="body_content"><![CDATA[
+                <div style="text-align: center; margin: 30px 0; padding: 30px; background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%); border-radius: 20px;">
+                    <p style="font-size: 18px; color: #7f8c8d; margin: 0 0 20px 0;">We are proud to recognize</p>
+                    <h2 style="color: #e74c3c; font-size: 30px; margin: 20px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">{student_name}</h2>
+                    <p style="font-size: 16px; color: #34495e; margin: 20px 0;">for demonstrating outstanding achievement in</p>
+                    <h3 style="color: #2c3e50; font-size: 22px; margin: 20px 0; font-style: italic;">"{program_name}"</h3>
+                    <div style="margin: 30px 0; padding: 25px; background: white; border-radius: 15px; box-shadow: 0 6px 20px rgba(231, 76, 60, 0.1);">
+                        <div style="display: flex; justify-content: space-around; align-items: center;">
+                            <div style="text-align: center;">
+                                <p style="margin: 0; font-size: 12px; color: #95a5a6; text-transform: uppercase;">Final Grade</p>
+                                <p style="margin: 5px 0 0 0; font-size: 24px; font-weight: bold; color: #e74c3c;">{grade}</p>
+                            </div>
+                            <div style="text-align: center;">
+                                <p style="margin: 0; font-size: 12px; color: #95a5a6; text-transform: uppercase;">Completed</p>
+                                <p style="margin: 5px 0 0 0; font-size: 16px; font-weight: bold; color: #2c3e50;">{completion_date}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <p style="font-size: 16px; color: #e74c3c; margin: 20px 0 0 0; font-weight: 500;">This achievement reflects exceptional dedication and excellence!</p>
+                </div>
+            ]]></field>
+            
+            <field name="footer_content"><![CDATA[
+                <div style="text-align: center; margin-top: 40px; padding: 20px; background: #2c3e50; border-radius: 10px;">
+                    <p style="color: white; font-size: 12px; margin: 5px 0;">Certificate Number: {certificate_number}</p>
+                    <p style="color: white; font-size: 12px; margin: 5px 0;">Issued on: {issue_date}</p>
+                    <p style="color: #3498db; font-size: 14px; margin: 10px 0; font-weight: bold;">{organization_name}</p>
+                </div>
+            ]]></field>
+            
+            <field name="background_color">#ffffff</field>
+            <field name="text_color">#2c3e50</field>
+            <field name="accent_color">#e74c3c</field>
+            <field name="font_family">Arial</field>
+        </record>
+
+    </data>
+</odoo>

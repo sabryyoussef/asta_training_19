@@ -1,0 +1,9 @@
+Role,Name,Phase 1 Hours,Phase 2 Hours,Phase 3 Hours,Phase 4 Hours,Total Hours,Skills Required,Availability
+Senior Developer,John Smith,40,60,70,50,220,Python; Odoo; API Integration; Database Design,Full-time
+Backend Developer,Sarah Johnson,30,50,40,30,150,Python; Odoo; Data Modeling; Performance Optimization,Full-time
+Frontend Developer,Mike Chen,20,30,50,20,120,JavaScript; OWL; UI/UX; Dashboard Development,Full-time
+QA Engineer,Lisa Brown,10,20,20,40,90,Testing; Quality Assurance; Integration Testing; Performance Testing,Part-time
+DevOps Engineer,David Wilson,5,10,10,20,45,Deployment; Infrastructure; Monitoring; Security,Part-time
+Project Manager,Emma Davis,15,25,25,30,95,Project Management; Coordination; Documentation; Stakeholder Communication,Part-time
+Technical Writer,Alex Taylor,5,5,10,25,45,Technical Writing; Documentation; Training Materials; User Guides,Part-time
+Total,,125,196,225,215,765,,,

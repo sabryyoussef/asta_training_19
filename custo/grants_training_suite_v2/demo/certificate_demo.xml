@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Demo Certificate 1: Draft State -->
+        <record id="demo_certificate_1" model="gr.certificate">
+            <field name="name">CERT001</field>
+            <field name="student_id" ref="demo_student_5"/>
+            <field name="certificate_name">English Language Proficiency Certificate</field>
+            <field name="certificate_type">completion</field>
+            <field name="state">draft</field>
+            <field name="description">Certificate of completion for English Language Course</field>
+        </record>
+        
+        <!-- Demo Certificate 2: Generated State -->
+        <record id="demo_certificate_2" model="gr.certificate">
+            <field name="name">CERT002</field>
+            <field name="student_id" ref="demo_student_6"/>
+            <field name="certificate_name">Advanced English Communication Certificate</field>
+            <field name="certificate_type">achievement</field>
+            <field name="state">generated</field>
+            <field name="generation_date">2024-12-26 10:00:00</field>
+            <field name="description">Certificate for achieving advanced level in English communication</field>
+        </record>
+        
+        <!-- Demo Certificate 3: Issued State -->
+        <record id="demo_certificate_3" model="gr.certificate">
+            <field name="name">CERT003</field>
+            <field name="student_id" ref="demo_student_7"/>
+            <field name="certificate_name">Business English Professional Certificate</field>
+            <field name="certificate_type">professional</field>
+            <field name="state">issued</field>
+            <field name="generation_date">2024-12-27 14:30:00</field>
+            <field name="issue_date">2024-12-27 16:00:00</field>
+            <field name="certificate_number">BEP-2024-001</field>
+            <field name="description">Professional certificate in Business English communication</field>
+        </record>
+        
+        <!-- Demo Certificate 4: Verified State -->
+        <record id="demo_certificate_4" model="gr.certificate">
+            <field name="name">CERT004</field>
+            <field name="student_id" ref="demo_student_8"/>
+            <field name="certificate_name">English Language Mastery Certificate</field>
+            <field name="certificate_type">mastery</field>
+            <field name="state">verified</field>
+            <field name="generation_date">2024-12-28 09:15:00</field>
+            <field name="issue_date">2024-12-28 11:30:00</field>
+            <field name="verification_date">2024-12-28 15:45:00</field>
+            <field name="certificate_number">ELM-2024-001</field>
+            <field name="verification_code">VER-ABC123</field>
+            <field name="description">Mastery level certificate in English language proficiency</field>
+        </record>
+        
+        <!-- Demo Certificate 5: Revoked State -->
+        <record id="demo_certificate_5" model="gr.certificate">
+            <field name="name">CERT005</field>
+            <field name="student_id" ref="demo_student_1"/>
+            <field name="certificate_name">English Foundation Certificate</field>
+            <field name="certificate_type">foundation</field>
+            <field name="state">revoked</field>
+            <field name="generation_date">2025-01-20 12:00:00</field>
+            <field name="issue_date">2025-01-20 14:00:00</field>
+            <field name="revocation_date">2025-01-25 10:30:00</field>
+            <field name="certificate_number">EFC-2025-001</field>
+            <field name="revocation_reason">Academic misconduct detected during verification</field>
+            <field name="description">Foundation level certificate in English language</field>
+        </record>
+        
+        <!-- Demo Certificate 6: Expired State -->
+        <record id="demo_certificate_6" model="gr.certificate">
+            <field name="name">CERT006</field>
+            <field name="student_id" ref="demo_student_2"/>
+            <field name="certificate_name">English Communication Certificate</field>
+            <field name="certificate_type">communication</field>
+            <field name="state">expired</field>
+            <field name="generation_date">2024-06-15 10:00:00</field>
+            <field name="issue_date">2024-06-15 12:00:00</field>
+            <field name="expiry_date">2024-12-15 23:59:59</field>
+            <field name="certificate_number">ECC-2024-001</field>
+            <field name="description">Certificate in English communication skills</field>
+        </record>
+        
+    </data>
+</odoo>

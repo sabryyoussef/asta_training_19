@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- Grants Training Manager Group -->
+        <record id="group_manager" model="res.groups">
+            <field name="name">Grants Training Manager</field>
+            <field name="comment">Full access to all grants training functionality</field>
+        </record>
+        
+        <!-- Grants Training Agent Group -->
+        <record id="group_agent" model="res.groups">
+            <field name="name">Grants Training Agent</field>
+            <field name="comment">Access to student management and assignment functionality</field>
+        </record>
+        
+        <!-- Grants Training Teacher Group -->
+        <record id="group_teacher" model="res.groups">
+            <field name="name">Grants Training Teacher</field>
+            <field name="comment">Access to course sessions and student progress</field>
+        </record>
+        
+        <!-- Grants Training Accounting View Group -->
+        <record id="group_accounting_view" model="res.groups">
+            <field name="name">Grants Training Accounting View</field>
+            <field name="comment">Read-only access to financial and reporting data</field>
+        </record>
+        
+    </data>
+</odoo>

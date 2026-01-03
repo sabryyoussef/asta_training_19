@@ -1,0 +1,116 @@
+/* Workflow Diagram Styles */
+.workflow-diagram-container {
+    margin: 20px 0;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.workflow-stages {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.workflow-stage {
+    background: #3498db;
+    color: white;
+    padding: 20px 25px;
+    border-radius: 12px;
+    text-align: center;
+    min-width: 140px;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex: 1;
+    max-width: 200px;
+}
+
+.workflow-stage:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+
+.workflow-stage .stage-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.workflow-stage .stage-subtitle {
+    font-size: 12px;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+.stage-arrow {
+    position: absolute;
+    right: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 24px;
+    font-weight: bold;
+    z-index: 10;
+}
+
+.workflow-stage:last-child .stage-arrow {
+    display: none;
+}
+
+/* Color variations for different stages */
+.workflow-stage.stage-inquiry { background: #3498db; }
+.workflow-stage.stage-application { background: #e74c3c; }
+.workflow-stage.stage-registration { background: #f39c12; }
+.workflow-stage.stage-enrollment { background: #27ae60; }
+.workflow-stage.stage-academic { background: #9b59b6; }
+.workflow-stage.stage-graduation { background: #1abc9c; }
+
+.workflow-stage.stage-intake { background: #e74c3c; }
+.workflow-stage.stage-assignment { background: #f39c12; }
+.workflow-stage.stage-sessions { background: #9b59b6; }
+.workflow-stage.stage-assessments { background: #1abc9c; }
+.workflow-stage.stage-certification { background: #34495e; }
+
+.workflow-description {
+    margin-top: 25px;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+.workflow-description h4 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    font-size: 18px;
+}
+
+.workflow-description p {
+    margin: 0;
+    color: #7f8c8d;
+    line-height: 1.6;
+    font-size: 14px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .workflow-stages {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .workflow-stage {
+        max-width: none;
+        margin-bottom: 10px;
+    }
+    
+    .stage-arrow {
+        display: none;
+    }
+}

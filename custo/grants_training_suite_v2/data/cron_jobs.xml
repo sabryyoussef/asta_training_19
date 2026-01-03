@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Batch eLearning Progress Synchronization -->
+        <record id="ir_cron_sync_elearning_progress" model="ir.cron">
+            <field name="name">Sync eLearning Progress</field>
+            <field name="model_id" ref="model_gr_progress_tracker"/>
+            <field name="state">code</field>
+            <field name="code">model.sync_all_elearning_progress()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">hours</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+        
+        <!-- Auto-enrollment of Eligible Students -->
+        <record id="ir_cron_auto_enroll_students" model="ir.cron">
+            <field name="name">Auto-enroll Eligible Students</field>
+            <field name="model_id" ref="model_gr_progress_tracker"/>
+            <field name="state">code</field>
+            <field name="code">model.auto_enroll_eligible_students()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+        
+        <!-- Daily Progress Monitoring and Alerts -->
+        <record id="ir_cron_progress_monitoring" model="ir.cron">
+            <field name="name">Progress Monitoring and Alerts</field>
+            <field name="model_id" ref="model_gr_progress_tracker"/>
+            <field name="state">code</field>
+            <field name="code">model.monitor_progress_and_alerts()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_admin"/>
+        </record>
+        
+    </data>
+</odoo>

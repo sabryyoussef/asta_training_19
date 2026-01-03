@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Default Alumni Groups -->
+        <record id="alumni_group_2020" model="op.alumni.group">
+            <field name="name">Class of 2020</field>
+            <field name="code">ALM2020</field>
+            <field name="group_type">batch</field>
+            <field name="graduation_year">2020</field>
+            <field name="description">Alumni who graduated in 2020</field>
+        </record>
+
+        <record id="alumni_group_2021" model="op.alumni.group">
+            <field name="name">Class of 2021</field>
+            <field name="code">ALM2021</field>
+            <field name="group_type">batch</field>
+            <field name="graduation_year">2021</field>
+            <field name="description">Alumni who graduated in 2021</field>
+        </record>
+
+        <record id="alumni_group_2022" model="op.alumni.group">
+            <field name="name">Class of 2022</field>
+            <field name="code">ALM2022</field>
+            <field name="group_type">batch</field>
+            <field name="graduation_year">2022</field>
+            <field name="description">Alumni who graduated in 2022</field>
+        </record>
+
+        <record id="alumni_group_2023" model="op.alumni.group">
+            <field name="name">Class of 2023</field>
+            <field name="code">ALM2023</field>
+            <field name="group_type">batch</field>
+            <field name="graduation_year">2023</field>
+            <field name="description">Alumni who graduated in 2023</field>
+        </record>
+
+        <record id="alumni_group_2024" model="op.alumni.group">
+            <field name="name">Class of 2024</field>
+            <field name="code">ALM2024</field>
+            <field name="group_type">batch</field>
+            <field name="graduation_year">2024</field>
+            <field name="description">Alumni who graduated in 2024</field>
+        </record>
+
+    </data>
+</odoo>
+

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Progress Tracker Form View -->
+    <record id="view_gr_progress_tracker_form" model="ir.ui.view">
+        <field name="name">gr.progress.tracker.form</field>
+        <field name="model">gr.progress.tracker</field>
+        <field name="arch" type="xml">
+            <form string="Progress Tracker">
+                <header>
+                    <button name="action_start_course" string="Start Course" type="object" 
+                            class="btn-primary" invisible="status != 'not_started'"/>
+                    <button name="action_complete_course" string="Complete Course" type="object" 
+                            class="btn-success" invisible="status != 'in_progress'"/>
+                    <button name="action_certify" string="Certify" type="object" 
+                            class="btn-info" invisible="status != 'completed'"/>
+                    <button name="action_sync_with_elearning" string="Sync with eLearning" type="object" 
+                            class="btn-secondary"/>
+                    <field name="status" widget="statusbar" statusbar_visible="not_started,in_progress,completed,certified"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="student_id" readonly="1"/>
+                        </h1>
+                        <h3>
+                            <field name="course_integration_id" readonly="1"/>
+                        </h3>
+                    </div>
+                    <group>
+                        <group string="Progress Information">
+                            <field name="elearning_progress" widget="progressbar"/>
+                            <field name="overall_progress" widget="progressbar"/>
+                            <field name="custom_sessions_completed"/>
+                            <field name="homework_submissions"/>
+                        </group>
+                        <group string="Dates">
+                            <field name="enrollment_date" readonly="1"/>
+                            <field name="start_date" readonly="1"/>
+                            <field name="completion_date" readonly="1"/>
+                            <field name="days_to_complete" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="eLearning Details">
+                            <field name="elearning_enrollment_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Progress Tracker List View -->
+    <record id="view_gr_progress_tracker_list" model="ir.ui.view">
+        <field name="name">gr.progress.tracker.list</field>
+        <field name="model">gr.progress.tracker</field>
+        <field name="arch" type="xml">
+            <list string="Progress Trackers">
+                <field name="student_id"/>
+                <field name="course_integration_id"/>
+                <field name="status"/>
+                <field name="elearning_progress" widget="progressbar"/>
+                <field name="overall_progress" widget="progressbar"/>
+                <field name="enrollment_date"/>
+                <field name="completion_date"/>
+                <field name="days_to_complete"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Progress Tracker Kanban View -->
+    <record id="view_gr_progress_tracker_kanban" model="ir.ui.view">
+        <field name="name">gr.progress.tracker.kanban</field>
+        <field name="model">gr.progress.tracker</field>
+        <field name="arch" type="xml">
+            <kanban sample="1">
+                <field name="student_id"/>
+                <field name="course_integration_id"/>
+                <field name="status"/>
+                <field name="elearning_progress"/>
+                <field name="overall_progress"/>
+                <field name="enrollment_date"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="oe_kanban_content">
+                                <div class="o_kanban_record_top">
+                                    <div class="o_kanban_record_headings">
+                                        <strong class="o_kanban_record_title">
+                                            <field name="student_id"/>
+                                        </strong>
+                                        <div class="o_kanban_record_subtitle">
+                                            <field name="course_integration_id"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_top_right">
+                                        <field name="status" widget="label_selection"/>
+                                    </div>
+                                </div>
+                                <div class="o_kanban_record_body">
+                                    <div class="o_kanban_stats">
+                                        <div class="o_kanban_stat">
+                                            <span class="o_kanban_stat_value">
+                                                <field name="elearning_progress"/>
+                                            </span>
+                                            <span class="o_kanban_stat_label">eLearning %</span>
+                                        </div>
+                                        <div class="o_kanban_stat">
+                                            <span class="o_kanban_stat_value">
+                                                <field name="overall_progress"/>
+                                            </span>
+                                            <span class="o_kanban_stat_label">Overall %</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Progress Tracker Search View -->
+    <record id="view_gr_progress_tracker_search" model="ir.ui.view">
+        <field name="name">gr.progress.tracker.search</field>
+        <field name="model">gr.progress.tracker</field>
+        <field name="arch" type="xml">
+            <search string="Progress Trackers">
+                <field name="student_id"/>
+                <field name="course_integration_id"/>
+                <filter string="Not Started" name="not_started" domain="[('status', '=', 'not_started')]"/>
+                <filter string="In Progress" name="in_progress" domain="[('status', '=', 'in_progress')]"/>
+                <filter string="Completed" name="completed" domain="[('status', '=', 'completed')]"/>
+                <filter string="Certified" name="certified" domain="[('status', '=', 'certified')]"/>
+                <filter string="This Week" name="this_week" domain="[('enrollment_date', '>=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                <group>
+                    <filter string="Status" name="group_status" domain="[]" context="{'group_by': 'status'}"/>
+                    <filter string="Student" name="group_student" domain="[]" context="{'group_by': 'student_id'}"/>
+                    <filter string="Course Integration" name="group_course" domain="[]" context="{'group_by': 'course_integration_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Progress Tracker Action -->
+    <record id="action_gr_progress_tracker" model="ir.actions.act_window">
+        <field name="name">Progress Trackers</field>
+        <field name="res_model">gr.progress.tracker</field>
+        <field name="view_mode">kanban,list,form</field>
+        <field name="context">{'search_default_this_week': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No progress trackers found!
+            </p>
+            <p>
+                Progress trackers are automatically created when students are enrolled
+                in integrated courses. They track both eLearning and custom training progress.
+            </p>
+        </field>
+    </record>
+
+</odoo>

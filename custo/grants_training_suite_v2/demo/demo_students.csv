@@ -1,0 +1,11 @@
+name,email,phone,birth_date,gender,nationality,native_language,english_level,has_certificate,certificate_type,certificate_date
+John Smith,john.smith@email.com,+1234567890,1995-03-15,male,American,English,advanced,true,IELTS,2023-06-15
+Maria Garcia,maria.garcia@email.com,+1234567891,1992-07-22,female,Mexican,Spanish,intermediate,false,,,
+Ahmed Hassan,ahmed.hassan@email.com,+1234567892,1998-11-08,male,Egyptian,Arabic,elementary,true,TOEFL,2023-09-20
+Sarah Johnson,sarah.johnson@email.com,+1234567893,1994-05-12,female,Canadian,English,proficient,true,Cambridge,2023-03-10
+Carlos Rodriguez,carlos.rodriguez@email.com,+1234567894,1996-09-30,male,Spanish,Spanish,upper_intermediate,false,,,
+Fatima Al-Zahra,fatima.alzahra@email.com,+1234567895,1993-12-03,female,Moroccan,Arabic,beginner,false,,,
+David Kim,david.kim@email.com,+1234567896,1997-01-18,male,Korean,Korean,intermediate,true,TOEIC,2023-08-05
+Emma Wilson,emma.wilson@email.com,+1234567897,1991-04-25,female,British,English,advanced,true,IELTS,2023-07-12
+Mohammed Ali,mohammed.ali@email.com,+1234567898,1999-08-14,male,Pakistani,Urdu,elementary,false,,,
+Lisa Chen,lisa.chen@email.com,+1234567899,1995-10-07,female,Chinese,Mandarin,upper_intermediate,true,HSK,2023-05-28

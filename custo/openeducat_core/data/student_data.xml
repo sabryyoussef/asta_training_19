@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Student Data - Loaded automatically on module install/upgrade -->
+    
+    <!-- Partner for Student -->
+    <!--
+    <record id="op_res_partner_student_26" model="res.partner">
+        <field name="name">Mohammed</field>
+    </record>
+
+    Student Record
+    <record id="op_student_26" model="op.student">
+        <field name="name">Mohammed A Al-Rashid</field>
+        <field name="first_name">Mohammed</field>
+        <field name="middle_name">A</field>
+        <field name="last_name">Al-Rashid</field>
+        <field name="gender">m</field>
+        <field name="birth_date">2000-08-15</field>
+        <field name="blood_group">O+</field>
+        <field name="email">mohammed.alrashid@example.com</field>
+        <field name="phone">+966501234567</field>
+        <field name="city">Jeddah</field>
+        <field name="street">123 King Abdulaziz Road</field>
+        <field name="street2">Apartment 5A</field>
+        <field name="zip">21432</field>
+        <field name="state_id" ref="base.state_sa_2"/>
+        <field name="country_id" ref="base.sa"/>
+        <field name="nationality" ref="base.sa"/>
+        <field name="type">contact</field>
+        <field name="active">True</field>
+        <field name="partner_id" ref="op_res_partner_student_26"/>
+    </record>
+    -->
+
+</odoo>
+

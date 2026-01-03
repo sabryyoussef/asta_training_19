@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Demo Course Integrations -->
+        <record id="course_integration_basic_english" model="gr.course.integration">
+            <field name="name">Basic English Communication Integration</field>
+            <field name="elearning_course_id" ref="elearning_course_basic_english"/>
+            <field name="training_program_id" ref="training_program_english_communication"/>
+            <field name="auto_enroll_eligible">True</field>
+            <field name="completion_threshold">80.0</field>
+            <field name="status">active</field>
+            <field name="description">Integration between Basic English eLearning course and English Communication Program</field>
+        </record>
+        
+        <record id="course_integration_business_writing" model="gr.course.integration">
+            <field name="name">Business Writing Skills Integration</field>
+            <field name="elearning_course_id" ref="elearning_course_business_writing"/>
+            <field name="training_program_id" ref="training_program_professional_development"/>
+            <field name="auto_enroll_eligible">True</field>
+            <field name="completion_threshold">85.0</field>
+            <field name="status">active</field>
+            <field name="description">Integration between Business Writing eLearning course and Professional Development Program</field>
+        </record>
+        
+        <record id="course_integration_digital_literacy" model="gr.course.integration">
+            <field name="name">Digital Literacy Integration</field>
+            <field name="elearning_course_id" ref="elearning_course_digital_literacy"/>
+            <field name="training_program_id" ref="training_program_digital_skills"/>
+            <field name="auto_enroll_eligible">True</field>
+            <field name="completion_threshold">75.0</field>
+            <field name="status">active</field>
+            <field name="description">Integration between Digital Literacy eLearning course and Digital Skills Program</field>
+        </record>
+        
+        <record id="course_integration_project_management" model="gr.course.integration">
+            <field name="name">Project Management Integration</field>
+            <field name="elearning_course_id" ref="elearning_course_project_management"/>
+            <field name="training_program_id" ref="training_program_professional_development"/>
+            <field name="auto_enroll_eligible">False</field>
+            <field name="completion_threshold">90.0</field>
+            <field name="status">active</field>
+            <field name="description">Integration between Project Management eLearning course and Professional Development Program (Manual enrollment only)</field>
+        </record>
+        
+        <record id="course_integration_customer_service" model="gr.course.integration">
+            <field name="name">Customer Service Excellence Integration</field>
+            <field name="elearning_course_id" ref="elearning_course_customer_service"/>
+            <field name="training_program_id" ref="training_program_professional_development"/>
+            <field name="auto_enroll_eligible">True</field>
+            <field name="completion_threshold">85.0</field>
+            <field name="status">active</field>
+            <field name="description">Integration between Customer Service eLearning course and Professional Development Program</field>
+        </record>
+        
+        <!-- Additional integration for testing manual enrollment -->
+        <record id="course_integration_advanced_english" model="gr.course.integration">
+            <field name="name">Advanced English Communication Integration</field>
+            <field name="elearning_course_id" ref="elearning_course_business_writing"/>
+            <field name="training_program_id" ref="training_program_english_communication"/>
+            <field name="auto_enroll_eligible">False</field>
+            <field name="completion_threshold">95.0</field>
+            <field name="status">active</field>
+            <field name="description">Advanced English course for manual enrollment testing</field>
+        </record>
+        
+    </data>
+</odoo>

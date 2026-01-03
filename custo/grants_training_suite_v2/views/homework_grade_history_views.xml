@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Homework Grade History Form View -->
+        <record id="view_gr_homework_grade_history_form" model="ir.ui.view">
+            <field name="name">gr.homework.grade.history.form</field>
+            <field name="model">gr.homework.grade.history</field>
+            <field name="arch" type="xml">
+                <form string="Grade History Entry">
+                    <header>
+                        <field name="change_date" readonly="1"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <h1>
+                                <field name="display_name" readonly="1"/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="Homework Information">
+                                <field name="homework_attempt_id" readonly="1"/>
+                                <field name="student_id" readonly="1"/>
+                                <field name="homework_title" readonly="1"/>
+                            </group>
+                            <group string="Change Information">
+                                <field name="change_date" readonly="1"/>
+                                <field name="changed_by_id" readonly="1"/>
+                                <field name="change_reason" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <group string="Previous Grade">
+                                <field name="old_grade" readonly="1"/>
+                                <field name="old_letter_grade" readonly="1"/>
+                            </group>
+                            <group string="New Grade">
+                                <field name="new_grade" readonly="1"/>
+                                <field name="new_letter_grade" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <group string="Change Analysis">
+                                <field name="grade_change" readonly="1"/>
+                                <field name="grade_change_percentage" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Homework Grade History Tree View -->
+        <record id="view_gr_homework_grade_history_tree" model="ir.ui.view">
+            <field name="name">gr.homework.grade.history.tree</field>
+            <field name="model">gr.homework.grade.history</field>
+            <field name="arch" type="xml">
+                <list string="Grade History">
+                    <field name="homework_title"/>
+                    <field name="student_id"/>
+                    <field name="old_grade"/>
+                    <field name="new_grade"/>
+                    <field name="grade_change" decoration-info="grade_change &gt; 0" decoration-warning="grade_change &lt; 0"/>
+                    <field name="old_letter_grade"/>
+                    <field name="new_letter_grade"/>
+                    <field name="change_date"/>
+                    <field name="changed_by_id"/>
+                    <field name="change_reason"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Homework Grade History Search View -->
+        <record id="view_gr_homework_grade_history_search" model="ir.ui.view">
+            <field name="name">gr.homework.grade.history.search</field>
+            <field name="model">gr.homework.grade.history</field>
+            <field name="arch" type="xml">
+                <search string="Grade History">
+                    <field name="homework_title"/>
+                    <field name="student_id"/>
+                    <field name="changed_by_id"/>
+                    <field name="homework_attempt_id"/>
+                    
+                    <filter string="Recent Changes" name="recent" domain="[('change_date', '>=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]"/>
+                    <filter string="Grade Increases" name="increases" domain="[('grade_change', '&gt;', 0)]"/>
+                    <filter string="Grade Decreases" name="decreases" domain="[('grade_change', '&lt;', 0)]"/>
+                    
+                    <group>
+                        <filter string="Student" name="group_student" domain="[]" context="{'group_by': 'student_id'}"/>
+                        <filter string="Changed By" name="group_changed_by" domain="[]" context="{'group_by': 'changed_by_id'}"/>
+                        <filter string="Change Date" name="group_date" domain="[]" context="{'group_by': 'change_date:day'}"/>
+                        <filter string="Homework" name="group_homework" domain="[]" context="{'group_by': 'homework_title'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Homework Grade History Action -->
+        <record id="action_gr_homework_grade_history" model="ir.actions.act_window">
+            <field name="name">Grade History</field>
+            <field name="res_model">gr.homework.grade.history</field>
+            <field name="view_mode">list,form</field>
+            <field name="search_view_id" ref="view_gr_homework_grade_history_search"/>
+            <field name="context">{'search_default_recent': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    No grade history found!
+                </p>
+                <p>
+                    Grade history tracks all changes made to homework grades,
+                    providing a complete audit trail for academic records.
+                </p>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>

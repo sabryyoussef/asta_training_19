@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        
+        <!-- Course Session Form View -->
+        <record id="view_gr_course_session_form" model="ir.ui.view">
+            <field name="name">gr.course.session.form</field>
+            <field name="model">gr.course.session</field>
+            <field name="arch" type="xml">
+                <form string="Course Session">
+                    <header>
+                        <button name="action_start_session" string="Start Session" type="object" class="btn-primary" 
+                                invisible="state != 'scheduled'"/>
+                        <button name="action_complete_session" string="Complete Session" type="object" class="btn-success" 
+                                invisible="state != 'in_progress'"/>
+                        <button name="action_mark_no_show" string="Mark No Show" type="object" class="btn-warning" 
+                                invisible="state != 'scheduled'"/>
+                        <button name="action_cancel_session" string="Cancel Session" type="object" class="btn-danger" 
+                                invisible="state in ['completed', 'cancelled', 'no_show']"/>
+                        <button name="action_reschedule" string="Reschedule" type="object" class="btn-secondary" 
+                                invisible="state in ['in_progress', 'completed']"/>
+                        <field name="state" widget="statusbar" statusbar_visible="scheduled,in_progress,completed"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <div class="oe_stat_button" icon="fa-clock-o">
+                                <field name="session_duration" widget="statinfo" string="Duration (hrs)"/>
+                            </div>
+                            <div class="oe_stat_button" icon="fa-percentage">
+                                <field name="progress_percentage" widget="statinfo" string="Progress"/>
+                            </div>
+                            <div class="oe_stat_button" icon="fa-user" 
+                                 invisible="attendance_status == False">
+                                <field name="attendance_status" widget="statinfo" string="Attendance"/>
+                            </div>
+                        </div>
+                        
+                        <div class="oe_title">
+                            <h1>
+                                <field name="name" placeholder="Enter session name..."/>
+                            </h1>
+                        </div>
+                        
+                        <group>
+                            <group string="Session Details">
+                                <field name="student_id" required="1"/>
+                                <field name="agent_id" required="1"/>
+                                <field name="session_date" required="1"/>
+                                <field name="session_duration"/>
+                                <field name="session_type"/>
+                                <field name="state"/>
+                            </group>
+                            <group string="Location &amp; Access">
+                                <field name="location" invisible="session_type != 'in_person'"/>
+                                <field name="meeting_link" invisible="session_type not in ['online', 'hybrid']"/>
+                                <field name="attendance_status" invisible="state == 'scheduled'"/>
+                                <field name="check_in_time" readonly="1"/>
+                                <field name="check_out_time" readonly="1"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <group string="Session Content">
+                                <field name="session_topic"/>
+                                <field name="session_objectives"/>
+                                <field name="progress_percentage"/>
+                                <field name="student_engagement" invisible="state == 'scheduled'"/>
+                            </group>
+                            <group string="Homework" invisible="state == 'scheduled'">
+                                <field name="homework_assigned"/>
+                                <field name="homework_due_date"/>
+                            </group>
+                        </group>
+                        
+                        <group>
+                            <field name="session_notes" placeholder="Session notes and observations..."/>
+                        </group>
+                        
+                        <notebook>
+                            <page string="Session Details" invisible="state == 'scheduled'">
+                                <group>
+                                    <group>
+                                        <field name="check_in_time" readonly="1"/>
+                                        <field name="check_out_time" readonly="1"/>
+                                        <field name="session_duration" readonly="1"/>
+                                    </group>
+                                    <group>
+                                        <field name="attendance_status" readonly="1"/>
+                                        <field name="student_engagement" readonly="1"/>
+                                        <field name="progress_percentage" readonly="1"/>
+                                    </group>
+                                </group>
+                            </page>
+                            
+                            <page string="Content &amp; Objectives">
+                                <group>
+                                    <field name="session_topic" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="session_objectives" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="session_notes" readonly="1"/>
+                                </group>
+                            </page>
+                            
+                            <page string="Homework" invisible="homework_assigned == False">
+                                <group>
+                                    <field name="homework_assigned" readonly="1"/>
+                                </group>
+                                <group>
+                                    <field name="homework_due_date" readonly="1"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Course Session List View -->
+        <record id="view_gr_course_session_list" model="ir.ui.view">
+            <field name="name">gr.course.session.list</field>
+            <field name="model">gr.course.session</field>
+            <field name="arch" type="xml">
+                <list string="Course Sessions" default_order="session_date desc">
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="agent_id"/>
+                    <field name="session_date"/>
+                    <field name="session_duration"/>
+                    <field name="session_type"/>
+                    <field name="attendance_status"/>
+                    <field name="progress_percentage"/>
+                    <field name="state" widget="badge" decoration-success="state == 'completed'" 
+                           decoration-warning="state == 'in_progress'" decoration-info="state == 'scheduled'" 
+                           decoration-danger="state == 'cancelled'"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Course Session Kanban View -->
+        <record id="view_gr_course_session_kanban" model="ir.ui.view">
+            <field name="name">gr.course.session.kanban</field>
+            <field name="model">gr.course.session</field>
+            <field name="arch" type="xml">
+                <kanban sample="1" default_group_by="state" class="o_kanban_small_column">
+                    <field name="name"/>
+                    <field name="state"/>
+                    <field name="student_id"/>
+                    <field name="agent_id"/>
+                    <field name="session_date"/>
+                    <field name="session_duration"/>
+                    <field name="session_type"/>
+                    <field name="attendance_status"/>
+                    <field name="progress_percentage"/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_card oe_kanban_global_click">
+                                <div class="oe_kanban_content">
+                                    <div class="o_kanban_record_top">
+                                        <div class="o_kanban_record_headings">
+                                            <strong class="o_kanban_record_title">
+                                                <field name="name"/>
+                                            </strong>
+                                        </div>
+                                        <div class="o_kanban_record_subtitle">
+                                            <field name="session_topic"/>
+                                        </div>
+                                    </div>
+                                    <div class="o_kanban_record_body">
+                                        <div class="o_kanban_record_details">
+                                            <div class="o_kanban_record_bottom">
+                                                <div class="oe_kanban_bottom_left">
+                                                    <span>Student: <field name="student_id"/></span>
+                                                </div>
+                                                <div class="oe_kanban_bottom_right">
+                                                    <span>Duration: <field name="session_duration"/>hrs</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Course Session Search View -->
+        <record id="view_gr_course_session_search" model="ir.ui.view">
+            <field name="name">gr.course.session.search</field>
+            <field name="model">gr.course.session</field>
+            <field name="arch" type="xml">
+                <search string="Search Course Sessions">
+                    <field name="name"/>
+                    <field name="student_id"/>
+                    <field name="agent_id"/>
+                    <field name="session_topic"/>
+                    <field name="session_type"/>
+                    <filter string="Scheduled" name="scheduled" domain="[('state', '=', 'scheduled')]"/>
+                    <filter string="In Progress" name="in_progress" domain="[('state', '=', 'in_progress')]"/>
+                    <filter string="Completed" name="completed" domain="[('state', '=', 'completed')]"/>
+                    <filter string="Cancelled" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                    <filter string="No Show" name="no_show" domain="[('state', '=', 'no_show')]"/>
+                    <filter string="Present" name="present" domain="[('attendance_status', '=', 'present')]"/>
+                    <filter string="Absent" name="absent" domain="[('attendance_status', '=', 'absent')]"/>
+                    <filter string="Late" name="late" domain="[('attendance_status', '=', 'late')]"/>
+                    <filter string="Today" name="today" domain="[('session_date', '>=', context_today().strftime('%Y-%m-%d')), ('session_date', '&lt;', (context_today() + relativedelta(days=1)).strftime('%Y-%m-%d'))]"/>
+                    <filter string="This Week" name="this_week" domain="[('session_date', '>=', (context_today() - relativedelta(weeks=1)).strftime('%Y-%m-%d'))]"/>
+                    <filter string="This Month" name="this_month" domain="[('session_date', '>=', (context_today() - relativedelta(months=1)).strftime('%Y-%m-01'))]"/>
+                    <group>
+                        <filter string="Status" name="group_state" domain="[]" context="{'group_by': 'state'}"/>
+                        <filter string="Student" name="group_student" domain="[]" context="{'group_by': 'student_id'}"/>
+                        <filter string="Agent" name="group_agent" domain="[]" context="{'group_by': 'agent_id'}"/>
+                        <filter string="Session Type" name="group_session_type" domain="[]" context="{'group_by': 'session_type'}"/>
+                        <filter string="Session Date" name="group_session_date" domain="[]" context="{'group_by': 'session_date'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- Course Session Action -->
+        <record id="action_gr_course_session" model="ir.actions.act_window">
+            <field name="name">Course Sessions</field>
+            <field name="res_model">gr.course.session</field>
+            <field name="view_mode">kanban,list,form</field>
+            <field name="context">{'search_default_today': 1}</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create your first course session!
+                </p>
+                <p>
+                    Course sessions track individual learning sessions between students and agents,
+                    including attendance, progress, and homework assignments.
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>
