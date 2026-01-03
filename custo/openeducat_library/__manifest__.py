@@ -64,7 +64,8 @@
     ],
     'demo': [
         'demo/media_type_demo.xml',
-        'demo/res_users_demo.xml',
+        # Commented out due to missing openeducat_core.op_user_faculty reference
+        # 'demo/res_users_demo.xml',
         'demo/tag_demo.xml',
         'demo/publisher_demo.xml',
         'demo/author_demo.xml',

@@ -45,8 +45,10 @@
         'menus/op_menu.xml',
     ],
     'demo': [
-        'demo/admission_register_demo.xml',
-        'demo/admission_demo.xml',
+        # Commented out due to missing openeducat_core.op_course_* references
+        # These load before CSV courses are imported
+        # 'demo/admission_register_demo.xml',
+        # 'demo/admission_demo.xml',
     ],
     'test': [],
     'images': [

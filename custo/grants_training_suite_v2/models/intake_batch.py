@@ -473,12 +473,13 @@ class IntakeBatch(models.Model):
             record.has_failed_records = record.failed_records_count > 0
     
     
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         """Override create to generate sequence number."""
-        if vals.get('name', _('New')) == _('New'):
-            vals['name'] = self.env['ir.sequence'].next_by_code('gr.intake.batch') or _('New')
-        return super(IntakeBatch, self).create(vals)
+        for vals in vals_list:
+            if vals.get('name', _('New')) == _('New'):
+                vals['name'] = self.env['ir.sequence'].next_by_code('gr.intake.batch') or _('New')
+        return super(IntakeBatch, self).create(vals_list)
     
     def action_upload_file(self):
         """Action to upload and validate file."""

@@ -36,8 +36,9 @@
         'menus/op_menu.xml',
     ],
     'demo': [
-        'demo/classroom_demo.xml',
-        'demo/facility_line_demo.xml'
+        # Commented out due to missing openeducat_core.op_course_* references
+        # 'demo/classroom_demo.xml',
+        # 'demo/facility_line_demo.xml'
     ],
     'images': [
         'static/description/openeducat-classroom_banner.jpg',
