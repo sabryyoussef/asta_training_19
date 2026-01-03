@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     
-    <!-- Hide "Don't have an account?" section from login page -->
+    <!-- TEMPORARILY DISABLED - Signup hiding functionality -->
+    <!-- TODO: Update XPath for Odoo 19 login template structure -->
+    <!-- 
     <template id="login_hide_signup" inherit_id="web.login" priority="99">
-        <!-- Hide the signup link/message by setting it to display:none -->
-        <xpath expr="//div[contains(@class, 'alert')]//a[@href='/web/signup']/.." position="attributes">
-            <attribute name="style">display: none;</attribute>
+        <xpath expr="//a[@href='/web/signup']" position="attributes" optional="True">
+            <attribute name="style">display: none !important;</attribute>
         </xpath>
     </template>
     
-    <!-- Alternative: If the above doesn't work, try hiding by specific text content -->
-    <template id="login_hide_signup_alt" inherit_id="web.login" priority="100" active="False">
-        <!-- This is an alternative approach - replace the entire div containing signup link -->
-        <xpath expr="//div[@class='alert alert-info' and contains(., 'account')]" position="replace"/>
+    <template id="login_hide_signup_text" inherit_id="web.login" priority="100">
+        <xpath expr="//div[contains(@class, 'alert') and contains(., 'account')]" position="attributes" optional="True">
+            <attribute name="style">display: none !important;</attribute>
+        </xpath>
     </template>
+    -->
 
 </odoo>
