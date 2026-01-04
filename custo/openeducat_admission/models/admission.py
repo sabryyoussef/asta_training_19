@@ -519,6 +519,10 @@ class OpAdmission(models.Model):
                         'op.student'].create(vals).id
                     record.partner_id = record.student_id.partner_id.id \
                         if record else False
+                    
+                    # Automatically create portal user access for the enrolled student
+                    if record.student_id and not record.student_id.user_id:
+                        record.student_id.create_student_user()
 
             else:
                 student_id = record.student_id.id
@@ -533,6 +537,10 @@ class OpAdmission(models.Model):
                         'product_id': record.register_id.product_id.id,
                     }]],
                 })
+                
+                # Also create portal user for existing student if not already created
+                if record.student_id and not record.student_id.user_id:
+                    record.student_id.create_student_user()
             if record.fees_term_id.fees_terms in ['fixed_days', 'fixed_date']:
                 val = []
                 product_id = record.register_id.product_id.id

@@ -20,6 +20,9 @@
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
+import logging
+
+_logger = logging.getLogger(__name__)
 
 
 class OpStudentCourse(models.Model):
@@ -135,16 +138,46 @@ class OpStudent(models.Model):
         }]
 
     def create_student_user(self):
-        user_group = self.env.ref("base.group_portal") or False
+        """Create portal user for student with Odoo 19 compatibility"""
+        portal_group = self.env.ref("base.group_portal", raise_if_not_found=False)
         users_res = self.env['res.users']
+        
         for record in self:
-            if not record.user_id:
-                user_id = users_res.create({
+            if not record.user_id and record.email:
+                # Create user without groups_id (Odoo 19 compatibility)
+                user_vals = {
                     'name': record.name,
                     'partner_id': record.partner_id.id,
                     'login': record.email,
-                    'groups_id': user_group,
                     'is_student': True,
                     'tz': self._context.get('tz'),
-                })
-                record.user_id = user_id
+                }
+                
+                try:
+                    user_id = users_res.create(user_vals)
+                    record.user_id = user_id
+                    
+                    # Assign portal group after user creation (Odoo 19 compatibility)
+                    if portal_group and user_id:
+                        try:
+                            # Use group's users field (inverse relationship)
+                            portal_group.write({'users': [(4, user_id.id)]})
+                            _logger.info(f"Portal access created for student: {record.name} (ID: {record.id})")
+                        except Exception as e:
+                            _logger.error(f"Could not assign portal group to user {user_id.id}: {e}")
+                            # Continue - user can be assigned groups manually later
+                    
+                    # Send password reset email to allow student to set their password
+                    if user_id:
+                        try:
+                            user_id.action_reset_password()
+                            _logger.info(f"Password reset email sent to: {record.email}")
+                        except Exception as e:
+                            _logger.warning(f"Could not send password reset email to {record.email}: {e}")
+                            
+                except Exception as e:
+                    _logger.error(f"Could not create portal user for student {record.name}: {e}")
+                    raise ValidationError(_(f"Could not create portal access for {record.name}. Error: {str(e)}"))
+            elif not record.email:
+                _logger.warning(f"Cannot create portal user for student {record.name} (ID: {record.id}): No email address")
+
