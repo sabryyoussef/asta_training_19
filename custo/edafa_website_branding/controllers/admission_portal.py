@@ -31,14 +31,14 @@ _logger = logging.getLogger(__name__)
 
 class EdafaAdmissionPortal(http.Controller):
 
-    @http.route(['/admission', '/admission/apply'], type='http', auth="public", website=True, sitemap=True)
+    @http.route(['/admission', '/admission/apply'], type='http', auth="user", website=True, sitemap=True)
     def admission_form(self, **kwargs):
         """Profile selection page - choose between Student or Trainer"""
         return request.render('edafa_website_branding.profile_selection', {
             'page_name': 'profile_selection',
         })
 
-    @http.route(['/admission/apply/student'], type='http', auth="public", website=True, sitemap=True)
+    @http.route(['/admission/apply/student'], type='http', auth="user", website=True, sitemap=True)
     def admission_form_student(self, **kwargs):
         """Student admission application form - Now uses multi-step wizard (Phase 1)"""
         # Get available departments first (for filtering)
@@ -94,7 +94,7 @@ class EdafaAdmissionPortal(http.Controller):
             'page_name': 'admission_wizard',
         })
 
-    @http.route(['/admission/apply/trainer'], type='http', auth="public", website=True, sitemap=True)
+    @http.route(['/admission/apply/trainer'], type='http', auth="user", website=True, sitemap=True)
     def admission_form_trainer(self, **kwargs):
         """Trainer application - redirect directly to HR recruitment or contact us"""
         # Check if hr_recruitment module is installed
@@ -110,7 +110,7 @@ class EdafaAdmissionPortal(http.Controller):
             # No recruitment module - redirect to contact us
             return request.redirect('/contactus')
 
-    @http.route(['/admission/apply/classic'], type='http', auth="public", website=True)
+    @http.route(['/admission/apply/classic'], type='http', auth="user", website=True)
     def admission_form_classic(self, **kwargs):
         """Original single-page form (kept for compatibility)"""
         # Get available courses, batches, programs (only active courses)
@@ -154,7 +154,7 @@ class EdafaAdmissionPortal(http.Controller):
             'page_name': 'admission',
         })
 
-    @http.route('/admission/submit', type='http', auth="public", website=True, methods=['POST'], csrf=True)
+    @http.route('/admission/submit', type='http', auth="user", website=True, methods=['POST'], csrf=True)
     def admission_submit(self, **post):
         """Handle admission form submission"""
         error = {}
