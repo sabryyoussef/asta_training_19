@@ -32,6 +32,7 @@
         'base',
         'website',
         'portal',
+        'auth_signup',  # Enable user signup functionality
         'openeducat_core',
         'openeducat_admission',
         'payment',  # For payment.transaction integration
