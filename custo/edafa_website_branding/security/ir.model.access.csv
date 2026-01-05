@@ -1,6 +1,10 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_op_admission_public,op.admission.public,openeducat_admission.model_op_admission,base.group_public,1,0,1,0
-access_op_admission_register_public,op.admission.register.public,openeducat_admission.model_op_admission_register,base.group_public,1,0,1,0
-access_op_course_public,op.course.public,openeducat_core.model_op_course,base.group_public,1,0,0,0
-access_op_batch_public,op.batch.public,openeducat_core.model_op_batch,base.group_public,1,0,0,0
+access_op_admission_portal,op.admission.portal,openeducat_admission.model_op_admission,base.group_portal,1,1,1,0
+access_op_admission_register_portal,op.admission.register.portal,openeducat_admission.model_op_admission_register,base.group_portal,1,0,0,0
+access_op_course_portal,op.course.portal,openeducat_core.model_op_course,base.group_portal,1,0,0,0
+access_op_batch_portal,op.batch.portal,openeducat_core.model_op_batch,base.group_portal,1,0,0,0
+access_op_program_portal,op.program.portal,openeducat_core.model_op_program,base.group_portal,1,0,0,0
+access_op_department_portal,op.department.portal,openeducat_core.model_op_department,base.group_portal,1,0,0,0
+access_res_country_portal,res.country.portal,base.model_res_country,base.group_portal,1,0,0,0
+access_res_country_state_portal,res.country.state.portal,base.model_res_country_state,base.group_portal,1,0,0,0
 

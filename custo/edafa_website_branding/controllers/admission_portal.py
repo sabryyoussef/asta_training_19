@@ -340,6 +340,7 @@ class EdafaAdmissionPortal(http.Controller):
                 'zip': post.get('zip', '').strip() if post.get('zip') else '',
                 'application_date': fields.Datetime.now(),
                 'state': 'submit',  # Set to submitted state initially
+                'partner_id': request.env.user.partner_id.id,  # Link to logged-in portal user
                 # Previous education fields (optional)
                 'prev_institute_id': post.get('prev_institute_id', '').strip() if post.get('prev_institute_id') else '',
                 'prev_course_id': post.get('prev_course_id', '').strip() if post.get('prev_course_id') else '',
@@ -446,8 +447,8 @@ class EdafaAdmissionPortal(http.Controller):
                 request.session['admission_default'] = post_data
                 return request.redirect('/admission/apply')
             
-            # Create admission record
-            admission = request.env['op.admission'].sudo().create(admission_vals)
+            # Create admission record (portal user creates their own admission)
+            admission = request.env['op.admission'].create(admission_vals)
             
             # Ensure application_number is generated (it might be computed)
             if not admission.application_number:
