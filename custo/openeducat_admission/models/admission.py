@@ -366,34 +366,66 @@ class OpAdmission(models.Model):
             
             student_user = False
             if enable_create_student_user:
-                # Create user first without groups_id (Odoo 19 compatibility)
-                portal_group = self.env.ref('base.group_portal', raise_if_not_found=False)
-                user_vals = {
-                    'name': student.name,
-                    'login': student.email if student.email else student.application_number,  # noqa
-                    'image_1920': self.image or False,
-                    'is_student': True,
-                    'partner_id': partner.id,  # Use existing partner to avoid duplicates
-                }
-                if self.company_id:
-                    user_vals['company_id'] = self.company_id.id
+                # Check if user already exists for this partner or email to avoid duplicates
+                existing_user = False
+                if partner:
+                    # First check if partner already has a user
+                    existing_user = self.env['res.users'].sudo().search([
+                        ('partner_id', '=', partner.id)
+                    ], limit=1)
                 
-                student_user = self.env['res.users'].create(user_vals)
+                if not existing_user and student.email:
+                    # Check if user exists with this email/login
+                    existing_user = self.env['res.users'].sudo().search([
+                        ('login', '=', student.email)
+                    ], limit=1)
                 
-                # Assign portal group after creation (Odoo 19 compatibility)
-                # Use group.users instead of user.groups_id (inverse relationship)
-                if portal_group and student_user:
-                    try:
-                        # In Odoo 19, groups_id is not writable on res.users
-                        # Use group's users field (inverse relationship) with write() method
-                        current_users = portal_group.users
-                        if student_user not in current_users:
-                            # Add user to group using Many2many command (4 = add to existing)
-                            portal_group.write({'users': [(4, student_user.id)]})
-                    except Exception as e:
-                        _logger.error(f"Could not assign portal group to user {student_user.id}: {e}")
-                        # Continue without group assignment - user can be assigned manually later
-                        # This is not critical - the user can still be created and assigned groups manually
+                if existing_user:
+                    # Use existing user instead of creating duplicate
+                    student_user = existing_user
+                    _logger.info(f"Using existing user for student {student.name}: {existing_user.login}")
+                    
+                    # Ensure the existing user has portal group if not already assigned
+                    portal_group = self.env.ref('base.group_portal', raise_if_not_found=False)
+                    if portal_group and student_user:
+                        try:
+                            current_users = portal_group.users
+                            if student_user not in current_users:
+                                # Ensure user is portal, not internal
+                                portal_group.write({'users': [(4, student_user.id)]})
+                                _logger.info(f"Assigned portal group to existing user {student_user.id}")
+                        except Exception as e:
+                            _logger.error(f"Could not assign portal group to existing user {student_user.id}: {e}")
+                else:
+                    # Create user first without groups_id (Odoo 19 compatibility)
+                    portal_group = self.env.ref('base.group_portal', raise_if_not_found=False)
+                    user_vals = {
+                        'name': student.name,
+                        'login': student.email if student.email else student.application_number,  # noqa
+                        'image_1920': self.image or False,
+                        'is_student': True,
+                        'partner_id': partner.id,  # Use existing partner to avoid duplicates
+                    }
+                    if self.company_id:
+                        user_vals['company_id'] = self.company_id.id
+                    
+                    student_user = self.env['res.users'].create(user_vals)
+                    _logger.info(f"Created new user for student {student.name}: {student_user.login}")
+                    
+                    # Assign portal group after creation (Odoo 19 compatibility)
+                    # Use group.users instead of user.groups_id (inverse relationship)
+                    if portal_group and student_user:
+                        try:
+                            # In Odoo 19, groups_id is not writable on res.users
+                            # Use group's users field (inverse relationship) with write() method
+                            current_users = portal_group.users
+                            if student_user not in current_users:
+                                # Add user to group using Many2many command (4 = add to existing)
+                                portal_group.write({'users': [(4, student_user.id)]})
+                        except Exception as e:
+                            _logger.error(f"Could not assign portal group to user {student_user.id}: {e}")
+                            # Continue without group assignment - user can be assigned manually later
+                            # This is not critical - the user can still be created and assigned groups manually
             # Prepare partner details (res.partner doesn't have 'mobile' field in standard Odoo)
             # Only include fields that exist on res.partner
             partner_details = {
