@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
+        <!-- Privilege -->
+        <record id="module_category_edafa_website_branding_privilege" model="res.groups.privilege">
+            <field name="name">Edafa Website Branding</field>
+            <field name="sequence">8</field>
+        </record>
+        
+        <!-- Website Branding User Group -->
+        <record id="group_edafa_website_branding_user" model="res.groups">
+            <field name="name">Website Branding User</field>
+            <field name="privilege_id" ref="module_category_edafa_website_branding_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        
+        <!-- Website Branding Manager Group -->
+        <record id="group_edafa_website_branding_manager" model="res.groups">
+            <field name="name">Website Branding Manager</field>
+            <field name="privilege_id" ref="module_category_edafa_website_branding_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_edafa_website_branding_user'))]"/>
+        </record>
         
         <!-- Portal User: Can only see their own admissions -->
         <record id="admission_portal_rule" model="ir.rule">

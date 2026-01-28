@@ -47,13 +47,13 @@
            ],
     'data': [
         'security/ir.model.access.csv',
+        'security/dashboard_security.xml',
         'data/workflow_data.xml',
         'views/workflow_dashboard_view.xml',
         'views/workflow_menu.xml',
     ],
     'assets': {
         'web.assets_backend': [
-            'motakamel_dashboard/static/src/css/english_numerals.css',
             'motakamel_dashboard/static/src/css/workflow_diagram.css',
             'motakamel_dashboard/static/src/js/bootstrap_console_tap.js',
             'motakamel_dashboard/static/src/css/workflow_dashboard.css',

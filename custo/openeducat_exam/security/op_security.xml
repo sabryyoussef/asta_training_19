@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+        <!-- Privilege -->
+        <record id="module_category_openeducat_exam_privilege" model="res.groups.privilege">
+            <field name="name">OpenEduCat Exam</field>
+            <field name="sequence">8</field>
+        </record>
+        
+        <!-- Exam User Group -->
+        <record id="group_openeducat_exam_user_privilege" model="res.groups">
+            <field name="name">Exam User</field>
+            <field name="privilege_id" ref="module_category_openeducat_exam_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        
+        <!-- Exam Manager Group -->
+        <record id="group_openeducat_exam_manager_privilege" model="res.groups">
+            <field name="name">Exam Manager</field>
+            <field name="privilege_id" ref="module_category_openeducat_exam_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_openeducat_exam_user_privilege'))]"/>
+        </record>
 
         <record model="ir.module.category" id="module_category_all_op_exam">
             <field name="name">Exam</field>

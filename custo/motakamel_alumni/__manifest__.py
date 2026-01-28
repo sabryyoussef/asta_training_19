@@ -55,12 +55,10 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'motakamel_alumni/static/src/css/english_numerals.css',
             'motakamel_alumni/static/src/css/alumni.css',
             'motakamel_alumni/static/src/js/alumni_dashboard.js',
         ],
         'web.assets_frontend': [
-            'motakamel_alumni/static/src/css/english_numerals.css',
             'motakamel_alumni/static/src/css/alumni_portal.css',
         ],
     },
