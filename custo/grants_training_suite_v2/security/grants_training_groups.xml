@@ -1,28 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
+        <!-- Privilege -->
+        <record id="module_category_grants_training_privilege" model="res.groups.privilege">
+            <field name="name">Grants Training Suite</field>
+            <field name="sequence">8</field>
+        </record>
+        
+        <!-- Grants Training User Group -->
+        <record id="group_grants_training_user" model="res.groups">
+            <field name="name">Grants Training User</field>
+            <field name="privilege_id" ref="module_category_grants_training_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
         
         <!-- Grants Training Manager Group -->
         <record id="group_manager" model="res.groups">
             <field name="name">Grants Training Manager</field>
+            <field name="privilege_id" ref="module_category_grants_training_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_grants_training_user'))]"/>
             <field name="comment">Full access to all grants training functionality</field>
         </record>
         
         <!-- Grants Training Agent Group -->
         <record id="group_agent" model="res.groups">
             <field name="name">Grants Training Agent</field>
+            <field name="privilege_id" ref="module_category_grants_training_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_grants_training_user'))]"/>
             <field name="comment">Access to student management and assignment functionality</field>
         </record>
         
         <!-- Grants Training Teacher Group -->
         <record id="group_teacher" model="res.groups">
             <field name="name">Grants Training Teacher</field>
+            <field name="privilege_id" ref="module_category_grants_training_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_grants_training_user'))]"/>
             <field name="comment">Access to course sessions and student progress</field>
         </record>
         
         <!-- Grants Training Accounting View Group -->
         <record id="group_accounting_view" model="res.groups">
             <field name="name">Grants Training Accounting View</field>
+            <field name="privilege_id" ref="module_category_grants_training_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_grants_training_user'))]"/>
             <field name="comment">Read-only access to financial and reporting data</field>
         </record>
         

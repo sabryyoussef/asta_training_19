@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+        <!-- Privilege -->
+        <record id="module_category_openeducat_core_privilege" model="res.groups.privilege">
+            <field name="name">OpenEduCat Core</field>
+            <field name="sequence">8</field>
+        </record>
+        
+        <!-- Core User Group -->
+        <record id="group_openeducat_core_user" model="res.groups">
+            <field name="name">Core User</field>
+            <field name="privilege_id" ref="module_category_openeducat_core_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        
+        <!-- Core Manager Group -->
+        <record id="group_openeducat_core_manager" model="res.groups">
+            <field name="name">Core Manager</field>
+            <field name="privilege_id" ref="module_category_openeducat_core_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_openeducat_core_user'))]"/>
+        </record>
+
         <record model="ir.module.category" id="base.module_category_marketing">
             <field name="sequence">100</field>
         </record>

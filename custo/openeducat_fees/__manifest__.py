@@ -46,7 +46,6 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'openeducat_fees/static/src/css/english_numerals.css',
             'openeducat_fees/static/src/js/page_list.js',
             'openeducat_fees/static/src/js/fees_term_widget.js',
             'openeducat_fees/static/src/xml/fees_term_widget_template.xml',

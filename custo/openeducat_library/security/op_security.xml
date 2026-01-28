@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+        <!-- Privilege -->
+        <record id="module_category_openeducat_library_privilege" model="res.groups.privilege">
+            <field name="name">OpenEduCat Library</field>
+            <field name="sequence">8</field>
+        </record>
+        
+        <!-- Library User Group -->
+        <record id="group_openeducat_library_user_privilege" model="res.groups">
+            <field name="name">Library User</field>
+            <field name="privilege_id" ref="module_category_openeducat_library_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        
+        <!-- Library Manager Group -->
+        <record id="group_openeducat_library_manager_privilege" model="res.groups">
+            <field name="name">Library Manager</field>
+            <field name="privilege_id" ref="module_category_openeducat_library_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_openeducat_library_user_privilege'))]"/>
+        </record>
 
         <record model="ir.module.category" id="module_category_all_Library">
             <field name="name">Library</field>

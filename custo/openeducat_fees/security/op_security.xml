@@ -1,5 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+        <!-- Privilege -->
+        <record id="module_category_openeducat_fees_privilege" model="res.groups.privilege">
+            <field name="name">OpenEduCat Fees</field>
+            <field name="sequence">8</field>
+        </record>
+        
+        <!-- Fees User Group -->
+        <record id="group_openeducat_fees_user_privilege" model="res.groups">
+            <field name="name">Fees User</field>
+            <field name="privilege_id" ref="module_category_openeducat_fees_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        
+        <!-- Fees Manager Group -->
+        <record id="group_openeducat_fees_manager_privilege" model="res.groups">
+            <field name="name">Fees Manager</field>
+            <field name="privilege_id" ref="module_category_openeducat_fees_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_openeducat_fees_user_privilege'))]"/>
+        </record>
 
         <record model="ir.module.category" id="module_category_all_op_fees">
             <field name="name">Fees</field>

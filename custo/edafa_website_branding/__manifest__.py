@@ -55,13 +55,8 @@
         'data/demo_data.xml',
     ],
     'assets': {
-        # Backend assets (loaded in Odoo backend)
-        'web.assets_backend': [
-            'edafa_website_branding/static/src/css/english_numerals.css',
-        ],
         # Frontend assets (loaded on website/portal pages)
         'web.assets_frontend': [
-            'edafa_website_branding/static/src/css/english_numerals.css',
             'edafa_website_branding/static/src/css/admission_portal.css',
             'edafa_website_branding/static/src/css/wizard.css',
             'edafa_website_branding/static/src/js/admission_form.js',

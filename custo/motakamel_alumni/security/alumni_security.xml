@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data noupdate="0">
+        <!-- Privilege -->
+        <record id="module_category_motakamel_alumni_privilege" model="res.groups.privilege">
+            <field name="name">Motakamel Alumni</field>
+            <field name="sequence">8</field>
+        </record>
+        
+        <!-- Alumni User Group -->
+        <record id="group_motakamel_alumni_user_privilege" model="res.groups">
+            <field name="name">Alumni User</field>
+            <field name="privilege_id" ref="module_category_motakamel_alumni_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+        
+        <!-- Alumni Manager Group -->
+        <record id="group_motakamel_alumni_manager_privilege" model="res.groups">
+            <field name="name">Alumni Manager</field>
+            <field name="privilege_id" ref="module_category_motakamel_alumni_privilege"/>
+            <field name="implied_ids" eval="[(4, ref('group_motakamel_alumni_user_privilege'))]"/>
+        </record>
         
         <!-- Alumni Module Category -->
         <record id="module_category_motakamel_alumni" model="ir.module.category">
