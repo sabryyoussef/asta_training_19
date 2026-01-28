@@ -366,30 +366,49 @@ class OpAdmission(models.Model):
             
             student_user = False
             if enable_create_student_user:
-                # Create user first without groups_id (Odoo 19 compatibility)
-                portal_group = self.env.ref('base.group_portal', raise_if_not_found=False)
-                user_vals = {
-                    'name': student.name,
-                    'login': student.email if student.email else student.application_number,  # noqa
-                    'image_1920': self.image or False,
-                    'is_student': True,
-                    'partner_id': partner.id,  # Use existing partner to avoid duplicates
-                }
-                if self.company_id:
-                    user_vals['company_id'] = self.company_id.id
+                # Check if user already exists for this partner to avoid duplicates
+                existing_user = self.env['res.users'].sudo().search([
+                    ('partner_id', '=', partner.id)
+                ], limit=1)
                 
-                student_user = self.env['res.users'].create(user_vals)
+                if existing_user:
+                    # User already exists - use it and ensure it's portal
+                    student_user = existing_user
+                    _logger.info(f"Using existing user {student_user.id} for partner {partner.id}")
+                else:
+                    # Create user as portal user (Odoo 19 compatibility)
+                    portal_group = self.env.ref('base.group_portal', raise_if_not_found=False)
+                    internal_group = self.env.ref('base.group_user', raise_if_not_found=False)
+                    user_vals = {
+                        'name': student.name,
+                        'login': student.email if student.email else student.application_number,  # noqa
+                        'image_1920': self.image or False,
+                        'is_student': True,
+                        'partner_id': partner.id,  # Use existing partner to avoid duplicates
+                    }
+                    if self.company_id:
+                        user_vals['company_id'] = self.company_id.id
+                    
+                    student_user = self.env['res.users'].create(user_vals)
                 
-                # Assign portal group after creation (Odoo 19 compatibility)
+                # Assign portal group and remove internal group (Odoo 19 compatibility)
                 # Use group.users instead of user.groups_id (inverse relationship)
+                portal_group = self.env.ref('base.group_portal', raise_if_not_found=False)
+                internal_group = self.env.ref('base.group_user', raise_if_not_found=False)
+                
                 if portal_group and student_user:
                     try:
-                        # In Odoo 19, groups_id is not writable on res.users
-                        # Use group's users field (inverse relationship) with write() method
+                        # First, remove from internal group if present (to avoid duplicate internal user)
+                        if internal_group and student_user in internal_group.users:
+                            internal_group.write({'users': [(3, student_user.id)]})
+                            _logger.info(f"Removed user {student_user.id} from internal group")
+                        
+                        # Then add to portal group
                         current_users = portal_group.users
                         if student_user not in current_users:
                             # Add user to group using Many2many command (4 = add to existing)
                             portal_group.write({'users': [(4, student_user.id)]})
+                            _logger.info(f"Added user {student_user.id} to portal group")
                     except Exception as e:
                         _logger.error(f"Could not assign portal group to user {student_user.id}: {e}")
                         # Continue without group assignment - user can be assigned manually later
