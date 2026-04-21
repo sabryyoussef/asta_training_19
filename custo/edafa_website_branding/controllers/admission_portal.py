@@ -31,6 +31,53 @@ _logger = logging.getLogger(__name__)
 
 class EdafaAdmissionPortal(http.Controller):
 
+    def _compute_nelc_progress_scaled(self, admission):
+        """Map admission workflow state into a course-level progress value (0..1)."""
+        state_to_progress = {
+            'draft': 0.0,
+            'submit': 0.20,
+            'pending': 0.35,
+            'confirm': 0.50,
+            'admission': 0.80,
+            'done': 1.0,
+        }
+        progress_scaled = state_to_progress.get(admission.state, 0.0)
+
+        # Payment success is a meaningful progress step for this journey.
+        if getattr(admission, 'payment_status', '') == 'paid':
+            progress_scaled = max(progress_scaled, 0.60)
+
+        return progress_scaled
+
+    def _emit_nelc_initialized_non_blocking(self, admission):
+        """Emit initialized statement without interrupting portal UX."""
+        try:
+            from odoo.addons.nelc_xapi_admission.services.nelc_xapi_client import (
+                send_initialized_statement,
+            )
+            send_initialized_statement(request.env, admission)
+        except Exception:
+            _logger.exception(
+                "NELC xAPI: unexpected error sending 'initialized' statement "
+                "for admission %s – portal flow not interrupted",
+                admission.id,
+            )
+
+    def _emit_nelc_progressed_non_blocking(self, admission):
+        """Emit progressed statement without interrupting portal UX."""
+        try:
+            from odoo.addons.nelc_xapi_admission.services.nelc_xapi_client import (
+                send_progressed_statement,
+            )
+            progress_scaled = self._compute_nelc_progress_scaled(admission)
+            send_progressed_statement(request.env, admission, progress_scaled)
+        except Exception:
+            _logger.exception(
+                "NELC xAPI: unexpected error sending 'progressed' statement "
+                "for admission %s – portal flow not interrupted",
+                admission.id,
+            )
+
     @http.route(['/admission', '/admission/apply'], type='http', auth="public", website=True, sitemap=True)
     def admission_form(self, **kwargs):
         """Profile selection page - choose between Student or Trainer"""
@@ -531,6 +578,11 @@ class EdafaAdmissionPortal(http.Controller):
                 admission = request.env['op.admission'].sudo().browse(int(application_number))
                 if not admission.exists():
                     admission = None
+
+        # First meaningful learner interaction after registration.
+        if admission and admission.x_nelc_registered_sent:
+            self._emit_nelc_initialized_non_blocking(admission)
+            self._emit_nelc_progressed_non_blocking(admission)
         
         return request.render('edafa_website_branding.admission_thank_you', {
             'application_number': application_number,
@@ -554,6 +606,8 @@ class EdafaAdmissionPortal(http.Controller):
             
             if not admission:
                 error = "Application not found. Please check your application number and email."
+            elif admission.x_nelc_registered_sent:
+                self._emit_nelc_progressed_non_blocking(admission)
         
         return request.render('edafa_website_branding.admission_status_check', {
             'admission': admission,
@@ -763,6 +817,10 @@ class EdafaAdmissionPortal(http.Controller):
         # Update payment status from transaction
         if admission.payment_transaction_id:
             admission._update_payment_status_from_transaction()
+
+        if admission.x_nelc_registered_sent:
+            self._emit_nelc_initialized_non_blocking(admission)
+            self._emit_nelc_progressed_non_blocking(admission)
         
         return request.render('edafa_website_branding.admission_payment_success', {
             'admission': admission,

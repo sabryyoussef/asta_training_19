@@ -20,7 +20,7 @@
 
 {
     'name': 'NELC xAPI Admission Integration',
-    'version': '19.0.1.0.0',
+    'version': '19.0.2.0.0',
     'license': 'LGPL-3',
     'category': 'Education',
     'sequence': 10,
@@ -56,6 +56,7 @@ Set the following environment variables on Odoo.sh (or copy .env.example):
         'edafa_website_branding',
     ],
     'data': [
+        'security/ir.model.access.csv',
         'data/nelc_config_init.xml',
     ],
     'post_init_hook': 'post_init_hook',
