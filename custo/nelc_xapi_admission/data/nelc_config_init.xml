@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!--
+        NELC xAPI Admission – default ir.config_parameter entries.
+
+        These parameters are pre-populated with empty/placeholder values on
+        module installation.  Fill in real values via:
+          a) Odoo.sh environment variables (recommended – see README.md), or
+          b) Settings → Technical → Parameters → System Parameters.
+
+        Never commit real credentials to source control.
+    -->
+
+    <data noupdate="1">
+
+        <record id="nelc_lrs_endpoint" model="ir.config_parameter">
+            <field name="key">nelc.lrs.endpoint</field>
+            <field name="value"></field>
+        </record>
+
+        <record id="nelc_lrs_auth_header" model="ir.config_parameter">
+            <field name="key">nelc.lrs.auth_header</field>
+            <field name="value"></field>
+        </record>
+
+        <record id="nelc_platform_key" model="ir.config_parameter">
+            <field name="key">nelc.platform_key</field>
+            <field name="value"></field>
+        </record>
+
+    </data>
+</odoo>

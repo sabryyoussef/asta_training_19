@@ -188,6 +188,15 @@ class EdafaAdmissionPortal(http.Controller):
         if not post.get('mobile') or not post.get('mobile').strip():
             error['mobile'] = 'Mobile number is required.'
         
+        # National ID validation (NELC requirement)
+        national_id = post.get('national_id', '').strip()
+        if not national_id:
+            error['national_id'] = 'National ID is required.'
+        elif not re.match(r'^\d{10}$', national_id):
+            error['national_id'] = 'National ID must be exactly 10 digits.'
+        elif national_id[0] not in ('1', '2', '4'):
+            error['national_id'] = 'National ID must begin with 1, 2, or 4.'
+        
         # If validation errors, redirect back with errors
         if error:
             request.session['admission_error'] = error
@@ -340,6 +349,8 @@ class EdafaAdmissionPortal(http.Controller):
                 'zip': post.get('zip', '').strip() if post.get('zip') else '',
                 'application_date': fields.Datetime.now(),
                 'state': 'submit',  # Set to submitted state initially
+                # NELC xAPI tracking
+                'x_nelc_national_id': post.get('national_id', '').strip(),
                 # Previous education fields (optional)
                 'prev_institute_id': post.get('prev_institute_id', '').strip() if post.get('prev_institute_id') else '',
                 'prev_course_id': post.get('prev_course_id', '').strip() if post.get('prev_course_id') else '',
@@ -456,6 +467,29 @@ class EdafaAdmissionPortal(http.Controller):
                 admission.refresh()
             
             _logger.info(f"DEBUG: Admission created successfully. ID: {admission.id}, Application Number: {admission.application_number}")
+            
+            # Send xAPI "registered" statement to NELC LRS (non-blocking)
+            if not admission.x_nelc_registered_sent:
+                try:
+                    from odoo.addons.nelc_xapi_admission.services.nelc_xapi_client import (
+                        send_registered_statement,
+                    )
+                    nelc_result = send_registered_statement(request.env, admission)
+                    if nelc_result.get('success'):
+                        admission.sudo().write({
+                            'x_nelc_registered_sent': True,
+                            'x_nelc_registered_uuid': nelc_result.get('uuid') or '',
+                        })
+                    else:
+                        admission.sudo().write({
+                            'x_nelc_registered_last_error': (nelc_result.get('error') or '')[:500],
+                        })
+                except Exception:
+                    _logger.exception(
+                        "NELC xAPI: unexpected error sending 'registered' statement "
+                        "for admission %s – student flow not interrupted",
+                        admission.id,
+                    )
             
             # Send notification email (optional)
             try:
