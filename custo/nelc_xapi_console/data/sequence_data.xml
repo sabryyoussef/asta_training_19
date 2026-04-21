@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_nelc_xapi_manual_test" model="ir.sequence">
+        <field name="name">NELC xAPI Manual Test</field>
+        <field name="code">nelc.xapi.manual.test</field>
+        <field name="prefix">NXT-</field>
+        <field name="padding">5</field>
+        <field name="number_increment">1</field>
+        <field name="number_next">1</field>
+        <field name="implementation">standard</field>
+    </record>
+</odoo>

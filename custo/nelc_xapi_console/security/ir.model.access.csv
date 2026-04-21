@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_nelc_xapi_console_settings_system,access_nelc_xapi_console_settings_system,model_nelc_xapi_console_settings,base.group_system,1,1,1,1
+access_nelc_xapi_manual_test_system,access_nelc_xapi_manual_test_system,model_nelc_xapi_manual_test,base.group_system,1,1,1,1

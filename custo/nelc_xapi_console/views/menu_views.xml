@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_nelc_xapi_console_root" name="NELC xAPI Console" sequence="10"/>
+
+    <menuitem id="menu_nelc_xapi_console_settings" name="Settings" parent="menu_nelc_xapi_console_root" action="action_nelc_xapi_console_settings" sequence="10"/>
+
+    <menuitem id="menu_nelc_xapi_console_tests" name="Manual Tests" parent="menu_nelc_xapi_console_root" action="action_nelc_xapi_manual_test" sequence="20"/>
+
+    <menuitem id="menu_nelc_xapi_console_logs" name="Event Logs" parent="menu_nelc_xapi_console_root" action="action_nelc_xapi_event_log_console" sequence="30"/>
+</odoo>

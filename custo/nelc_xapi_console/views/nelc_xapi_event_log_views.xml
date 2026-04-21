@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_nelc_xapi_event_log_tree_console" model="ir.ui.view">
+        <field name="name">nelc.xapi.event.log.tree.console</field>
+        <field name="model">nelc.xapi.event.log</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="event_type"/>
+                <field name="status"/>
+                <field name="admission_id"/>
+                <field name="course_id"/>
+                <field name="statement_uuid"/>
+                <field name="response_uuid"/>
+                <field name="sequence_index"/>
+                <field name="sent_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_nelc_xapi_event_log_form_console" model="ir.ui.view">
+        <field name="name">nelc.xapi.event.log.form.console</field>
+        <field name="model">nelc.xapi.event.log</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group col="2">
+                        <field name="event_type"/>
+                        <field name="status"/>
+                        <field name="verb_iri"/>
+                        <field name="sequence_index"/>
+                        <field name="admission_id"/>
+                        <field name="course_id"/>
+                        <field name="learner_national_id"/>
+                        <field name="learner_email"/>
+                        <field name="object_id"/>
+                        <field name="object_type"/>
+                        <field name="statement_uuid"/>
+                        <field name="response_uuid"/>
+                        <field name="dedup_key"/>
+                        <field name="sent_at"/>
+                    </group>
+                    <group>
+                        <field name="payload_json" widget="text"/>
+                        <field name="error_message" widget="text"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_nelc_xapi_event_log_search_console" model="ir.ui.view">
+        <field name="name">nelc.xapi.event.log.search.console</field>
+        <field name="model">nelc.xapi.event.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="event_type"/>
+                <field name="status"/>
+                <field name="admission_id"/>
+                <field name="course_id"/>
+                <filter string="Sent" name="sent" domain="[('status','=','sent')]"/>
+                <filter string="Failed" name="failed" domain="[('status','=','failed')]"/>
+                <filter string="Skipped Duplicate" name="skipped" domain="[('status','=','skipped_duplicate')]"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_nelc_xapi_event_log_console" model="ir.actions.act_window">
+        <field name="name">xAPI Event Logs</field>
+        <field name="res_model">nelc.xapi.event.log</field>
+        <field name="view_mode">list,form</field>
+        <field name="search_view_id" ref="view_nelc_xapi_event_log_search_console"/>
+    </record>
+</odoo>

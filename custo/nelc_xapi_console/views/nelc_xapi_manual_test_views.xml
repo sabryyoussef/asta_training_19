@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_nelc_xapi_manual_test_tree" model="ir.ui.view">
+        <field name="name">nelc.xapi.manual.test.tree</field>
+        <field name="model">nelc.xapi.manual.test</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="event_type"/>
+                <field name="admission_id"/>
+                <field name="status"/>
+                <field name="result_uuid"/>
+                <field name="executed_at"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="view_nelc_xapi_manual_test_form" model="ir.ui.view">
+        <field name="name">nelc.xapi.manual.test.form</field>
+        <field name="model">nelc.xapi.manual.test</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_send_test" type="object" string="Send Test Event" class="btn-primary"/>
+                    <field name="status" widget="statusbar" statusbar_visible="draft,success,failed"/>
+                </header>
+                <sheet>
+                    <group col="2">
+                        <field name="name" readonly="1"/>
+                        <field name="admission_id"/>
+                        <field name="event_type"/>
+                        <field name="executed_at" readonly="1"/>
+                    </group>
+
+                    <group string="Progressed Inputs" invisible="event_type != 'progressed'">
+                        <field name="progress_scaled"/>
+                    </group>
+
+                    <group string="Attempted Inputs" invisible="event_type != 'attempted'" col="2">
+                        <field name="quiz_key"/>
+                        <field name="score_raw"/>
+                        <field name="score_min"/>
+                        <field name="score_max"/>
+                    </group>
+
+                    <group string="Rated Inputs" invisible="event_type != 'rated'" col="2">
+                        <field name="rating_scaled"/>
+                        <field name="rating_response"/>
+                    </group>
+
+                    <group string="Earned Inputs" invisible="event_type != 'earned'" col="2">
+                        <field name="certificate_id"/>
+                        <field name="certificate_url"/>
+                        <field name="certificate_name"/>
+                    </group>
+
+                    <group string="Result" col="2">
+                        <field name="result_uuid" readonly="1"/>
+                        <field name="event_log_id" readonly="1"/>
+                        <field name="error_message" readonly="1"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_nelc_xapi_manual_test" model="ir.actions.act_window">
+        <field name="name">Manual xAPI Tests</field>
+        <field name="res_model">nelc.xapi.manual.test</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>
